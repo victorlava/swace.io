@@ -19,6 +19,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('head')
+    
 </head>
 <body>
     <div id="app">
@@ -34,7 +37,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                            <li> 
+                            <li>
                                 <a class="nav-link" href="{{ route('contribute.create') }}">{{ __('Contribute (Buy tokens)') }}</a>
                             </li>
                     </ul>

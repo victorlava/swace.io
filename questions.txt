@@ -1,1 +1,3 @@
 1. Confirm password fieldas reikalingas sign upe?
+2. Remember password ar reikia sign in'e?
+3.
