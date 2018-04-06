@@ -15,4 +15,4 @@ Auth::routes();
 
 Route::get('/', 'PageController@index')->name('page.landing');
 
-Route::get('/contribute', 'ContributeController@index')->name('page.contribute');
+Route::resource('/contribute', 'ContributeController')->only(['create', 'store']);

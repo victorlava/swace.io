@@ -34,8 +34,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                            <li>
-                                <a class="nav-link" href="{{ route('page.contribute') }}">{{ __('Contribute (Buy tokens)') }}</a>
+                            <li> 
+                                <a class="nav-link" href="{{ route('contribute.create') }}">{{ __('Contribute (Buy tokens)') }}</a>
                             </li>
                     </ul>
 
