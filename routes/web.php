@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
+
+Route::get('/', 'PageController@index')->name('page.landing');
+
+Route::get('/contribute', 'ContributeController@index')->name('page.contribute');
