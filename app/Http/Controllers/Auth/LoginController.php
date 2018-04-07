@@ -43,27 +43,6 @@ class LoginController extends Controller
 
     public function authenticate(Request $request) {
 
-
-        // Rule::unique('users')->where(function ($query) {
-        //     // echo 'sdf';
-        //     return $query->where('email', 'sveiki@viktoraslava.lt');
-        // });
-
-        // $email = $request->email;
-        // // dd($email);
-        //
-        // $validator = Validator::make($request->all(), [
-        //                 'email' => [
-        //                     'required',
-        //                     Rule::unique('users')->where(function ($query) {
-        //                         // echo 'sdf';
-        //                         // dd($this);
-        //                         return $query->where('email', $request->input('email'));
-        //                     }),
-        //                 ],
-        //             ]);
-        // dd($validator->errors());
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:254',
             'password' => 'required',
@@ -71,32 +50,42 @@ class LoginController extends Controller
 
         $validator->email = $request->email;
         $validator->password = $request->password;
+        $validator->recaptcha = $request->input('g-recaptcha-response');
 
         $validator->after(function ($validator) {
-            // dd($validator);
-            if (!Auth::attempt(['email' => $validator->email, 'password' => $validator->password])) {
-                $validator->errors()->add('email', 'Something is wrong with this field!');
+
+            $recaptcha = new \ReCaptcha\ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
+            $response = $recaptcha->verify($validator->recaptcha, $_SERVER['REMOTE_ADDR']); // Verify recaptcha
+
+            if(!$response->isSuccess()) { // If reCAPTCHA failed then add an error
+                $validator->errors()->add('recaptcha', 'reCAPTCHA validation failed, please try again the "I\'m not a robot" test.');
             }
-            else {
-                // return redirect()->route('dashboard');
+            else { // If reCAPTCHA succeeded then attempt to authenicate
+
+                if (!Auth::attempt(['email' => $validator->email,
+                                    'password' => $validator->password])) { // If authenication fails then add an error
+
+                    $validator->errors()->add('email', 'These credentials do not match our records.');
+                }
+
             }
+
         });
-        //
-        // // $error = '';
-        //
-        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-        //     // Authentication passed...
-        //     return redirect()->route('dashboard');
-        // }
-        //
-        // // if ($validator->fails()) {
-        // //     return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY')])->withErrors($validator);
-        // // }
-        //
-        return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY')])->withErrors($validator);
+
+        if ($validator->fails()) { // If validation failed then show errors on login page
+            return redirect()->route('login')->withErrors($validator)->withInput();
+        }
+        else { // If succeeded proceed to user dashboard
+            return redirect()->route('dashboard');
+        }
+
+        // If no validation occured just show an ordinary login page
+        return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY')]);
     }
 
     public function showLoginForm() {
+
         return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY') ]);
+
     }
 }

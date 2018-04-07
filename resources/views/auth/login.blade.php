@@ -55,7 +55,12 @@
 
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
-                                <div class="g-recaptcha" data-sitekey="{{ $recaptcha }}"></div>
+                                <div class="g-recaptcha form-control{{ $errors->has('recaptcha') ? ' is-invalid' : '' }}" data-sitekey="{{ $recaptcha }}"></div>
+                                @if ($errors->has('recaptcha'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('recaptcha') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
