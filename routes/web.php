@@ -16,3 +16,4 @@ Auth::routes();
 Route::get('/', 'PageController@index')->name('page.landing');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store']);
+Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');

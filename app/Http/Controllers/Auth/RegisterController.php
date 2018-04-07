@@ -71,10 +71,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $request->session()->put('email', $data['email']);
-        $request->session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
+        session()->put('email', $data['email']);
+        session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
-                                                    ' e-mail address. Make sure to confirm your address within 24 hours.') }});
+                                                    ' e-mail address. Make sure to confirm your address within 24 hours.'));
 
         return User::create([
             'first_name' => $data['first_name'],
