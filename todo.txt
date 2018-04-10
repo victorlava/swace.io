@@ -1,2 +1,2 @@
 // 1. Recpatcha backend validation
-2. ReCaptcha hide/show on login fail/success
+// 2. ReCaptcha hide/show on login fail/success
