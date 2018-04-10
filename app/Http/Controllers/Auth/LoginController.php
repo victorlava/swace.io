@@ -43,6 +43,8 @@ class LoginController extends Controller
 
     public function authenticate(Request $request) {
 
+        $fail_counter = session()->get('fail_counter');
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:254',
             'password' => 'required',
@@ -51,19 +53,23 @@ class LoginController extends Controller
         $validator->email = $request->email;
         $validator->password = $request->password;
         $validator->recaptcha = $request->input('g-recaptcha-response');
+        $validator->fail_counter = $fail_counter;
 
         $validator->after(function ($validator) {
 
             $recaptcha = new \ReCaptcha\ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
             $response = $recaptcha->verify($validator->recaptcha, $_SERVER['REMOTE_ADDR']); // Verify recaptcha
 
-            if(!$response->isSuccess()) { // If reCAPTCHA failed then add an error
+            if(!$response->isSuccess() && $validator->fail_counter > 2 ) { // If reCAPTCHA failed then add an error
                 $validator->errors()->add('recaptcha', 'reCAPTCHA validation failed, please try again the "I\'m not a robot" test.');
             }
             else { // If reCAPTCHA succeeded then attempt to authenicate
 
                 if (!Auth::attempt(['email' => $validator->email,
                                     'password' => $validator->password])) { // If authenication fails then add an error
+
+                    $validator->fail_counter++; // The fail counter increases only when AUTH is attempted
+                    session()->put('fail_counter', $validator->fail_counter);
 
                     $validator->errors()->add('email', 'These credentials do not match our records.');
                 }
@@ -75,17 +81,15 @@ class LoginController extends Controller
         if ($validator->fails()) { // If validation failed then show errors on login page
             return redirect()->route('login')->withErrors($validator)->withInput();
         }
-        else { // If succeeded proceed to user dashboard
-            return redirect()->route('dashboard');
-        }
 
-        // If no validation occured just show an ordinary login page
-        return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY')]);
+        return redirect()->route('dashboard');
     }
 
     public function showLoginForm() {
+        $fail_counter = session()->get('fail_counter');
 
-        return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY') ]);
+        return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY'),
+                                    'fail_counter' => $fail_counter ]);
 
     }
 }
