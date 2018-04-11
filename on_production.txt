@@ -1,1 +1,2 @@
-1. Create recaptcha for swace and set the keys in the .env file
+1. Create recaptcha (google account) for swace and set the keys in the .env file
+2. 
