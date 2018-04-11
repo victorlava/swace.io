@@ -10,6 +10,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Jobs\SendVerificationEmail;
+use App\Mail\EmailVerification;
+use Mail;
+// use Job;
 
 class RegisterController extends Controller
 {
@@ -74,8 +77,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        dispatch(new SendVerificationEmail($data));
-
         session()->put('email', $data['email']);
         session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
@@ -99,7 +100,13 @@ class RegisterController extends Controller
     public function register(Request $request) {
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
+
+        // $email = new EmailVerification($user);
+        // Mail::to($user->email)->send($email);
+
         dispatch(new SendVerificationEmail($user));
+
+        return redirect()->route('contribute.create');
         // return view('verification');
     }
 
@@ -120,3 +127,4 @@ class RegisterController extends Controller
             // Send to dashboard, add error message
         }
     }
+}
