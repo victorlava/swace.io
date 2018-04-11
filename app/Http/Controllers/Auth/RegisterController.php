@@ -127,8 +127,9 @@ class RegisterController extends Controller
             $user->save();
 
             // Send to dashboard, add success message
-            // Send email verified message, add queue to send 
-
+            // Send email verified message, add queue to send
+            
+            return redirect()->route('dashboard');
             // return view('emailconfirm',['user'=>$user]);
         }
         else {
