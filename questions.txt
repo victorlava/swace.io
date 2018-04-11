@@ -1,4 +1,4 @@
 1. Confirm password fieldas reikalingas sign upe?
 2. Remember password ar reikia sign in'e?
-3.
-W
+3. Ką darom kai linkas būna expired email patvirtinimo?
+    Trinam userį ar ką darom, koks flow?

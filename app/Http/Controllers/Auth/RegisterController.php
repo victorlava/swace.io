@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('verify'); // You can verify when you are signed in
     }
 
     /**
@@ -101,13 +102,14 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
 
-        // $email = new EmailVerification($user);
-        // Mail::to($user->email)->send($email);
+        Auth::attempt(['email' => $request->email,
+                            'password' => $request->password]);
+                            // Login the user even if he's not verified
 
         dispatch(new SendVerificationEmail($user));
 
-        return redirect()->route('contribute.create');
-        // return view('verification');
+
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -120,11 +122,17 @@ class RegisterController extends Controller
         $user = User::where('email_token',$token)->first();
         $user->verified = 1;
         if($user->save()){
+
+            $user->email_token = null; // Remove token to save space
+            $user->save();
+
             // Send to dashboard, add success message
+            // Send email verified message, add queue to send 
+
             // return view('emailconfirm',['user'=>$user]);
         }
         else {
-            // Send to dashboard, add error message
+            // Send to dashboard, add error message that link has expired
         }
     }
 }
