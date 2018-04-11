@@ -12,6 +12,7 @@
 */
 
 Auth::routes();
+Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verify');
 
 Route::get('/', 'PageController@index')->name('page.landing');
 

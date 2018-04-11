@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use App\Jobs\SendVerificationEmail;
 
 class RegisterController extends Controller
 {
@@ -71,6 +74,8 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
+        dispatch(new SendVerificationEmail($data));
+
         session()->put('email', $data['email']);
         session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
@@ -81,7 +86,37 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phone' => $data['phone']
+            'phone' => $data['phone'],
+            'email_token' => base64_encode($data['email'])
         ]);
     }
-}
+    /**
+    * Handle a registration request for the application.
+    *
+    * @param \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\Response
+    */
+    public function register(Request $request) {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        dispatch(new SendVerificationEmail($user));
+        // return view('verification');
+    }
+
+    /**
+    * Handle a registration request for the application.
+    *
+    * @param $token
+    * @return \Illuminate\Http\Response
+    */
+    public function verify($token) {
+        $user = User::where('email_token',$token)->first();
+        $user->verified = 1;
+        if($user->save()){
+            // Send to dashboard, add success message
+            // return view('emailconfirm',['user'=>$user]);
+        }
+        else {
+            // Send to dashboard, add error message
+        }
+    }
