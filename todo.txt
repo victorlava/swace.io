@@ -2,4 +2,4 @@
 // 2. ReCaptcha hide/show on login fail/
 3. Sign up page terms conditions (popup for terms link)
 4. Landing page rodyti alertą jei neconfirmintas useris (dashboard non-active daryt), middlewara sukurti neconfirmintam
-5. 
+5. Deklaracijas pridėti prie email confirmation blade templeito

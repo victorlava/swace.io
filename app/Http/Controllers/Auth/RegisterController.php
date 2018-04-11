@@ -109,7 +109,7 @@ class RegisterController extends Controller
         dispatch(new SendVerificationEmail($user));
 
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.index');
     }
 
     /**
@@ -119,21 +119,25 @@ class RegisterController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function verify($token) {
+
         $user = User::where('email_token',$token)->first();
         $user->verified = 1;
-        if($user->save()){
+
+        if($user->save()) {
 
             $user->email_token = null; // Remove token to save space
             $user->save();
 
             // Send to dashboard, add success message
-            // Send email verified message, add queue to send
-            
-            return redirect()->route('dashboard');
-            // return view('emailconfirm',['user'=>$user]);
+            session()->flash('success', 'Your email is verified, now you can start using the dashboard.');
+
         }
         else {
-            // Send to dashboard, add error message that link has expired
+
+            session()->flash('error', 'Link has expired.');
+
         }
+
+        return redirect()->route('dashboard.index');
     }
 }
