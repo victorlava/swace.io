@@ -128,13 +128,13 @@ class RegisterController extends Controller
             $user->email_token = null; // Remove token to save space
             $user->save();
 
-            // Send to dashboard, add success message
-            session()->flash('success', 'Your email is verified, now you can start using the dashboard.');
+            session()->flash('type', 'success');
+            session()->flash('message', 'Your email is verified, now you can start using the dashboard.');
 
         }
         else {
-
-            session()->flash('error', 'Link has expired.');
+            session()->flash('type', 'error');
+            session()->flash('message', 'Email confirmation link has expired.');
 
         }
 
