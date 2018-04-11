@@ -1,2 +1,8 @@
 1. Create recaptcha (google account) for swace and set the keys in the .env file
-2. 
+2. Create queue tables for process management:
+    php artisan queue:table
+    php artisan queue:failed-table
+    2.1 edit .env - queue driver should be database
+3. Setup mail server on production, for staging mailtrap!
+    3.1 set MAIL_FROM_ADDRESS=system@swace.io
+4.
