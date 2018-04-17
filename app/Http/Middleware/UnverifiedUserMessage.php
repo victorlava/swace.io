@@ -18,9 +18,12 @@ class UnverifiedUserMessage
     {
         if(Auth::user()->verified == 0) {
             /* If logged in and not verified show error message */
-            session()->flash('type', 'error');
-            session()->flash('message', 'Your email ' . Auth::user()->email . ' is not verified, you can not use the dashboard.');
-        }
+            if(!session()->get('type')) { /* Don't show the message if there are other flash messages coming in */
+                session()->flash('type', 'error');
+                session()->flash('message', 'Your email ' . Auth::user()->email . ' is not verified, you can not use the dashboard.');
+                }
+
+            }
 
         return $next($request);
     }
