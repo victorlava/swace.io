@@ -19,6 +19,6 @@ Route::get('/', 'PageController@index')->name('page.landing');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 Route::get('/dashboard/test', 'DashboardController@test')->name('dashboard.test')->middleware('verified');
 
-Route::resource('/contribute', 'ContributeController')->only(['create', 'store']);
+Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
