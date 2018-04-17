@@ -13,5 +13,9 @@ class DashboardController extends Controller
 
     }
 
+    public function test() {
+        echo 'sdfs';
+    }
+
 
 }

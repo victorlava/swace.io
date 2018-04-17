@@ -38,8 +38,19 @@ class Kernel extends HttpKernel
         ],
 
         'verified' => [
+            /* Redirects logged in, unverified user if tries to access
+             a route with this middleware, also attaches an error, that says to
+             the email */
             \Illuminate\Auth\Middleware\Authenticate::class,
-            \App\Http\Middleware\VerifiedUser::class
+            \App\Http\Middleware\UnverifiedUserMessage::class,
+            \App\Http\Middleware\UnverifiedUserRedirect::class
+        ],
+
+        'verified.message' => [
+            /* Attaches an error message to a user, which is logged in and not verified,
+                doesn't redirect */
+            \Illuminate\Auth\Middleware\Authenticate::class,
+            \App\Http\Middleware\UnverifiedUserMessage::class
         ],
 
         'api' => [

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class VerifiedUser
+class UnverifiedUserMessage
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,11 @@ class VerifiedUser
      */
     public function handle($request, Closure $next)
     {
-
-        if(Auth::user()->verified != 1) {
-            /* If logged in and not verified redirect to unactive dashboard index */
-            
-            return redirect()->route('dashboard.index');
+        if(Auth::user()->verified == 0) {
+            /* If logged in and not verified show error message */
+            session()->flash('type', 'error');
+            session()->flash('message', 'Your email ' . Auth::user()->email . ' is not verified, you can not use the dashboard.');
         }
-
 
         return $next($request);
     }
