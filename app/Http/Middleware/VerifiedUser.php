@@ -19,6 +19,7 @@ class VerifiedUser
 
         if(Auth::user()->verified != 1) {
             /* If logged in and not verified redirect to unactive dashboard index */
+            
             return redirect()->route('dashboard.index');
         }
 

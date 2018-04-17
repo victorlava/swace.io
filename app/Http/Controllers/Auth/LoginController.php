@@ -93,10 +93,4 @@ class LoginController extends Controller
 
     }
 
-    /* Used to display verify your email message to a user */
-    public function verify() {
-
-        return view('auth.verify', ['email' => Auth::user()->email]);
-        
-    }
 }

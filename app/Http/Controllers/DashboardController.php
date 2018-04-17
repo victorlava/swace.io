@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    /* By default shows transaction history */
     public function index() {
-        
+
         return view('dashboard/index');
 
     }
+
+
 }

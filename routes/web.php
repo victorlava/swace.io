@@ -21,4 +21,3 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store']);
 
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
-Route::get('/verify', 'Auth\LoginController@verify')->name('login.verify');
