@@ -82,7 +82,7 @@ class LoginController extends Controller
             return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.index');
     }
 
     public function showLoginForm() {
@@ -91,5 +91,12 @@ class LoginController extends Controller
         return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY'),
                                     'fail_counter' => $fail_counter ]);
 
+    }
+
+    /* Used to display verify your email message to a user */
+    public function verify() {
+
+        return view('auth.verify', ['email' => Auth::user()->email]);
+        
     }
 }

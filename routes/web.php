@@ -16,7 +16,9 @@ Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('ema
 
 Route::get('/', 'PageController@index')->name('page.landing');
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('auth');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store']);
+
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
+Route::get('/verify', 'Auth\LoginController@verify')->name('login.verify');
