@@ -121,10 +121,10 @@ class RegisterController extends Controller
     public function verify($token) {
 
         $user = User::where('email_token',$token)->first();
-        $user->verified = 1;
 
-        if($user->save()) {
+        if($user) {
 
+            $user->verified = 1;
             $user->email_token = null; // Remove token to save space
             $user->save();
 
@@ -133,6 +133,7 @@ class RegisterController extends Controller
 
         }
         else {
+
             session()->flash('type', 'error');
             session()->flash('message', 'Email confirmation link has expired.');
 
