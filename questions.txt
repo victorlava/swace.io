@@ -2,3 +2,5 @@
 2. Remember password ar reikia sign in'e?
 3. Ką darom kai linkas būna expired email patvirtinimo?
     Trinam userį ar ką darom, koks flow?
+
+4. Kaip KWC verčiasi pilnai?
