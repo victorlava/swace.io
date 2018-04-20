@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('head')
+<!--  jQuery for simple api rate check on coingate,
+    might not be neccesery on front-end -->
+<script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -54,7 +63,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <p id="rate">1,253 $</p>
+                                <p><span id="rate">0</span> $</p>
                             </div>
                         </div>
 
@@ -64,8 +73,8 @@
                             </label>
 
                             <div class="col-md-6">
-                                <p id="tokens">
-                                    <strong>450 SWA~</strong>
+                                <p>
+                                    <strong><span id="tokens">0</span> SWA~</strong>
                                 </p>
                             </div>
                         </div>
@@ -82,6 +91,41 @@
             </div>
         </div>
     </div>
-
 </div>
+<!--  asdasd -->
+<script type="text/javascript">
+    $(document).ready(function(){
+
+
+        $('#amount, #currency').on('input', function() {
+
+            let amount = parseFloat($('#amount').val()),
+                currency = $('#currency').val().toUpperCase(),
+                amountUSD = 0,
+                tokenPrice = {{ $token_price }},
+                tokenAmount = 0; // Just for estimation!
+
+
+                const proxyurl = "https://cors-anywhere.herokuapp.com/";
+                const url = "https://api.coingate.com/v1/rates/merchant/USD/" + currency;
+                fetch(proxyurl + url)
+                .then(response => response.text())
+                .then(contents => {
+                    amountUSD = amount / contents;
+                    if(isNaN(amountUSD)) { amountUSD = 0; }
+
+                    $('#rate').text(amountUSD.toLocaleString('en', {
+                        'maximumFractionDigits': 2
+                    }));
+
+                    tokenAmount = amountUSD / tokenPrice;
+                    $('#tokens').text(Math.floor(tokenAmount));
+                });
+
+
+        });
+
+
+    });
+</script>
 @endsection

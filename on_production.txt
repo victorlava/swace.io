@@ -12,3 +12,5 @@
     - COINGATE_APP_ID
     - COINGATE_KEY
     - COINGATE_SECRET
+7. Set token price on .env (USD):
+    TOKEN_PRICE

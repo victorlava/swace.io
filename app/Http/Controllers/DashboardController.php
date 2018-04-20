@@ -8,6 +8,15 @@ use CoinGate\CoinGate as Gateway;
 
 class DashboardController extends Controller
 {
+
+    public $token_price;
+
+    public function __construct() {
+
+        $this->token_price = env('TOKEN_PRICE');
+
+    }
+
     /* By default shows transaction history */
     public function index() {
 
@@ -20,7 +29,7 @@ class DashboardController extends Controller
     public function create() {
 
 
-        return view('dashboard/create');
+        return view('dashboard/create', ['token_price' => $this->token_price]);
 
     }
 
