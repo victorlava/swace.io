@@ -22,3 +22,5 @@ Route::get('/dashboard/test', 'DashboardController@test')->name('dashboard.test'
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
+
+Route::get('/payment', 'PaymentController@store')->name('payment.store');

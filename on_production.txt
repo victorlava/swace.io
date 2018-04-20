@@ -5,4 +5,10 @@
     2.1 edit .env - queue driver should be database
 3. Setup mail server on production, for staging mailtrap!
     3.1 set MAIL_FROM_ADDRESS=system@swace.io
-4.
+4. Create coingate account, verify it
+5. Create an app to get api keys
+6. Add coingate api information to .env:
+    - COINGATE_ENVIRONMENT to live
+    - COINGATE_APP_ID
+    - COINGATE_KEY
+    - COINGATE_SECRET

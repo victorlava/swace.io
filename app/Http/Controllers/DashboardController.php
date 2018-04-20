@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use CoinGate\CoinGate as Gateway;
 
 class DashboardController extends Controller
 {
