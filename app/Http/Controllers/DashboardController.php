@@ -17,8 +17,11 @@ class DashboardController extends Controller
 
     }
 
-    public function test() {
-        echo 'sdfs';
+    public function create() {
+
+
+        return view('dashboard/create');
+
     }
 
 

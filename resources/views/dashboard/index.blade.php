@@ -26,7 +26,7 @@
                         If you are interested in investing more than <strong>1,000 $</strong> and you want to claim your tokens you need to pass the <a href="#"><strong>KWC</strong></a>.
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="btn btn-danger btn-lg">Buy tokens</a>
+                        <a href="{{ route('dashboard.create') }}" class="btn btn-danger btn-lg">Buy tokens</a>
                     </div>
                 </div>
             </div>
