@@ -19,6 +19,24 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!--  Custom class to disabled the dashboard,
+          not needed in front-end probably. -->
+    <style media="screen">
+        .disabled {
+            opacity: 0.5;
+        }
+
+        .disabled:after {
+            width: 100%;
+            height: 100%;
+            display: block;
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: not-allowed;
+        }
+    </style>
 
     @yield('head')
 
