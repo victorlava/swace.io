@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+@php
+    $classDisabled = $verified ? '' : ' disabled';
+@endphp
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -11,7 +16,8 @@
             @endif
         </div>
     </div>
-    <div class="row">
+
+    <div class="row{{ $classDisabled }}">
         <div class="col-md-12">
             <h1 class="float-left">Dashboard page</h1>
             <div class="col-md-7 float-right">
@@ -27,7 +33,7 @@
         </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5{{ $classDisabled }}">
         <div class="col-md-12">
             <h4>Transaction history</h4>
         </div>
@@ -103,7 +109,7 @@
         </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5{{ $classDisabled }}">
         <div class="col-md-12">
             <h4>Pre-sale progress</h4>
             <p>We got <span class="badge badge-success">124,052 $</span> out of <span class="badge badge-warning">1,000,000 $</span></p>

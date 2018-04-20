@@ -24,6 +24,7 @@
     <style media="screen">
         .disabled {
             opacity: 0.5;
+            position: relative;
         }
 
         .disabled:after {
