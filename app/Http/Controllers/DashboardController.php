@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CoinGate\CoinGate as Gateway;
+use App\Currency;
 
 class DashboardController extends Controller
 {
@@ -28,8 +29,10 @@ class DashboardController extends Controller
 
     public function create() {
 
+        $currencies = Currency::all();
 
-        return view('dashboard/create', ['token_price' => $this->token_price]);
+        return view('dashboard/create', ['currencies' => $currencies,
+                                         'token_price' => $this->token_price]);
 
     }
 

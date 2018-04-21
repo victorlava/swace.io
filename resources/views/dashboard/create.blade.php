@@ -42,9 +42,9 @@
 
                                     <div class="col-md-3">
                                         <select id="currency" class="form-control{{ $errors->has('currency') ? ' is-invalid' : '' }}" name="currency">
-                                            <option value="btc">BTC</option>
-                                            <option value="ltc">LTC</option>
-                                            <option value="eth">ETH</option>
+                                            @foreach($currencies as $currency)
+                                            <option value="{{ $currency->id }}">{{ strtoupper($currency->short_title) }}</option>
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('currency'))
                                             <span class="invalid-feedback">
@@ -99,11 +99,10 @@
         $('#amount, #currency').on('input', function() {
 
             let amount = parseFloat($('#amount').val()),
-                currency = $('#currency').val().toUpperCase(),
+                currency = $('#currency option:selected').text().toLowerCase(),
                 amountUSD = 0,
                 tokenPrice = {{ $token_price }},
                 tokenAmount = 0; // Just for estimation!
-
 
                 const proxyurl = "https://cors-anywhere.herokuapp.com/";
                 const url = "https://api.coingate.com/v1/rates/merchant/USD/" + currency;

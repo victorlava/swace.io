@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate as Gateway;
 use App\Order as Order;
@@ -23,15 +24,14 @@ class PaymentController extends Controller
         // do basic validation to prevent spam
 
         $orderModel = new Order();
-        $orderModel->type = $request->currency;
+        $orderModel->currency_id = $request->currency;
         $orderModel->rate = 1.25;
         $orderModel->gross = 222;
         $orderModel->fee = 1.2;
         $orderModel->net = 222;
         $orderModel->tokens = 2000;
         $orderModel->bonus = 20;
-        $orderModel->status = 1;
-        $orderModel->invoice = 'link';
+        $orderModel->status_id = 1; // Failed by default
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();
 
@@ -60,6 +60,11 @@ class PaymentController extends Controller
         if ($order) {
             // dd($order);
             // echo $order->status;
+            $orderModel = Order::find($orderModel->id);
+            $orderModel->coingate_id = $order->id;
+            $orderModel->invoice = $order->payment_url;
+            $orderModel->status = 2; // Pending
+            $orderModel->save();
             dd($order);
             // Create an order in our system
             return redirect($order->payment_url);
