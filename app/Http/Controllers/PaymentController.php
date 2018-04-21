@@ -30,7 +30,7 @@ class PaymentController extends Controller
         $orderModel->net = 222;
         $orderModel->tokens = 2000;
         $orderModel->bonus = 20;
-        $orderModel->status = 'failed';
+        $orderModel->status = 1;
         $orderModel->invoice = 'link';
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();

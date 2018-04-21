@@ -25,12 +25,6 @@ class CreateOrdersTable extends Migration
             $table->integer('status')->unsigned();
             $table->string('invoice'); // Invoice link
             $table->integer('user_id')->unsigned();
-            // Status:
-            // 1. Invalid - when CoinGate fails to create an order, this one shouldn't occur normally
-            // 2. Pending - order processed by CoinGate
-            // 3. Expired - order marked as expired by Coingate
-            // 4. Paid - order marked as paid by Coingate
-            // 5. Cancel - user canceled order from Coingate
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

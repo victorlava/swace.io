@@ -17,7 +17,6 @@ class CreateCurrenciesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->char('short_title', 6);
-            $table->timestamps();
         });
     }
 
