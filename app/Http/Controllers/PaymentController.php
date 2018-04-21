@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use CoinGate\CoinGate as Gateway;
+use App\Order as Order;
 
 class PaymentController extends Controller
 {
@@ -21,6 +22,19 @@ class PaymentController extends Controller
 
         // do basic validation to prevent spam
 
+        $orderModel = new Order();
+        $orderModel->type = $request->currency;
+        $orderModel->rate = 1.25;
+        $orderModel->gross = 222;
+        $orderModel->fee = 1.2;
+        $orderModel->net = 222;
+        $orderModel->tokens = 2000;
+        $orderModel->bonus = 20;
+        $orderModel->status = 'failed';
+        $orderModel->invoice = 'link';
+        $orderModel->user_id = Auth::user()->id;
+        $orderModel->save();
+
         $this->connect();
 
         $customOrderID = '32315';
@@ -28,7 +42,7 @@ class PaymentController extends Controller
         $tokenAmount = 21;
 
         $post_params = array(
-           'order_id'          => 'YOUR-CUSTOM-ORDER-ID-115',
+           'order_id'          => $orderModel->id,
            'price'             => $request->amount,
            'currency'          => $request->currency,
            'receive_currency'  => 'USD',
@@ -37,7 +51,7 @@ class PaymentController extends Controller
                                                             'token_amount' => $tokenAmount]),
            'success_url'       => route('payment.success', ['order_id' => $customOrderID,
                                                             'token_amount' => $tokenAmount]),
-           'title'             => 'Order #112',
+           'title'             => 'Order #' . $orderModel->id,
            'description'       => 'SWA token purchase.'
         );
 
@@ -46,7 +60,7 @@ class PaymentController extends Controller
         if ($order) {
             // dd($order);
             // echo $order->status;
-
+            dd($order);
             // Create an order in our system
             return redirect($order->payment_url);
 
@@ -59,6 +73,7 @@ class PaymentController extends Controller
     public function callback(Request $request) {
 
     }
+
 
     public function success($order_id, $token_amount) {
 
