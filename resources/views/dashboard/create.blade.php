@@ -45,7 +45,6 @@
                                             <option value="btc">BTC</option>
                                             <option value="ltc">LTC</option>
                                             <option value="eth">ETH</option>
-                                            <option value="xvg">XVG</option>
                                         </select>
                                         @if ($errors->has('currency'))
                                             <span class="invalid-feedback">

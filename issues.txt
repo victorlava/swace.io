@@ -1,1 +1,2 @@
 // 1. Contribute email -> sign up (sesiją kažkur nenuresetinta)
+2. Coingate supportina tik BTC/
