@@ -26,6 +26,7 @@ class PaymentController extends Controller
 
         $orderModel = new Order();
         $orderModel->currency_id = $request->currency;
+        $orderModel->amount = $request->amount;
         $orderModel->rate = 1.25;
         $orderModel->gross = 222;
         $orderModel->fee = 1.2;
@@ -83,7 +84,13 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(Request $request) {
+    public function callback($token, Request $request) {
+
+        $status = Status::where('title', strtolower($request->title))->first();
+
+        $order = Order::where('id', $request->order_id)->first();
+        $order->status = $status->id;
+        $order->save();
 
     }
 

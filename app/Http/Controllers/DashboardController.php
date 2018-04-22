@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CoinGate\CoinGate as Gateway;
 use App\Currency;
+use App\Order;
 
 class DashboardController extends Controller
 {
@@ -22,8 +23,12 @@ class DashboardController extends Controller
     public function index() {
 
         $verified = (Auth::user()->verified) ? true : false;
+        $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
-        return view('dashboard/index', ['verified' => $verified]);
+        // dd($transactions);
+
+        return view('dashboard/index', ['verified' => $verified,
+                                        'orders' => $orders]);
 
     }
 

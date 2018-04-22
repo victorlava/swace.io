@@ -55,55 +55,33 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>2018-05-12</td>
-                  <td>BTC</td>
-                  <td>12</td>
-                  <td>0.005 $</td>
-                  <td>32,452 $</td>
-                  <td>1,252 $</td>
-                  <td>31,052 $</td>
-                  <td>3512</td>
-                  <td>120</td>
-                  <td>
-                       <span class="badge badge-warning">In progress</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>2018-05-12</td>
-                  <td>BTC</td>
-                  <td>12</td>
-                  <td>0.005 $</td>
-                  <td>32,452 $</td>
-                  <td>1,252 $</td>
-                  <td>31,052 $</td>
-                  <td>3512</td>
-                  <td>120</td>
-                  <td>
-                      <!-- add invoice icon link here -->
-                      <span class="badge badge-success">Completed</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>2018-05-12</td>
-                  <td>BTC</td>
-                  <td>12</td>
-                  <td>0.005 $</td>
-                  <td>32,452 $</td>
-                  <td>1,252 $</td>
-                  <td>31,052 $</td>
-                  <td>3512</td>
-                  <td>120</td>
-                  <td><span class="badge badge-danger">Failed</span></td>
-                </tr>
+                @if(count($orders) > 0)
+                    @foreach($orders as $order)
+                    <tr>
+                      <th scope="row">
+                          {{ $loop->iteration }}
+                      </th>
+                      <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                      <td>{{ strtoupper($order->type->short_title) }}</td>
+                      <td>{{ $order->amount }} $</td>
+                      <td>{{ $order->rate }} $</td>
+                      <td>{{ $order->gross }} $</td>
+                      <td>{{ $order->fee }} $</td>
+                      <td>{{ $order->net }} $</td>
+                      <td>{{ $order->tokens }}</td>
+                      <td>{{ $order->bonus }}</td>
+                      <td>
+                           <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
+                      </td>
+                    </tr>
+                    @endforeach
+                @else:
                 <tr>
                     <td colspan="11">
                         Your transaction history is empty.
                     </td>
                 </tr>
+                @endif
               </tbody>
             </table>
         </div>

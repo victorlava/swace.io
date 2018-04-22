@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->float('amount', 10, 2); 
             $table->float('rate', 10, 2); // USD rate 1,000,000.00
             $table->float('gross', 10, 2);
             $table->float('fee', 8, 2); // CoinGate fee 100,000.00
