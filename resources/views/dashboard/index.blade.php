@@ -93,7 +93,7 @@
         <div class="col-md-12">
             <div class="progress" style="height: 40px;">
               <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ number_format($percentage, 2) }}
+                  {{ number_format($percentage, 2) }} %
               </div>
             </div>
         </div>

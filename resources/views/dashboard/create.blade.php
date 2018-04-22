@@ -58,7 +58,7 @@
 
                         <div class="form-group row">
                             <label for="currency" class="col-sm-4 col-form-label text-md-right">
-                                {{ __('Rate') }}:
+                                {{ __('USD to spend') }}:
                             </label>
 
                             <div class="col-md-6">
@@ -68,7 +68,7 @@
 
                         <div class="form-group row">
                             <label for="currency" class="col-sm-4 col-form-label text-md-right">
-                                {{ __('Tokens to receive') }}:
+                                {{ __('Tokens to receive (estimation)') }}:
                             </label>
 
                             <div class="col-md-6">

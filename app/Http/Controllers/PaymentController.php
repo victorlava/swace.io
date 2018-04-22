@@ -37,7 +37,7 @@ class PaymentController extends Controller
         $orderModel->status_id = 1; // Failed by default
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();
-
+ 
         $this->connect();
 
         $token = 'need to generate token here';
@@ -54,7 +54,7 @@ class PaymentController extends Controller
                                                             'token_amount' => $tokenAmount]),
            'success_url'       => route('payment.success', ['order_id' => $orderModel->order_id,
                                                             'token_amount' => $tokenAmount]),
-           'title'             => 'Order #' . $orderModel->id,
+           'title'             => 'Order #' . $orderModel->order_id, // For client
            'description'       => 'SWA token purchase.'
         );
 
