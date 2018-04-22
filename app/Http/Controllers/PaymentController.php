@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate as Gateway;
-use App\Order as Order;
+use App\Order;
+use App\Currency;
 
 class PaymentController extends Controller
 {
@@ -39,12 +40,13 @@ class PaymentController extends Controller
 
         $customOrderID = '32315';
         $token = 'need to generate token here';
+        $currency = Currency::findOrFail($request->currency);
         $tokenAmount = 21;
 
         $post_params = array(
            'order_id'          => $orderModel->id,
            'price'             => $request->amount,
-           'currency'          => $request->currency,
+           'currency'          => $currency->short_title,
            'receive_currency'  => 'USD',
            'callback_url'      => route('payment.callback', $token),
            'cancel_url'        => route('payment.cancel', ['order_id' => $customOrderID,
@@ -58,21 +60,27 @@ class PaymentController extends Controller
         $order = \CoinGate\Merchant\Order::create($post_params);
 
         if ($order) {
-            // dd($order);
-            // echo $order->status;
+
             $orderModel = Order::find($orderModel->id);
             $orderModel->coingate_id = $order->id;
             $orderModel->invoice = $order->payment_url;
-            $orderModel->status = 2; // Pending
+            $orderModel->status_id = 2; // Pending
             $orderModel->save();
-            dd($order);
-            // Create an order in our system
-            return redirect($order->payment_url);
+
+            $url = $order->payment_url;
+
 
         } else {
-            # Order Is Not Valid
+
+            $orderModel = Order::find($orderModel->id);
+            $orderModel->status_id = 1; // Failed
+            $orderModel->save();
+
+            // Create flash message with failed order message
+            $url = route('dashboard.index');
         }
 
+        return redirect($url);
     }
 
     public function callback(Request $request) {

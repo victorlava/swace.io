@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
             $table->string('invoice')->nullable(); // Invoice link
             $table->integer('coingate_id')->nullable()->unsigned();
             $table->integer('currency_id')->unsigned();
-            $table->integer('status_id')->unsigned();
+            $table->integer('status_id')->nullable()->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 

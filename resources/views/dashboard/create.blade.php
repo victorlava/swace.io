@@ -99,7 +99,7 @@
         $('#amount, #currency').on('input', function() {
 
             let amount = parseFloat($('#amount').val()),
-                currency = $('#currency option:selected').text().toLowerCase(),
+                currency = $('#currency option:selected').text().toUpperCase(),
                 amountUSD = 0,
                 tokenPrice = {{ $token_price }},
                 tokenAmount = 0; // Just for estimation!
