@@ -25,6 +25,7 @@ class PaymentController extends Controller
         // do basic validation to prevent spam
 
         $orderModel = new Order();
+        $orderModel->order_id = rand(100, 10000000);
         $orderModel->currency_id = $request->currency;
         $orderModel->amount = $request->amount;
         $orderModel->rate = 1.25;
@@ -39,7 +40,6 @@ class PaymentController extends Controller
 
         $this->connect();
 
-        $customOrderID = '32315';
         $token = 'need to generate token here';
         $currency = Currency::findOrFail($request->currency);
         $tokenAmount = 21;
@@ -50,9 +50,9 @@ class PaymentController extends Controller
            'currency'          => $currency->short_title,
            'receive_currency'  => 'USD',
            'callback_url'      => route('payment.callback', $token),
-           'cancel_url'        => route('payment.cancel', ['order_id' => $customOrderID,
+           'cancel_url'        => route('payment.cancel', ['order_id' => $orderModel->order_id,
                                                             'token_amount' => $tokenAmount]),
-           'success_url'       => route('payment.success', ['order_id' => $customOrderID,
+           'success_url'       => route('payment.success', ['order_id' => $orderModel->order_id,
                                                             'token_amount' => $tokenAmount]),
            'title'             => 'Order #' . $orderModel->id,
            'description'       => 'SWA token purchase.'

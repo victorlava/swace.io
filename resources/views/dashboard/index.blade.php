@@ -43,7 +43,6 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Date</th>
-                  <th scope="col">Type</th>
                   <th scope="col">Amount</th>
                   <th scope="col">Rate</th>
                   <th scope="col">Gross</th>
@@ -59,11 +58,10 @@
                     @foreach($orders as $order)
                     <tr>
                       <th scope="row">
-                          {{ $loop->iteration }}
+                          {{ $order->order_id }}
                       </th>
                       <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
-                      <td>{{ strtoupper($order->type->short_title) }}</td>
-                      <td>{{ $order->amount }} $</td>
+                      <td>{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</td>
                       <td>{{ $order->rate }} $</td>
                       <td>{{ $order->gross }} $</td>
                       <td>{{ $order->fee }} $</td>
