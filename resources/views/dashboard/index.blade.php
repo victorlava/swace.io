@@ -88,12 +88,12 @@
     <div class="row mt-5{{ $classDisabled }}">
         <div class="col-md-12">
             <h4>Pre-sale progress</h4>
-            <p>We got <span class="badge badge-success">124,052 $</span> out of <span class="badge badge-warning">1,000,000 $</span></p>
+            <p>We have collected <span class="badge badge-success">{{ number_format($collected) }} $</span> out of <span class="badge badge-warning">{{ number_format($sale) }} $</span></p>
         </div>
         <div class="col-md-12">
             <div class="progress" style="height: 40px;">
-              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
-                  15%
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+                  {{ number_format($percentage, 2) }}
               </div>
             </div>
         </div>
