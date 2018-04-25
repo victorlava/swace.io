@@ -13,6 +13,7 @@ class DashboardController extends Controller
 {
 
     public $token_price;
+
     public $sale_amount;
 
     public function __construct() {
@@ -27,6 +28,7 @@ class DashboardController extends Controller
 
         $verified = (Auth::user()->verified) ? true : false;
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+
         $collected = Sale::latest()->first();
         $percentage = (100 * $collected->amount) / (int)$this->sale_amount;
         // dd($this->sale_amount);

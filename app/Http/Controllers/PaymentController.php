@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use CoinGate\CoinGate as Gateway;
+use CoinGate\CoinGate;
 use App\Order;
 use App\Currency;
 
@@ -12,7 +12,7 @@ class PaymentController extends Controller
 {
 
     private function connect() {
-        Gateway::config(array(
+        CoinGate::config(array(
           'environment' => env('COINGATE_ENVIRONMENT'),
           'app_id'      => env('COINGATE_APP_ID'),
           'api_key'     => env('COINGATE_KEY'),
@@ -37,7 +37,7 @@ class PaymentController extends Controller
         $orderModel->status_id = 1; // Failed by default
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();
- 
+
         $this->connect();
 
         $token = 'need to generate token here';
@@ -84,7 +84,7 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback($token, Request $request) {
+    public function callback(string $token, Request $request) {
 
         $status = Status::where('title', strtolower($request->title))->first();
 
@@ -95,13 +95,13 @@ class PaymentController extends Controller
     }
 
 
-    public function success($order_id, $token_amount) {
+    public function success(int $order_id, int $token_amount) {
 
         return view('payment.success', ['order_id' => $order_id,
                                         'token_amount' => $token_amount]);
     }
 
-    public function cancel($order_id, $token_amount) {
+    public function cancel(int $order_id, int $token_amount) {
         return view('payment.cancel', ['order_id' => $order_id,
                                         'token_amount' => $token_amount]);
     }

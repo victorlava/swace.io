@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 
 class ContributeController extends Controller
 {
-    public function create()
-    {
+    public function create() {
         return view('pages/contribute');
     }
 

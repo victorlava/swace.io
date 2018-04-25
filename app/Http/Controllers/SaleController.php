@@ -17,6 +17,5 @@ class SaleController extends Controller
         $sale->amount = $amount;
         $sale->save();
 
-
     }
 }

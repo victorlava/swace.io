@@ -99,11 +99,12 @@ class RegisterController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function register(Request $request) {
+
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
 
         Auth::attempt(['email' => $request->email,
-                            'password' => $request->password]);
+                      'password' => $request->password]);
                             // Login the user even if he's not verified
 
         dispatch(new SendVerificationEmail($user));
@@ -116,17 +117,14 @@ class RegisterController extends Controller
     * Handle a registration request for the application.
     *
     * @param $token
-    * @return \Illuminate\Http\Response
     */
-    public function verify($token) {
+    public function verify(string $token) {
 
-        $user = User::where('email_token',$token)->first();
+        $user = User::where('email_token', $token)->first();
 
         if($user) {
 
-            $user->verified = 1;
-            $user->email_token = null; // Remove token to save space
-            $user->save();
+            $user->verify();
 
             session()->flash('type', 'success');
             session()->flash('message', 'Your email is verified, now you can start using the dashboard.');
@@ -135,7 +133,7 @@ class RegisterController extends Controller
         else {
 
             /* Only show this message if user is logged in and not verified */
-            if(Auth::user() && Auth::user()->verified != 1) {
+            if(Auth::user() && !Auth::user()->is_verified()) {
                 session()->flash('type', 'error');
                 session()->flash('message', 'Your email confirmation link has expired, contact our support team to continue.');
             }
