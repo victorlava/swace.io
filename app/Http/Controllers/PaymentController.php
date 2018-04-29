@@ -10,6 +10,17 @@ use App\Currency;
 
 class PaymentController extends Controller
 {
+    private $receiveCurrency;
+    private $coingateFee;
+    private $bonusPercentage;
+
+    public function __construct()
+    {
+        $this->receiveCurrency = 'USD';
+        $this->coingateFee = 1; // Percentage;
+        $this->bonusPercentage = 30;
+    }
+
     private function connect()
     {
         CoinGate::config(array(
@@ -27,19 +38,13 @@ class PaymentController extends Controller
 
         $orderModel = new Order();
         $orderModel->order_id = rand(100, 10000000); // external
-        $orderModel->currency_id = $request->currency;
+        $orderModel->currency_id = (int)$request->currency;
         $orderModel->amount = $request->amount;
-        // $orderModel->rate = 1.25;
-        // $orderModel->gross = 222;
-        // $orderModel->fee = 1.2;
-        // $orderModel->net = 222;
-        // $orderModel->tokens = 2000;
-        // $orderModel->bonus = 20;
-        // dd($orderModel->status);
-        // $orderModel->status->set('failed'); // Failed by default
+        $orderModel->rate = $orderModel->calcRate($this->receiveCurrency);
+        $orderModel->gross = $orderModel->calcGross();
+        $orderModel->fee = $orderModel->calcFee($this->coingateFee);
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();
-
 
         $this->connect();
 
@@ -53,10 +58,8 @@ class PaymentController extends Controller
            'currency' => $currency->short_title,
            'receive_currency' => 'USD',
            'callback_url' => route('payment.callback', $token),
-           'cancel_url' => route('payment.cancel', ['order_id' => $orderModel->order_id,
-                                                            'token_amount' => $tokenAmount]),
-           'success_url' => route('payment.success', ['order_id' => $orderModel->order_id,
-                                                            'token_amount' => $tokenAmount]),
+           'cancel_url' => route('payment.cancel', ['order_id' => $orderModel->order_id]),
+           'success_url' => route('payment.success', ['order_id' => $orderModel->order_id]),
            'title' => 'Order #' . $orderModel->order_id, // For client
            'description' => 'SWA token purchase.'
         );
@@ -67,7 +70,7 @@ class PaymentController extends Controller
             $orderModel = Order::find($orderModel->id);
             $orderModel->coingate_id = $order->id;
             $orderModel->invoice = $order->payment_url;
-            $orderModel->status->set('pending');
+            $orderModel->setStatus('pending');
             $orderModel->save();
 
             dd($order);
@@ -75,7 +78,7 @@ class PaymentController extends Controller
             $url = $order->payment_url;
         } else {
             $orderModel = Order::find($orderModel->id);
-            $orderModel->status->set('failed');
+            $orderModel->setStatus('failed');
             $orderModel->save();
 
             // Create flash message with failed order message
@@ -87,10 +90,13 @@ class PaymentController extends Controller
 
     public function callback(string $token, Request $request)
     {
-        $status = Status::where('title', strtolower($request->title))->first();
+        // Calculations
 
         $order = Order::where('id', $request->order_id)->first();
-        $order->status = $status->id;
+        $order->net = $request->receive_amount;
+        $order->tokens = $order->calcTokens($this->tokenPrice, $this->bonusPercentage);
+        $order->bonus = $this->bonusPercentage;
+        $order->setStatus($request->status);
         $order->save();
     }
 

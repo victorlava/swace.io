@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-md-8">
-            <p>Your order <strong>#{{ $order_id }}</strong> to buy <strong>{{ $token_amount }}</strong> SWA tokens have been canceled.</p>
+            <p>Your order <strong>#{{ $order_id }}</strong> to buy SWA tokens have been canceled.</p>
         </div>
     </div>
     <div class="row">

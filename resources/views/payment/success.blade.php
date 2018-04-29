@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-md-8">
-            <p>Your order <strong>#{{ $order_id }}</strong> to buy <strong>{{ $token_amount }}</strong> SWA tokens have been succesfully created and it will appear in the dashboard's transaction history. It will be approved during next 20 minutes.</p>
+            <p>Your order <strong>#{{ $order_id }}</strong>.</p>
         </div>
     </div>
     <div class="row">
