@@ -10,22 +10,23 @@ use App\Currency;
 
 class PaymentController extends Controller
 {
-
-    private function connect() {
+    private function connect()
+    {
         CoinGate::config(array(
-          'environment' => env('COINGATE_ENVIRONMENT'),
-          'app_id'      => env('COINGATE_APP_ID'),
-          'api_key'     => env('COINGATE_KEY'),
-          'api_secret'  => env('COINGATE_SECRET')
+            'environment' => env('COINGATE_ENVIRONMENT'),
+            'app_id' => env('COINGATE_APP_ID'),
+            'api_key' => env('COINGATE_KEY'),
+            'api_secret' => env('COINGATE_SECRET')
         ));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         // do basic validation to prevent spam
 
         $orderModel = new Order();
-        $orderModel->order_id = rand(100, 10000000);
+        $orderModel->order_id = rand(100, 10000000); // external
         $orderModel->currency_id = $request->currency;
         $orderModel->amount = $request->amount;
         $orderModel->rate = 1.25;
@@ -45,23 +46,22 @@ class PaymentController extends Controller
         $tokenAmount = 21;
 
         $post_params = array(
-           'order_id'          => $orderModel->id,
-           'price'             => $request->amount,
-           'currency'          => $currency->short_title,
-           'receive_currency'  => 'USD',
-           'callback_url'      => route('payment.callback', $token),
-           'cancel_url'        => route('payment.cancel', ['order_id' => $orderModel->order_id,
+           'order_id' => $orderModel->id,
+           'price' => $request->amount,
+           'currency' => $currency->short_title,
+           'receive_currency' => 'USD',
+           'callback_url' => route('payment.callback', $token),
+           'cancel_url' => route('payment.cancel', ['order_id' => $orderModel->order_id,
                                                             'token_amount' => $tokenAmount]),
-           'success_url'       => route('payment.success', ['order_id' => $orderModel->order_id,
+           'success_url' => route('payment.success', ['order_id' => $orderModel->order_id,
                                                             'token_amount' => $tokenAmount]),
-           'title'             => 'Order #' . $orderModel->order_id, // For client
-           'description'       => 'SWA token purchase.'
+           'title' => 'Order #' . $orderModel->order_id, // For client
+           'description' => 'SWA token purchase.'
         );
 
         $order = \CoinGate\Merchant\Order::create($post_params);
 
         if ($order) {
-
             $orderModel = Order::find($orderModel->id);
             $orderModel->coingate_id = $order->id;
             $orderModel->invoice = $order->payment_url;
@@ -69,10 +69,7 @@ class PaymentController extends Controller
             $orderModel->save();
 
             $url = $order->payment_url;
-
-
         } else {
-
             $orderModel = Order::find($orderModel->id);
             $orderModel->status_id = 1; // Failed
             $orderModel->save();
@@ -84,27 +81,25 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $token, Request $request) {
-
+    public function callback(string $token, Request $request)
+    {
         $status = Status::where('title', strtolower($request->title))->first();
 
         $order = Order::where('id', $request->order_id)->first();
         $order->status = $status->id;
         $order->save();
-
     }
 
 
-    public function success(int $order_id, int $token_amount) {
-
+    public function success(int $order_id, int $token_amount)
+    {
         return view('payment.success', ['order_id' => $order_id,
                                         'token_amount' => $token_amount]);
     }
 
-    public function cancel(int $order_id, int $token_amount) {
+    public function cancel(int $order_id, int $token_amount)
+    {
         return view('payment.cancel', ['order_id' => $order_id,
                                         'token_amount' => $token_amount]);
     }
-
-
 }

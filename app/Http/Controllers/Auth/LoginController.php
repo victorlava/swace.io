@@ -41,8 +41,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function authenticate(Request $request) {
-
+    public function authenticate(Request $request)
+    {
         $fail_counter = session()->get('fail_counter');
 
         $validator = Validator::make($request->all(), [
@@ -56,14 +56,12 @@ class LoginController extends Controller
         $validator->fail_counter = $fail_counter;
 
         $validator->after(function ($validator) {
-
             $recaptcha = new \ReCaptcha\ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
             $response = $recaptcha->verify($validator->recaptcha, $_SERVER['REMOTE_ADDR']); // Verify recaptcha
 
-            if(!$response->isSuccess() && $validator->fail_counter > 2 ) { // If reCAPTCHA failed then add an error
+            if (!$response->isSuccess() && $validator->fail_counter > 2) { // If reCAPTCHA failed then add an error
                 $validator->errors()->add('recaptcha', 'reCAPTCHA validation failed, please try again the "I\'m not a robot" test.');
-            }
-            else { // If reCAPTCHA succeeded then attempt to authenicate
+            } else { // If reCAPTCHA succeeded then attempt to authenicate
 
                 if (!Auth::attempt(['email' => $validator->email,
                                     'password' => $validator->password])) { // If authenication fails then add an error
@@ -73,9 +71,7 @@ class LoginController extends Controller
 
                     $validator->errors()->add('email', 'These credentials do not match our records.');
                 }
-
             }
-
         });
 
         if ($validator->fails()) { // If validation failed then show errors on login page
@@ -85,12 +81,11 @@ class LoginController extends Controller
         return redirect()->route('dashboard.index');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         $fail_counter = session()->get('fail_counter');
 
         return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY'),
                                     'fail_counter' => $fail_counter ]);
-
     }
-
 }

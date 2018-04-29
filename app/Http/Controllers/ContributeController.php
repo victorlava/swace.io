@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class ContributeController extends Controller
 {
-    public function create() {
+    public function create()
+    {
         return view('pages/contribute');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         // Checking two things:
         // 1. is email registered for the contribution
@@ -28,6 +30,5 @@ class ContributeController extends Controller
         $request->session()->flash('email', $request->email);
 
         return redirect()->route('register');
-
     }
 }

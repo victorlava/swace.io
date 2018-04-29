@@ -8,7 +8,8 @@ use App\Order;
 
 class SaleController extends Controller
 {
-    public function store() {
+    public function store()
+    {
         // Scheduled task - cron job here
 
         $amount = Order::where('status_id', 4)->sum('gross');
@@ -16,6 +17,5 @@ class SaleController extends Controller
         $sale = new Sale();
         $sale->amount = $amount;
         $sale->save();
-
     }
 }

@@ -11,21 +11,19 @@ use App\Sale;
 
 class DashboardController extends Controller
 {
-
     public $token_price;
 
     public $sale_amount;
 
-    public function __construct() {
-
+    public function __construct()
+    {
         $this->token_price = env('TOKEN_PRICE');
         $this->sale_amount = env('SALE_AMOUNT');
-
     }
 
     /* By default shows transaction history */
-    public function index() {
-
+    public function index()
+    {
         $verified = (Auth::user()->verified) ? true : false;
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
@@ -38,17 +36,13 @@ class DashboardController extends Controller
                                         'sale' => $this->sale_amount,
                                         'collected' => $collected->amount,
                                         'percentage' => $percentage]);
-
     }
 
-    public function create() {
-
+    public function create()
+    {
         $currencies = Currency::all();
 
         return view('dashboard/create', ['currencies' => $currencies,
                                          'token_price' => $this->token_price]);
-
     }
-
-
 }

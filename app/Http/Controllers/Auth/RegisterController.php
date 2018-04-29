@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Jobs\SendVerificationEmail;
 use App\Mail\EmailVerification;
 use Mail;
+
 // use Job;
 
 class RegisterController extends Controller
@@ -77,7 +78,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
         session()->put('email', $data['email']);
         session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
@@ -98,14 +98,14 @@ class RegisterController extends Controller
     * @param \Illuminate\Http\Request $request
     * @return \Illuminate\Http\Response
     */
-    public function register(Request $request) {
-
+    public function register(Request $request)
+    {
         $this->validator($request->all())->validate();
         event(new Registered($user = $this->create($request->all())));
 
         Auth::attempt(['email' => $request->email,
                       'password' => $request->password]);
-                            // Login the user even if he's not verified
+        // Login the user even if he's not verified
 
         dispatch(new SendVerificationEmail($user));
 
@@ -118,26 +118,22 @@ class RegisterController extends Controller
     *
     * @param $token
     */
-    public function verify(string $token) {
-
+    public function verify(string $token)
+    {
         $user = User::where('email_token', $token)->first();
 
-        if($user) {
-
+        if ($user) {
             $user->verify();
 
             session()->flash('type', 'success');
             session()->flash('message', 'Your email is verified, now you can start using the dashboard.');
-
-        }
-        else {
+        } else {
 
             /* Only show this message if user is logged in and not verified */
-            if(Auth::user() && !Auth::user()->is_verified()) {
+            if (Auth::user() && !Auth::user()->is_verified()) {
                 session()->flash('type', 'error');
                 session()->flash('message', 'Your email confirmation link has expired, contact our support team to continue.');
             }
-
         }
 
         return redirect()->route('dashboard.index');
