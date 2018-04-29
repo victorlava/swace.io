@@ -8,25 +8,22 @@ class Status extends Model
 {
     public $timestamps = false;
 
-    public function class() : string {
+    public function class() : string
+    {
         $clasName = '';
 
-        if($this->title == 'Invalid') {
+        if ($this->title == 'Invalid') {
             $className = 'badge-danger';
         } elseif ($this->title == 'Pending') {
             $className = 'badge-warning';
-        }
-        elseif ($this->title == 'Expired') {
+        } elseif ($this->title == 'Expired') {
             $className = 'badge-secondary';
-        }
-        elseif ($this->title == 'Paid') {
+        } elseif ($this->title == 'Paid') {
             $className = 'badge-success';
-        }
-        elseif ($this->title == 'Canceled') {
+        } elseif ($this->title == 'Canceled') {
             $className = 'badge-danger';
         }
 
         return ' ' . $className;
-
     }
 }

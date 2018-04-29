@@ -27,11 +27,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function is_verified() : boolean {
+    public function is_verified() : boolean
+    {
         return $this->verified === 1 ? true : false;
     }
 
-    public function verify() {
+    public function verify()
+    {
         $this->verified = 1;
         $this->email_token = null;
         $this->save();

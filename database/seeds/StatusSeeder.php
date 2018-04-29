@@ -12,7 +12,6 @@ class StatusSeeder extends Seeder
      */
     public function run()
     {
-
         $data = [
                     [
                         'status' => 'Invalid',
@@ -42,6 +41,5 @@ class StatusSeeder extends Seeder
             $status->description = $row['description'];
             $status->save();
         }
-
     }
 }

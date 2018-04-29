@@ -12,7 +12,6 @@ class CurrencySeeder extends Seeder
      */
     public function run()
     {
-
         $data = [
                     [
                         'title' => 'Litecoin',
