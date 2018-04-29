@@ -29,15 +29,17 @@ class PaymentController extends Controller
         $orderModel->order_id = rand(100, 10000000); // external
         $orderModel->currency_id = $request->currency;
         $orderModel->amount = $request->amount;
-        $orderModel->rate = 1.25;
-        $orderModel->gross = 222;
-        $orderModel->fee = 1.2;
-        $orderModel->net = 222;
-        $orderModel->tokens = 2000;
-        $orderModel->bonus = 20;
-        $orderModel->status_id = 1; // Failed by default
+        // $orderModel->rate = 1.25;
+        // $orderModel->gross = 222;
+        // $orderModel->fee = 1.2;
+        // $orderModel->net = 222;
+        // $orderModel->tokens = 2000;
+        // $orderModel->bonus = 20;
+        // dd($orderModel->status);
+        // $orderModel->status->set('failed'); // Failed by default
         $orderModel->user_id = Auth::user()->id;
         $orderModel->save();
+
 
         $this->connect();
 
@@ -65,13 +67,15 @@ class PaymentController extends Controller
             $orderModel = Order::find($orderModel->id);
             $orderModel->coingate_id = $order->id;
             $orderModel->invoice = $order->payment_url;
-            $orderModel->status_id = 2; // Pending
+            $orderModel->status->set('pending');
             $orderModel->save();
+
+            dd($order);
 
             $url = $order->payment_url;
         } else {
             $orderModel = Order::find($orderModel->id);
-            $orderModel->status_id = 1; // Failed
+            $orderModel->status->set('failed');
             $orderModel->save();
 
             // Create flash message with failed order message

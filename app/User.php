@@ -27,7 +27,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function is_verified() : boolean
+    public function isVerified(): bool
     {
         return $this->verified === 1 ? true : false;
     }

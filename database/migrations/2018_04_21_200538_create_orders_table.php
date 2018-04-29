@@ -17,12 +17,12 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('order_id')->unique();
             $table->float('amount', 10, 2);
-            $table->float('rate', 10, 2); // USD rate 1,000,000.00
-            $table->float('gross', 10, 2);
-            $table->float('fee', 8, 2); // CoinGate fee 100,000.00
-            $table->float('net', 10, 2); // Calculate tokens from this sum
-            $table->integer('tokens');
-            $table->integer('bonus'); // Token bonus
+            $table->float('rate', 10, 2)->nullable(); // USD rate 1,000,000.00
+            $table->float('gross', 10, 2)->nullable();
+            $table->float('fee', 8, 2)->nullable(); // CoinGate fee 100,000.00
+            $table->float('net', 10, 2)->nullable(); // Calculate tokens from this sum
+            $table->integer('tokens')->nullable();
+            $table->integer('bonus')->nullable(); // Token bonus
             $table->string('invoice')->nullable(); // Invoice link
             $table->integer('coingate_id')->nullable()->unsigned();
             $table->integer('currency_id')->unsigned();

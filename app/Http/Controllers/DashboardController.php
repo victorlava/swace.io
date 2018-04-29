@@ -24,17 +24,16 @@ class DashboardController extends Controller
     /* By default shows transaction history */
     public function index()
     {
-        $verified = (Auth::user()->verified) ? true : false;
+        $verified = Auth::user()->isVerified();
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
-        $collected = Sale::latest()->first();
-        $percentage = (100 * $collected->amount) / (int)$this->sale_amount;
-        // dd($this->sale_amount);
+        $collected = Sale::collectedAmount();
+        $percentage = Sale::collectedPercentage($collected, $this->sale_amount);
 
         return view('dashboard/index', ['verified' => $verified,
                                         'orders' => $orders,
                                         'sale' => $this->sale_amount,
-                                        'collected' => $collected->amount,
+                                        'collected' => $collected,
                                         'percentage' => $percentage]);
     }
 
