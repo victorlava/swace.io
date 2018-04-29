@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate;
 use CoinGate\Merchant\Order as MerchantOrder;
+use App\Http\Requests\StoreOrder;
 use App\Order;
 use App\Currency;
 
@@ -34,10 +35,8 @@ class PaymentController extends Controller
         ));
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreOrder $request): \Illuminate\Http\RedirectResponse
     {
-        // do basic validation to prevent spam
-
         $this->coingateConfig();
 
         if (Coingate::testConnection()) {
