@@ -15,6 +15,44 @@ class Order extends Model
         $this->exchangeUrl = 'https://api.coingate.com/v2/rates/merchant/';
     }
 
+    public function create(array $data)
+    {
+        $this->order_id = $this->generateID();
+        $this->currency_id = (int)$data['request']->currency;
+        $this->amount = $data['request']->amount;
+        $this->rate = $this->calcRate($data['receive_currency']);
+        $this->gross = $this->calcGross();
+        $this->fee = $this->calcFee($data['fee']);
+        $this->setStatus('pending');
+        $this->user_id = $data['user_id'];
+        $this->hash = md5($this->order_id);
+        $this->save();
+    }
+
+    public function pending(array $data)
+    {
+        $this->coingate_id = $data['id'];
+        $this->invoice = $data['url'];
+        $this->setStatus('pending');
+        $this->save();
+    }
+
+    public function failed(array $data)
+    {
+        $this->setStatus('failed');
+        $this->save();
+    }
+
+    public function paid(array $data)
+    {
+        $this->net = $data['request']->receive_amount;
+        $this->tokens = $this->calcTokens($data['token_price'], $data['bonus']);
+        $this->bonus = $this->calcBonus($this->tokens, $data['bonus']);
+        $this->setStatus($data['request']->status);
+        $this->hash = null; // Remove hash to save space
+        $this->save();
+    }
+
     public function type()
     {
         return $this->hasOne('App\Currency', 'id', 'currency_id');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate;
+use CoinGate\Merchant\Order as MerchantOrder;
 use App\Order;
 use App\Currency;
 
@@ -23,7 +24,7 @@ class PaymentController extends Controller
         $this->tokenPrice = env('TOKEN_PRICE');
     }
 
-    private function connectCoingate()
+    private function coingateConfig()
     {
         CoinGate::config(array(
             'environment' => env('COINGATE_ENVIRONMENT'),
@@ -35,51 +36,39 @@ class PaymentController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-
         // do basic validation to prevent spam
 
-        $order = new Order();
-        $order->order_id = $order->generateID();
-        $order->currency_id = (int)$request->currency;
-        $order->amount = $request->amount;
-        $order->rate = $order->calcRate($this->receiveCurrency);
-        $order->gross = $order->calcGross();
-        $order->fee = $order->calcFee($this->coingateFee);
-        $order->setStatus('pending');
-        $order->user_id = Auth::user()->id;
-        $order->hash = md5($order->order_id);
-        $order->save();
+        $this->coingateConfig();
 
-        $this->connectCoingate();
+        if (Coingate::testConnection()) {
+            $order = new Order();
+            $order->create(['user_id' => Auth::user()->id,
+                            'request' => $request,
+                            'receive_currency' => $this->receiveCurrency,
+                            'fee' => $this->coingateFee]);
 
-        $post_params = array(
-           'order_id' => $order->id,
-           'price' => $request->amount,
-           'currency' => $order->type->short_title,
-           'receive_currency' => 'USD',
-           'callback_url' => route('payment.callback', $order->hash),
-           'cancel_url' => route('payment.cancel', ['order_id' => $order->order_id]),
-           'success_url' => route('payment.success', ['order_id' => $order->order_id]),
-           'title' => 'Order #' . $order->order_id, // For client
-           'description' => 'SWA token purchase.'
-        );
 
-        $cgOrder = \CoinGate\Merchant\Order::create($post_params);
+            $orderParams = $this->prepParams(['order' => $order,
+                                                'amount' => $request->amount]);
 
-        if ($cgOrder) {
-            $order = Order::find($order->id);
-            $order->coingate_id = $cgOrder->id;
-            $order->invoice = $cgOrder->payment_url;
-            $order->setStatus('pending');
-            $order->save();
+            $coingateOrder = MerchantOrder::create($orderParams);
 
-            $url = $cgOrder->payment_url;
+            if ($coingateOrder) {
+                $order = Order::findOrFail($order->id);
+                $order->pending([   'id' => $coingateOrder->id,
+                                    'url' => $coingateOrder->payment_url]);
+
+                $url = $coingateOrder->payment_url;
+            } else {
+                $order = Order::findOrFail($order->id);
+                $order->failed();
+
+                // Create flash message with failed order message
+                $url = route('dashboard.index');
+            }
         } else {
-            $order = Order::find($order->id);
-            $order->setStatus('failed');
-            $order->save();
-
-            // Create flash message with failed order message
+            // Flash message: our provider is not available,
+            // contact support
             $url = route('dashboard.index');
         }
 
@@ -91,15 +80,27 @@ class PaymentController extends Controller
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
         if ($order) {
-            $order->net = $request->receive_amount;
-            $order->tokens = $order->calcTokens($this->tokenPrice, $this->bonusPercentage);
-            $order->bonus = $order->calcBonus($order->tokens, $this->bonusPercentage);
-            $order->setStatus($request->status);
-            $order->hash = null; // Remove hash to save space
-            $order->save();
+            $order->paid(['request' => $request,
+                          'token_price' => $this->tokenPrice,
+                          'bonus' => $this->bonusPercentage]);
         }
 
         return true;
+    }
+
+    private function prepParams(array $data): array
+    {
+        return $preparedParams = [
+           'order_id' => $data['order']->id,
+           'price' => $data['amount'],
+           'currency' => $data['order']->type->short_title,
+           'receive_currency' => 'USD',
+           'callback_url' => route('payment.callback', $data['order']->hash),
+           'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->order_id]),
+           'success_url' => route('payment.success', ['order_id' => $data['order']->order_id]),
+           'title' => 'Order #' . $data['order']->order_id, // For client
+           'description' => 'SWA token purchase.'
+       ];
     }
 
 
