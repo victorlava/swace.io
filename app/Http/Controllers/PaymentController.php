@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate;
 use CoinGate\Merchant\Order as MerchantOrder;
-use App\Http\Requests\StoreOrder;
 use App\Order;
 use App\Currency;
+use App\Http\Requests\OrderCallback;
+use App\Http\Requests\StoreOrder;
 
 class PaymentController extends Controller
 {
@@ -39,7 +40,7 @@ class PaymentController extends Controller
     {
         $this->coingateConfig();
 
-        if (Coingate::testConnection()) {
+        if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
             $order = new Order();
             $order->create(['user_id' => Auth::user()->id,
                             'request' => $request,
@@ -74,7 +75,7 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $hash, Request $request): bool
+    public function callback(string $hash, OrderCallback $request): bool
     {
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
