@@ -16,7 +16,7 @@ class UnverifiedUserRedirect
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->verified == 0) {
+        if (!Auth::user()->isVerified()) {
             /* If logged in and not verified redirect to unactive dashboard index */
             return redirect()->route('dashboard.index');
         }
