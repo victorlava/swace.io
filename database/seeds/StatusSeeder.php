@@ -14,7 +14,7 @@ class StatusSeeder extends Seeder
     {
         $data = [
                     [
-                        'status' => 'Invalid',
+                        'status' => 'Failed',
                         'description' => "when CoinGate fails to create an order, this one shouldn't occur normally"
                     ],
                     [

@@ -24,7 +24,7 @@ Route::resource('/contribute', 'ContributeController')->only(['create', 'store']
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
 
 Route::post('/payment', 'PaymentController@store')->name('payment.store')->middleware('verified');
-Route::post('/payment/callback/{token}', 'PaymentController@callback')->name('payment.callback'); // Callback for Coingate - must be public, no auth here
+Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Callback for Coingate - must be public, no auth here
 Route::get('/payment/success/{order_id}', 'PaymentController@success')->name('payment.success')->middleware('verified');
 Route::get('/payment/cancel/{order_id}', 'PaymentController@cancel')->name('payment.cancel')->middleware('verified');
 

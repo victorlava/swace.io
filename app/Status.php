@@ -13,7 +13,7 @@ class Status extends Model
     {
         $clasName = '';
 
-        if ($this->title == 'Invalid') {
+        if ($this->title == 'Failed') {
             $className = 'badge-danger';
         } elseif ($this->title == 'Pending') {
             $className = 'badge-warning';

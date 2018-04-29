@@ -15,7 +15,6 @@ class Order extends Model
         $this->exchangeUrl = 'https://api.coingate.com/v2/rates/merchant/';
     }
 
-
     public function type()
     {
         return $this->hasOne('App\Currency', 'id', 'currency_id');
@@ -24,6 +23,11 @@ class Order extends Model
     public function status()
     {
         return $this->hasOne('App\Status', 'id', 'status_id');
+    }
+
+    public function generateID(): int
+    {
+        return rand(100, 10000000); // Improve this
     }
 
     public function calcRate(string $receiveCurrency): float
@@ -44,6 +48,11 @@ class Order extends Model
     public function calcTokens(float $price, float $bonus): int
     {
         return floor((($this->net / $price) * $bonus) / 100);
+    }
+
+    public function calcBonus(int $tokens, float $bonus): int
+    {
+        return floor(($tokens * $bonus) / 100);
     }
 
     public function setStatus(string $status)
