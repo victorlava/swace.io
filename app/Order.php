@@ -63,6 +63,17 @@ class Order extends Model
         return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
+    public static function getCollectedAmount()
+    {
+        $amount = Order::whereHas('status', function ($query) {
+            $query->where('title', 'Paid');
+        })->sum('gross');
+
+        Cache::store('file')->put('collected_amount', $amount, 10);
+
+        return $amount;
+    }
+
     public function generateID(): int
     {
         return rand(100, 10000000); // Improve this

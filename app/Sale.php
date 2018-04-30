@@ -3,15 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Sale extends Model
 {
-    public $updated_at = false;
-
-    // Check the latest sale amount
     public static function collectedAmount(): float
     {
-        return (Sale::latest()->first()) ? Sale::latest()->first()->amount : 1;
+        $amount = Cache::store('file')->get('collected_amount');
+
+        return (Cache::store('file')->has('collected_amount') ? $amount : 0) ;
     }
 
     public static function collectedPercentage(float $amount, float $totalAmount): float

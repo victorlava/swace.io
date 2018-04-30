@@ -5,9 +5,12 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Http\Controllers\SaleController;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\UpdateAmount;
 
 class Kernel extends ConsoleKernel
 {
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -18,6 +21,14 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
+     * The time in minutes on how often to execute then UpdateAmount Queue
+     * Also, how long to hold the collected_amount cache in Cache storage.
+     *
+     * @var int
+     */
+    private $amountExecTime;
+
+    /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
@@ -25,8 +36,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call('App\Http\Controllers\SaleController@store')
-        ->everyFiveMinutes();
+        $this->amountExecTime = 240; // 4 hours
+
+        $schedule->job(new UpdateAmount($this->amountExecTime))
+                        ->cron("*/$this->amountExecTime * * * *")
+                        ->skip(function () {
+                            $collected = Cache::store('file')->get('collected_amount');
+                            $total = env("SALE_AMOUNT");
+
+                            // Skip this cron if the total amount is collected
+                            return ($collected >= (int)$total) ? true : false;
+                        });
     }
 
     /**
