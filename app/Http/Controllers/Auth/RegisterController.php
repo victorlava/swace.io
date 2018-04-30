@@ -125,14 +125,18 @@ class RegisterController extends Controller
         if ($user) {
             $user->verify();
 
-            session()->flash('type', 'success');
-            session()->flash('message', 'Your email is verified, now you can start using the dashboard.');
+            Flash::create(
+                'type',
+                'Your email is verified, now you can start using the dashboard.'
+            );
         } else {
 
             /* Only show this message if user is logged in and not verified */
             if (Auth::user() && !Auth::user()->is_verified()) {
-                session()->flash('type', 'error');
-                session()->flash('message', 'Your email confirmation link has expired, contact our support team to continue.');
+                Flash::create(
+                    'error',
+                    'Your email confirmation link has expired, contact our support team to continue.'
+                );
             }
         }
 

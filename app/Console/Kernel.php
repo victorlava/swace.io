@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new UpdateAmount($this->amountExecTime))
+        $schedule->job(new UpdateAmount)
                         ->everyMinute()
                         ->skip(function () {
                             $collected = Cache::store('file')->get('collected_amount');

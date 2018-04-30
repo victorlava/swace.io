@@ -37,7 +37,7 @@ class Order extends Model
         $this->save();
     }
 
-    public function failed(array $data)
+    public function failed()
     {
         $this->setStatus('failed');
         $this->save();

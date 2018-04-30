@@ -8,6 +8,7 @@ use CoinGate\CoinGate;
 use CoinGate\Merchant\Order as MerchantOrder;
 use App\Order;
 use App\Currency;
+use App\Flash;
 use App\Http\Requests\OrderCallback;
 use App\Http\Requests\StoreOrder;
 
@@ -63,12 +64,11 @@ class PaymentController extends Controller
                 $order = Order::findOrFail($order->id);
                 $order->failed();
 
-                // Create flash message with failed order message
+                Flash::create('error', 'Our provider rejected your order. Please contact our support.');
                 $url = route('dashboard.index');
             }
         } else {
-            // Flash message: our provider is not available,
-            // contact support
+            Flash::create('error', 'We are having issues with our provider. Please try again.');
             $url = route('dashboard.index');
         }
 

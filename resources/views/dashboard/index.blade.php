@@ -65,7 +65,7 @@
                       <td>{{ $order->rate }} $</td>
                       <td>{{ $order->gross }} $</td>
                       <td>{{ $order->fee }} $</td>
-                      <td>{{ $order->net }} $</td>
+                      <td>{{ ($order->net) ? $order->net.' $' : '' }}</td>
                       <td>{{ $order->tokens }}</td>
                       <td>{{ $order->bonus }}</td>
                       <td>
