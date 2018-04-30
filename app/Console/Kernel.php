@@ -21,14 +21,6 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     * The time in minutes on how often to execute then UpdateAmount Queue
-     * Also, how long to hold the collected_amount cache in Cache storage.
-     *
-     * @var int
-     */
-    private $amountExecTime;
-
-    /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
@@ -36,10 +28,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $this->amountExecTime = 240; // 4 hours
-
         $schedule->job(new UpdateAmount($this->amountExecTime))
-                        ->cron("*/$this->amountExecTime * * * *")
+                        ->everyMinute()
                         ->skip(function () {
                             $collected = Cache::store('file')->get('collected_amount');
                             $total = env("SALE_AMOUNT");

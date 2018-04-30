@@ -24,16 +24,13 @@ class UpdateAmount implements ShouldQueue
     */
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $time; // Cache time in minutes
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(int $time)
+    public function __construct()
     {
-        $this->time = $time;
     }
 
     /**
@@ -51,6 +48,6 @@ class UpdateAmount implements ShouldQueue
             $amount = 0;
         }
 
-        Cache::store('file')->put('collected_amount', $amount, $this->time + 2); // In case of long exec time
+        Cache::store('file')->put('collected_amount', $amount, 720);
     }
 }
