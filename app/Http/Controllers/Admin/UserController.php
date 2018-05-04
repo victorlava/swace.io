@@ -61,18 +61,11 @@ class UserController extends Controller
         return view('admin.user.log', ['user' => $user]);
     }
 
-    // public function filter(Request $request)
-    // {
-    //     $users = User::where($type, $value)->get();
-    //
-    //     return view('admin.user.index', ['users' => $users]);
-    // }
-
     public function transaction(int $user_id)
     {
-        $orders = Order::where('user_id', $user_id)->get();
+        $user = User::findOrFail($user_id);
+        // dd($user->orders);
 
-        return view('admin.user.transaction', [ 'user_id' => $user_id,
-                                                'orders' => $orders]);
+        return view('admin.user.transaction', ['user' => $user ]);
     }
 }

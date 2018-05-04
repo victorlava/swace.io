@@ -6,30 +6,13 @@
 
     <div class="row mt-5">
         <div class="col-md-6">
-            <h1>User List</h1>
+            <h1>User List ({{ count($users) }})</h1>
         </div>
         <div class="col-md-6">
-            <form action="{{ route('admin.users.filter') }}" method="GET" class="form-inline">
-              <div class="form-group ml-auto mb-2">
-                <label for="contributed">Filters: </label>
-
-                <select id="contributed" class="form-control ml-3" name="contributed">
-                    <option value='none' selected>Choose...</option>
-                    @foreach($filters['contributed'] as $option)
-                    <option value="{{ $loop->index }}" {{ ($loop->index == $contributed) ? 'selected' : '' }}>{{ $option }}</option>
-                    @endforeach
-                </select>
-              </div>
-              <div class="form-group mx-sm-3 mb-2">
-                  <select id="verified" class="form-control" name="verified">
-                      <option value='none' selected>Choose...</option>
-                      @foreach($filters['verified'] as $option)
-                      <option value="{{ $loop->index }}" {{ ($loop->index == $verified) ? 'selected' : '' }}>{{ $option }}</option>
-                      @endforeach
-                  </select>
-              </div>
-              <button type="submit" class="btn btn-primary mb-2">Filter</button>
-            </form>
+            @component('admin/components/user-filters', ['contributed' => $contributed,
+                                                        'verified' => $verified,
+                                                        'filters' => $filters])
+            @endcomponent
         </div>
         <div class="col-md-12 mt-3">
             <table class="table">
@@ -37,13 +20,10 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Full name</th>
-                  <th scope="col">Email</th>
+                  <th scope="col">E-mail</th>
                   <th scope="col">Phone</th>
-                  <th scope="col">IP log</th>
-                  <th scope="col">History</th>
-                  <th scope="col">Reg. date</th>
-                  <th scope="col">Email confirm date</th>
-                  <th scope="col">Last Online date</th>
+                  <th scope="col">Dates</th>
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -60,14 +40,23 @@
                       </td>
                       <td>{{ $user->phone }}</td>
                       <td>
-                          <a href="{{ route('admin.users.log', $user->id) }}">Log</a>
+                         <p class="mb-1">
+                             Registered at: <span title='{{ $user->format_date($user->created_at, "precise") }}'>{{ $user->format_date($user->created_at) }}</span>
+
+                         </p>
+                         <p class="mb-1">
+                             Verified at: <span title='{{ $user->verified_date("precise") }}'>{{ $user->verified_date() }}</span>
+
+                         </p>
+                         <p class="mb-1">
+                             Last online at: <span title='{{ $user->last_online_date("precise") }}'>{{ $user->last_online_date() }}</span>
+
+                         </p>
                       </td>
                       <td>
-                          <a href="{{ route('admin.users.transaction', $user->id) }}">Transaction history</a>
+                         <p><a href="{{ route('admin.users.transaction', $user->id) }}" class="btn btn-success btn-sm">Transactions</a></p>
+                         <p><a href="{{ route('admin.users.log', $user->id) }}" class="btn btn-primary btn-sm">IP log</a></p>
                       </td>
-                      <td>{{ $user->created_at }}</td>
-                      <td>{{ $user->verified_date() }}</td>
-                      <td>{{ $user->last_online_date() }}</td>
                     </tr>
                     @endforeach
                 @else:

@@ -11,6 +11,10 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
+    public $nice_date_format = 'F j, H:i a';
+
+    public $precise_date_format = 'Y-m-d H:i:s';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -57,16 +61,35 @@ class User extends Authenticatable
         return date('Y-m-d H:i:s', time());
     }
 
-    public function verified_date(): string
+    public function format_date($date, string $type = 'nice'): string
     {
-        return ($this->verified_at !== null) ? $this->verified_at : 'not verified';
+        $timestamp = strtotime($date);
+        $nice = date($this->nice_date_format, $timestamp);
+        $precise = date($this->precise_date_format, $timestamp);
+
+        return ($type == 'nice') ? $nice : $precise;
     }
 
-    public function last_online_date(): string
+    public function registered_date(): string
+    {
+        return $this->format_date($this->created_at);
+    }
+
+    public function verified_date(string $type = 'nice'): string
+    {
+        return ($this->verified_at !== null) ? $this->format_date($this->verified_at, $type) : 'not verified';
+    }
+
+    public function last_online_date(string $type = 'nice'): string
     {
         $date = $this->logs()->orderBy('log_in', 'desc')->first();
 
-        return ($date) ? $date->log_in : 'never';
+        return ($date) ? $this->format_date($date->log_in, $type) : 'never';
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order', 'user_id', 'id');
     }
 
 
