@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->verified === 1 ? true : false;
     }
 
+    public function isContributed(): bool
+    {
+        return $this->contributed === 1 ? true : false;
+    }
+
     public function verify()
     {
         $this->verified = 1;
