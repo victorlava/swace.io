@@ -57,9 +57,16 @@ class User extends Authenticatable
         return date('Y-m-d H:i:s', time());
     }
 
-    public function last_online_date()
+    public function verified_date(): string
     {
-        return $this->logs()->orderBy('log_in', 'desc')->first()->log_in;
+        return ($this->verified_at !== null) ? $this->verified_at : 'not verified';
+    }
+
+    public function last_online_date(): string
+    {
+        $date = $this->logs()->orderBy('log_in', 'desc')->first();
+
+        return ($date) ? $date->log_in : 'never';
     }
 
 

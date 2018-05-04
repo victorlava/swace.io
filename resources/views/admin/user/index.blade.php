@@ -43,7 +43,7 @@
                           <a href="{{ route('admin.users.transaction', $user->id) }}">Transaction history</a>
                       </td>
                       <td>{{ $user->created_at }}</td>
-                      <td>{{ $user->verified_at }}</td>
+                      <td>{{ $user->verified_date() }}</td>
                       <td>{{ $user->last_online_date() }}</td>
                     </tr>
                     @endforeach
