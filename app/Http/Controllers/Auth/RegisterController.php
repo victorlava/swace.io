@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Flash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -89,7 +90,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone'],
-            'email_token' => base64_encode($data['email'])
+            'email_token' => base64_encode($data['email']),
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
     /**
@@ -132,7 +134,7 @@ class RegisterController extends Controller
         } else {
 
             /* Only show this message if user is logged in and not verified */
-            if (Auth::user() && !Auth::user()->is_verified()) {
+            if (Auth::user() && !Auth::user()->isVerified()) {
                 Flash::create(
                     'error',
                     'Your email confirmation link has expired, contact our support team to continue.'

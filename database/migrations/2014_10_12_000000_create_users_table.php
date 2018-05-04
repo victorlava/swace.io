@@ -23,7 +23,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('verified')->default(0);
             $table->string('email_token')->nullable();
             $table->rememberToken();
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('verified_at')->nullable();
         });
     }
 

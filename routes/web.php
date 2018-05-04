@@ -27,3 +27,9 @@ Route::post('/payment', 'PaymentController@store')->name('payment.store')->middl
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Callback for Coingate - must be public, no auth here
 Route::get('/payment/success/{order_id}', 'PaymentController@success')->name('payment.success')->middleware('verified');
 Route::get('/payment/cancel/{order_id}', 'PaymentController@cancel')->name('payment.cancel')->middleware('verified');
+
+
+
+Route::get('/admin/users', 'Admin\UserController@index')->name('admin.users'); // Middleware admin
+Route::get('/admin/users/{user_id}/log', 'Admin\UserController@log')->name('admin.users.log'); // Middleware admin
+Route::get('/admin/users/{user_id}/transaction', 'Admin\UserController@transaction')->name('admin.users.transaction'); // Middleware admin
