@@ -26,11 +26,6 @@ class AuthLogin
      */
     public function handle($event)
     {
-        $log = new Log;
-        $log->session_token = csrf_token();
-        $log->user_id = $event->user->id;
-        $log->ip_address = request()->ip();
-        $log->log_in = $event->user->date_time();
-        $log->save();
+        session()->put('log_in_date', $event->user->date_time());
     }
 }

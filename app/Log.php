@@ -13,8 +13,7 @@ class Log extends Model
         $log_in = strtotime($this->log_in);
         $log_out = strtotime($this->log_out);
         $timestamp = $log_out - $log_in;
-        $date = ($log_out === false) ? 'online' : date('H:i:s', $timestamp);
 
-        return $date;
+        return date('H:i:s', $timestamp);
     }
 }

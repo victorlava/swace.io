@@ -26,7 +26,10 @@ class AuthLogout
      */
     public function handle($event)
     {
-        $log = Log::where('user_id', $event->user->id)->where('session_token', csrf_token())->first();
+        $log = new Log;
+        $log->user_id = $event->user->id;
+        $log->ip_address = request()->ip();
+        $log->log_in = session()->get('log_in_date');
         $log->log_out = $event->user->date_time();
         $log->save();
     }

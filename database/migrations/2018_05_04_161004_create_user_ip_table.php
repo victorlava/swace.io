@@ -15,7 +15,6 @@ class CreateUserIpTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('session_token');
             $table->integer('user_id')->unsigned();
             $table->string('ip_address');
             $table->dateTime('log_in');
