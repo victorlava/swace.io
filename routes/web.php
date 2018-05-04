@@ -34,5 +34,6 @@ Route::get('/admin/transactions', 'Admin\TransactionController@index')->name('ad
 
 Route::get('/admin/users/', 'Admin\UserController@index')->name('admin.users.index'); // Middleware admin
 Route::get('/admin/users/filter', 'Admin\UserController@filter')->name('admin.users.filter');
+Route::post('/admin/users/export', 'Admin\UserController@export')->name('admin.users.export');
 Route::get('/admin/users/{user_id}/log', 'Admin\UserController@log')->name('admin.users.log'); // Middleware admin
 Route::get('/admin/users/{user_id}/transaction', 'Admin\UserController@transaction')->name('admin.users.transaction'); // Middleware admin

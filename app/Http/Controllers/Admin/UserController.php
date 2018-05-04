@@ -71,13 +71,12 @@ class UserController extends Controller
 
     public function export(Request $request)
     {
-        dd($request);
+        // dd($request->get('users'));
         //
-        // $data = $eloquentCollection->toArray();
+        // $data = $request->get('users')->toArray();
         // fputcsv($out, array_keys($data[1]));
         // $out = fopen('php://output', 'w');
-        // foreach($data as $line)
-        // {
+        // foreach ($data as $line) {
         //     fputcsv($out, $line);
         // }
         // fclose($out);
