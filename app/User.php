@@ -47,6 +47,11 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function full_name()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     public function date_time(): string
     {
         return date('Y-m-d H:i:s', time());

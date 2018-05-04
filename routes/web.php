@@ -30,6 +30,8 @@ Route::get('/payment/cancel/{order_id}', 'PaymentController@cancel')->name('paym
 
 
 
-Route::get('/admin/users', 'Admin\UserController@index')->name('admin.users'); // Middleware admin
+Route::get('/admin/transactions', 'Admin\TransactionController@index')->name('admin.transactions.index'); // Middleware admin
+
+Route::get('/admin/users', 'Admin\UserController@index')->name('admin.users.index'); // Middleware admin
 Route::get('/admin/users/{user_id}/log', 'Admin\UserController@log')->name('admin.users.log'); // Middleware admin
 Route::get('/admin/users/{user_id}/transaction', 'Admin\UserController@transaction')->name('admin.users.transaction'); // Middleware admin

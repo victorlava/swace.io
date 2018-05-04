@@ -21,7 +21,7 @@
                   <th scope="col">History</th>
                   <th scope="col">Reg. date</th>
                   <th scope="col">Email confirm date</th>
-                  <th scope="col">Online date</th>
+                  <th scope="col">Last Online date</th>
                 </tr>
               </thead>
               <tbody>

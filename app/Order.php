@@ -63,6 +63,11 @@ class Order extends Model
         return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
     public static function getCollectedAmount()
     {
         $amount = Order::whereHas('status', function ($query) {

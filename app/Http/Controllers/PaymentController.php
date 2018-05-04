@@ -31,15 +31,14 @@ class PaymentController extends Controller
     {
         CoinGate::config(array(
             'environment' => env('COINGATE_ENVIRONMENT'),
-            'app_id' => env('COINGATE_APP_ID'),
-            'api_key' => env('COINGATE_KEY'),
-            'api_secret' => env('COINGATE_SECRET')
+            'auth_token' => env('COINGATE_TOKEN')
         ));
     }
 
     public function store(StoreOrder $request): \Illuminate\Http\RedirectResponse
     {
         $this->coingateConfig();
+
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
             $order = new Order();
@@ -53,7 +52,7 @@ class PaymentController extends Controller
                                                 'amount' => $request->amount]);
 
             $coingateOrder = MerchantOrder::create($orderParams);
-
+    
             if ($coingateOrder) {
                 $order = Order::findOrFail($order->id);
                 $order->pending([   'id' => $coingateOrder->id,
@@ -91,9 +90,9 @@ class PaymentController extends Controller
     private function prepParams(array $data): array
     {
         return $preparedParams = [
-           'order_id' => $data['order']->id,
-           'price' => $data['amount'],
-           'currency' => $data['order']->type->short_title,
+           'order_id' => (string)$data['order']->id,
+           'price_amount' => (float)$data['amount'],
+           'price_currency' => strtoupper($data['order']->type->short_title),
            'receive_currency' => 'USD',
            'callback_url' => route('payment.callback', $data['order']->hash),
            'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->order_id]),
