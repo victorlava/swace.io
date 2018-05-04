@@ -19,6 +19,8 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">IP Address</th>
+                  <th scope="col">Log in</th>
+                  <th scope="col">Log out</th>
                   <th scope="col">Online time</th>
                 </tr>
               </thead>
@@ -30,6 +32,8 @@
                           {{ $log->id }}
                       </th>
                       <td>{{ $log->ip_address }}</td>
+                      <td>{{ $log->log_in }}</td>
+                      <td>{{ $log->log_out }}</td>
                       <td>{{ $log->online_time() }}</td>
                     </tr>
                     @endforeach

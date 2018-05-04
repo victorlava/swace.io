@@ -13,8 +13,7 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">F. name</th>
-                  <th scope="col">L. name</th>
+                  <th scope="col">Full name</th>
                   <th scope="col">Email</th>
                   <th scope="col">Phone</th>
                   <th scope="col">IP log</th>
@@ -31,8 +30,7 @@
                       <th scope="row">
                           {{ $user->id }}
                       </th>
-                      <td>{{ $user->first_name }}</td>
-                      <td>{{ $user->last_name }}</td>
+                      <td>{{ $user->full_name() }}</td>
                       <td>
                           {{ $user->email }}
                            <span class="badge badge-{{ ($user->verified) ? 'success' : 'danger' }}">{{ ($user->verified) ? 'verified' : 'non-verified' }}</span>
