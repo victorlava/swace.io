@@ -68,4 +68,18 @@ class UserController extends Controller
 
         return view('admin.user.transaction', ['user' => $user ]);
     }
+
+    public function export(Request $request)
+    {
+        dd($request);
+        //
+        // $data = $eloquentCollection->toArray();
+        // fputcsv($out, array_keys($data[1]));
+        // $out = fopen('php://output', 'w');
+        // foreach($data as $line)
+        // {
+        //     fputcsv($out, $line);
+        // }
+        // fclose($out);
+    }
 }

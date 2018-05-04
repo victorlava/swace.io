@@ -18,4 +18,5 @@
       </select>
   </div>
   <button type="submit" class="btn btn-primary mb-2">Filter</button>
+  <a href="{{ route('admin.users.index') }}" class="btn btn-danger mb-2 ml-3">Reset</a>
 </form>
