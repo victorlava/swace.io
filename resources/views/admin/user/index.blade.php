@@ -3,6 +3,15 @@
 @section('content')
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @if(Session::has('message'))
+            <div class="alert {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
+                {{ Session::get("message") }}
+            </div>
+            @endif
+        </div>
+    </div>
 
     <div class="row mt-5">
         <div class="col-md-6">
@@ -25,7 +34,7 @@
                   <thead class="thead-light">
                     <tr>
                       <th scope="col">
-                          <input type="checkbox" name="users[]" value="all">
+                          <input id="select_all" type="checkbox">
                       </th>
                       <th scope="col">#</th>
                       <th scope="col">Full name</th>
@@ -40,7 +49,7 @@
                         @foreach($users as $user)
                         <tr>
                             <td>
-                                <input type="checkbox" name="users[]" value="{{ $user->id }}">
+                                <input type="checkbox" class="checkbox" name="users[]" value="{{ $user->id }}">
                             </td>
                           <th scope="row">
                               {{ $user->id }}
@@ -81,6 +90,32 @@
                   </tbody>
                 </table>
             </form>
+            <script type="text/javascript">
+
+                document.addEventListener('DOMContentLoaded', function() {
+
+                    let form = document.querySelector('#export'),
+                        checkboxes = null;
+
+                    form.querySelector('#select_all').addEventListener('change', function() {
+
+                        checkboxes = form.querySelectorAll('.checkbox');
+
+                        if(this.checked) {
+                            for(i = 0; i < checkboxes.length; i++) {
+                                checkboxes[i].checked = true;
+                            }
+                        }
+                        else {
+                            for(i = 0; i < checkboxes.length; i++) {
+                                checkboxes[i].checked = false;
+                            }
+                        }
+                    
+                    });
+
+                })
+            </script>
         </div>
     </div>
 </div>

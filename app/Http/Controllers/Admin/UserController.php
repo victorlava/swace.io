@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Order;
+use App\Flash;
 
 class UserController extends Controller
 {
@@ -71,14 +72,24 @@ class UserController extends Controller
 
     public function export(Request $request)
     {
-        // dd($request->get('users'));
-        //
-        // $data = $request->get('users')->toArray();
-        // fputcsv($out, array_keys($data[1]));
-        // $out = fopen('php://output', 'w');
-        // foreach ($data as $line) {
-        //     fputcsv($out, $line);
-        // }
-        // fclose($out);
+        $request_users = $request->get('users');
+        if ($request_users > 0) {
+            $users = User::whereIn('id', $request_users)->get();
+
+            $fields = [ 'id', 'first_name',
+                        'last_name', 'phone',
+                        'email', 'verified',
+                        'contributed', 'created_at',
+                        'verified_at'
+                    ];
+
+            $csv = new \Laracsv\Export();
+            $csv->build($users, $fields);
+            $csv->download();
+        } else {
+            Flash::create('error', 'Please select data that you want to export.');
+
+            return redirect()->route('admin.users.index');
+        }
     }
 }
