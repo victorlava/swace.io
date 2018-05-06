@@ -11,7 +11,7 @@
             @endif
         </div>
     </div>
-    
+
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -82,10 +82,6 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Update') }}
                                 </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Change password') }}
-                                </a>
                             </div>
                         </div>
                     </form>

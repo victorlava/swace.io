@@ -18,9 +18,13 @@ Route::resource('/contribute', 'ContributeController')->only(['create', 'store']
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 Route::get('/dashboard/buy-tokens', 'DashboardController@create')->name('dashboard.create')->middleware('verified');
 
-Route::get('/profile', 'ProfileController@index')->name('profile.index')->middleware('verified.message');
-Route::post('/profile/store', 'ProfileController@store')->name('profile.store')->middleware('verified.message');
-
+Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
+    Route::get('', 'ProfileController@index')->name('index');
+    Route::post('/store', 'ProfileController@store')->name('store');
+    
+    Route::get('/password', 'PasswordController@index')->name('password.index');
+    Route::post('/password/store', 'PasswordController@store')->name('password.store');
+});
 
 Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
