@@ -57,7 +57,8 @@
                           <td>{{ $user->full_name() }}</td>
                           <td>
                               {{ $user->email }}
-                               <span class="badge badge-{{ ($user->verified) ? 'success' : 'danger' }}">{{ ($user->verified) ? 'verified' : 'non-verified' }}</span>
+                              <span class="badge badge-{{ ($user->verified) ? 'success' : 'danger' }}">{{ ($user->verified) ? 'verified' : 'non-verified' }}</span>
+                              <span class="badge badge-{{ ($user->contributed) ? 'success' : 'danger' }}">{{ ($user->contributed) ? 'contributed' : 'not contributed' }}</span>
                           </td>
                           <td>{{ $user->phone }}</td>
                           <td>
@@ -111,7 +112,7 @@
                                 checkboxes[i].checked = false;
                             }
                         }
-                    
+
                     });
 
                 })

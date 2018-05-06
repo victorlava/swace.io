@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8163d77eee9d853cec0462b5b498e9a8",
+    "content-hash": "88c5356666da97e131dd458083439624",
     "packages": [
         {
             "name": "coingate/coingate-php",
