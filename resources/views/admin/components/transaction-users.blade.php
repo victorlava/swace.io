@@ -22,7 +22,7 @@
           <th scope="row">
               {{ $order->order_id }}
           </th>
-          <td>{{ $order->user->full_name }}</td>
+          <td>{{ $order->user->full_name() }}</td>
           <td>{{ $order->user->email }}</td>
           <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
           <td>{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</td>
