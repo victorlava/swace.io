@@ -11,18 +11,20 @@
 |
 */
 
-Auth::routes();
-
-Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');
-
 Route::get('/', 'PageController@index')->name('page.landing');
+
+Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 Route::get('/dashboard/buy-tokens', 'DashboardController@create')->name('dashboard.create')->middleware('verified');
 
-Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
+Route::get('/profile', 'ProfileController@index')->name('profile.index')->middleware('verified.message');
+Route::post('/profile/store', 'ProfileController@store')->name('profile.store')->middleware('verified.message');
 
+
+Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
+Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');
 
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Public for coingate response
 Route::prefix('payment')->name('payment.')->middleware('verified')->group(function () {
