@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->verified === 1 ? true : false;
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->admin === 1 ? true : false;
+    }
+
     public function isContributed(): bool
     {
         return $this->contributed === 1 ? true : false;

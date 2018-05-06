@@ -37,6 +37,11 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
+        'admin' => [
+            \Illuminate\Auth\Middleware\Authenticate::class,
+            \App\Http\Middleware\AdminVerify::class
+        ],
+
         'verified' => [
             /* Redirects logged in, unverified user if tries to access
              a route with this middleware, also attaches an error, that says to

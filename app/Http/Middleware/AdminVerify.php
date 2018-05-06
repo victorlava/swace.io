@@ -3,10 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Flash;
 use Illuminate\Support\Facades\Auth;
 
-class UnverifiedUserRedirect
+class AdminVerify
 {
     /**
      * Handle an incoming request.
@@ -17,9 +16,8 @@ class UnverifiedUserRedirect
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->isVerified()) {
-            /* If logged in and not verified redirect to unactive dashboard index */
-            return redirect()->route('dashboard.index');
+        if (!Auth::user()->isAdmin()) {
+            return abort(404);
         }
 
         return $next($request);

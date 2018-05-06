@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->dateTime('created_at');
             $table->dateTime('verified_at')->nullable();
+            $table->tinyInteger('admin')->default(0);
         });
     }
 
