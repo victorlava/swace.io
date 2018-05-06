@@ -5,8 +5,8 @@
 <div class="container">
 
     <div class="row mt-5">
-        <h1 class="float-left">Transaction history</h1>
-        <div class="col-md-6 float-right">
+        <h1 class="mr-auto">Transaction history</h1>
+        <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
                     <a href="{{ URL::previous() }}" class="float-right btn btn-danger btn-lg">Back</a>
