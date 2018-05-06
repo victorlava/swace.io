@@ -28,11 +28,15 @@ Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('pay
 Route::get('/payment/success/{order_id}', 'PaymentController@success')->name('payment.success')->middleware('verified');
 Route::get('/payment/cancel/{order_id}', 'PaymentController@cancel')->name('payment.cancel')->middleware('verified');
 
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+    Route::get('/', 'Admin\AdminController@index')->name('index');
+    Route::get('/transactions', 'Admin\TransactionController@index')->name('transactions.index');
 
-Route::get('/admin', 'Admin\AdminController@index')->name('admin.index');
-Route::get('/admin/users/', 'Admin\UserController@index')->name('admin.users.index'); // Middleware admin
-Route::get('/admin/users/filter', 'Admin\UserController@filter')->name('admin.users.filter');
-Route::post('/admin/users/export', 'Admin\UserController@export')->name('admin.users.export');
-Route::get('/admin/users/{user_id}/log', 'Admin\UserController@log')->name('admin.users.log'); // Middleware admin
-Route::get('/admin/users/{user_id}/transaction', 'Admin\UserController@transaction')->name('admin.users.transaction'); // Middleware admin
-Route::get('/admin/transactions', 'Admin\TransactionController@index')->name('admin.transactions.index'); // Middleware admin
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('', 'Admin\UserController@index')->name('index');
+        Route::get('/filter', 'Admin\UserController@filter')->name('filter');
+        Route::get('/{user_id}/log', 'Admin\UserController@log')->name('log');
+        Route::get('/{user_id}/transaction', 'Admin\UserController@transaction')->name('transaction');
+        Route::post('/export', 'Admin\UserController@export')->name('export');
+    });
+});
