@@ -7,20 +7,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailVerification extends Mailable
+class PasswordChanged extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $user;
+    protected $ip;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $ip)
     {
         $this->user = $user;
+        $this->ip = $ip;
     }
 
     /**
@@ -30,6 +32,6 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.verification', ['email_token' => $this->user->email_token ]);
+        return $this->view('emails.password-changed', ['ip' => $this->ip ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Jobs\SendPasswordChangedEmail;
 use App\User;
 use App\Flash;
 
@@ -26,6 +27,8 @@ class PasswordController extends Controller
         $user = User::where('id', $id)->first();
         $user->password = \Hash::make($request->get('password'));
         $user->save();
+
+        dispatch(new SendPasswordChangedEmail($user, request()->ip()));
 
         Flash::create('success', 'Your password updated succesfully.');
 

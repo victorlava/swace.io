@@ -21,7 +21,7 @@ Route::get('/dashboard/buy-tokens', 'DashboardController@create')->name('dashboa
 Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
     Route::get('', 'ProfileController@index')->name('index');
     Route::post('/store', 'ProfileController@store')->name('store');
-    
+
     Route::get('/password', 'PasswordController@index')->name('password.index');
     Route::post('/password/store', 'PasswordController@store')->name('password.store');
 });
@@ -29,6 +29,8 @@ Route::prefix('profile')->name('profile.')->middleware('verified.message')->grou
 Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
 Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');
+Route::get('/email/password/{token}', 'Auth\PasswordController@index')->name('email.password');
+
 
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Public for coingate response
 Route::prefix('payment')->name('payment.')->middleware('verified')->group(function () {
