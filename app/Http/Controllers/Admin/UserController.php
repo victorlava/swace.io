@@ -11,9 +11,11 @@ use App\Flash;
 class UserController extends Controller
 {
     private $filters;
+    private $pagination;
 
     public function __construct()
     {
+        $this->pagination = 10;
         $this->filters = [
                             'contributed' => ['Not contributed', 'Contributed'],
                             'verified' => ['Un-verified','Verified'],
@@ -22,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate($this->pagination);
 
         return view('admin.user.index', [   'contributed' => false,
                                             'verified' => false,
@@ -37,16 +39,22 @@ class UserController extends Controller
 
         if ($contributed != 'none' && $verified != 'none') {
             $users = User::where('contributed', (int)$contributed)
-                           ->where('verified', (int)$verified)->get();
+                           ->where('verified', (int)$verified)
+                           ->paginate($this->pagination);
         } elseif ($contributed != 'none') {
             $verified = -1;
-            $users = User::where('contributed', (int)$contributed)->get();
+            $users = User::where('contributed', (int)$contributed)
+                            ->paginate($this->pagination);
         } elseif ($verified != 'none') {
             $contributed = -1;
-            $users = User::where('verified', (int)$verified)->get();
+            $users = User::where('verified', (int)$verified)
+                            ->paginate($this->pagination);
         } else { // Both contributed and verified is none, redirect to index
             return redirect()->route('admin.users.index');
         }
+
+        $users->appends(['contributed' => $contributed,
+                         'verified' => $verified])->links();
 
         return view('admin.user.index', [   'contributed' => $contributed,
                                             'verified' => $verified,

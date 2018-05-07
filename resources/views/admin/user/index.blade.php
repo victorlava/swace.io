@@ -91,6 +91,9 @@
                   </tbody>
                 </table>
             </form>
+            
+            {{ $users->links() }}
+
             <script type="text/javascript">
 
                 document.addEventListener('DOMContentLoaded', function() {
