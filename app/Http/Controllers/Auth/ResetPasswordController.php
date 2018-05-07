@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use App\Jobs\SendPasswordResetEmail;
 
 class ResetPasswordController extends Controller
 {
@@ -25,7 +26,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -36,15 +37,4 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
-
-    /**
-     * Send the password reset email.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    // public function sendPasswordResetNotification($token)
-    // {
-    //     $this->notify(new ResetPasswordNotification($token));
-    // }
 }

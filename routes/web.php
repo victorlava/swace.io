@@ -29,8 +29,6 @@ Route::prefix('profile')->name('profile.')->middleware('verified.message')->grou
 Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
 Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');
-Route::get('/email/password/{token}', 'Auth\PasswordController@index')->name('email.password');
-
 
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Public for coingate response
 Route::prefix('payment')->name('payment.')->middleware('verified')->group(function () {
