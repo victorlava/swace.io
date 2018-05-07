@@ -30,12 +30,12 @@ Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
 Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');
 
-Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback'); // Public for coingate response
 Route::prefix('payment')->name('payment.')->middleware('verified')->group(function () {
     Route::post('/', 'PaymentController@store')->name('store');
     Route::get('/success/{order_id}', 'PaymentController@success')->name('success');
     Route::get('/cancel/{order_id}', 'PaymentController@cancel')->name('cancel');
 });
+Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback');
 
 Route::prefix('adm1n')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/', 'Admin\AdminController@index')->name('index');

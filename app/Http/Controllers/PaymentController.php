@@ -52,7 +52,7 @@ class PaymentController extends Controller
                                                 'amount' => $request->amount]);
 
             $coingateOrder = MerchantOrder::create($orderParams);
-    
+
             if ($coingateOrder) {
                 $order = Order::findOrFail($order->id);
                 $order->pending([   'id' => $coingateOrder->id,
@@ -74,7 +74,7 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $hash, OrderCallback $request): bool
+    public function callback(string $hash, Request $request): bool
     {
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 

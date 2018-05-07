@@ -69,7 +69,10 @@
                       <td>{{ $order->tokens }}</td>
                       <td>{{ $order->bonus }}</td>
                       <td>
-                           <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
+                          <p>
+                              <a href="{{ $order->invoice }}">Invoice</a>
+                          </p>
+                          <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
                       </td>
                     </tr>
                     @endforeach
