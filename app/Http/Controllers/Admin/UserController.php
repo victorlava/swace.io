@@ -16,26 +16,38 @@ class UserController extends Controller
     public function __construct()
     {
         $this->pagination = 10;
+        $this->total_users = $this->countUsers();
         $this->filters = [
                             'contributed' => ['Not contributed', 'Contributed'],
                             'verified' => ['Un-verified','Verified'],
                         ];
     }
 
+    private function countUsers():int
+    {
+        $number = User::all()->count();
+
+        return $number;
+    }
+
     public function index()
     {
         $users = User::paginate($this->pagination);
+        $formGET = '/?contributed=none&verified=none';
 
-        return view('admin.user.index', [   'contributed' => false,
-                                            'verified' => false,
+        return view('admin.user.index', [   'contributed' => -1,
+                                            'verified' => -1,
                                             'filters' => $this->filters,
-                                            'users' => $users]);
+                                            'users' => $users,
+                                            'total' => $this->total_users,
+                                            'formGET' => $formGET]);
     }
 
     public function filter(Request $request)
     {
         $contributed = $request->get('contributed');
         $verified = $request->get('verified');
+        $formGET = '/?contributed=' . $contributed . '&verified=' . $verified;
 
         if ($contributed != 'none' && $verified != 'none') {
             $users = User::where('contributed', (int)$contributed)
@@ -59,7 +71,9 @@ class UserController extends Controller
         return view('admin.user.index', [   'contributed' => $contributed,
                                             'verified' => $verified,
                                             'filters' => $this->filters,
-                                            'users' => $users]);
+                                            'users' => $users,
+                                            'total' => $this->total_users,
+                                            'formGET' => $formGET]);
     }
 
     public function log(int $user_id)
@@ -80,24 +94,37 @@ class UserController extends Controller
 
     public function export(Request $request)
     {
+        $fields = [ 'id', 'first_name',
+                    'last_name', 'phone',
+                    'email', 'verified',
+                    'contributed', 'created_at',
+                    'verified_at'
+                ];
+
         $request_users = $request->get('users');
+
         if ($request_users > 0) {
             $users = User::whereIn('id', $request_users)->get();
-
-            $fields = [ 'id', 'first_name',
-                        'last_name', 'phone',
-                        'email', 'verified',
-                        'contributed', 'created_at',
-                        'verified_at'
-                    ];
-
-            $csv = new \Laracsv\Export();
-            $csv->build($users, $fields);
-            $csv->download();
         } else {
-            Flash::create('error', 'Please select data that you want to export.');
+            $contributed = $request->get('contributed');
+            $verified = $request->get('verified');
 
-            return redirect()->route('admin.users.index');
+
+            if ($contributed != 'none' && $verified != 'none') {
+                $users = User::where('contributed', (int)$contributed)
+                               ->where('verified', (int)$verified)
+                               ->get();
+            } elseif ($contributed != 'none') {
+                $users = User::where('contributed', (int)$contributed)->get();
+            } elseif ($verified != 'none') {
+                $users = User::where('verified', (int)$verified)->get();
+            } else {
+                $users = User::all();
+            }
         }
+
+        $csv = new \Laracsv\Export();
+        $csv->build($users, $fields);
+        $csv->download();
     }
 }

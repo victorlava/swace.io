@@ -17,7 +17,7 @@
         <div class="col-md-6">
             <h1>
                 <input type="submit" class="btn btn-success" value="Export" form="export">
-                User List ({{ count($users) }})
+                User List ({{ $total }})
             </h1>
         </div>
         <div class="col-md-6">
@@ -27,7 +27,7 @@
             @endcomponent
         </div>
         <div class="col-md-12 mt-3">
-            <form id="export" action="{{ route('admin.users.export' )}}" method="POST">
+            <form id="export" action="{{ route('admin.users.export') . $formGET}}" method="POST">
                 @csrf
 
                 <table class="table">
@@ -91,7 +91,7 @@
                   </tbody>
                 </table>
             </form>
-            
+
             {{ $users->links() }}
 
             <script type="text/javascript">
