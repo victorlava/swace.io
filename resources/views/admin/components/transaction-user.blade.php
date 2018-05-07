@@ -18,7 +18,7 @@
         @foreach($orders as $order)
         <tr>
           <th scope="row">
-              {{ $order->order_id }}
+              {{ $order->id }}
           </th>
           <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
           <td>{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</td>
@@ -29,7 +29,10 @@
           <td>{{ $order->tokens }}</td>
           <td>{{ $order->bonus }}</td>
           <td>
-               <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
+              <p>
+                  <a href="{{ $order->invoice }}">Invoice</a>
+              </p>
+              <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
           </td>
         </tr>
         @endforeach

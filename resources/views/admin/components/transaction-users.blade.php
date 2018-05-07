@@ -20,7 +20,7 @@
         @foreach($orders as $order)
         <tr>
           <th scope="row">
-              {{ $order->order_id }}
+              {{ $order->id }}
           </th>
           <td>{{ $order->user->full_name() }}</td>
           <td>{{ $order->user->email }}</td>
@@ -33,7 +33,10 @@
           <td>{{ $order->tokens }}</td>
           <td>{{ $order->bonus }}</td>
           <td>
-               <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
+              <p>
+                  <a href="{{ $order->invoice }}">Invoice</a>
+              </p>
+              <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
           </td>
         </tr>
         @endforeach
