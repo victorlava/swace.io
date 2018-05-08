@@ -9,9 +9,9 @@
     <meta property="og:site_name" content="Swace" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Swace" />
-    <meta property="og:image" content="path-to-image.jpg" />
+    <meta property="og:image" content="{{ asset('/images/swacoin.svg') }}" />
     <meta property="og:description" content="Project description" />
-    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:url" content="{{ url()->current() }}" />
     <link rel="icon" href="favicon.ico">
 
     <!-- CSRF Token -->
@@ -19,17 +19,15 @@
 
     <title>{{ config('app.name', 'Swace') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Google Tag Manager -->
+
+    <!-- End Google Tag Manager -->
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-
-    <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     @yield('head')
-
 </head>
 <body>
 
@@ -83,7 +81,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <!-- <script src="js/rangeslider.min.js" type="text/javascript"></script> -->
-    <script src="js/nouislider.min.js" type="text/javascript"></script>
+    <script src="{{ asset('js/nouislider.min.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
 
@@ -113,7 +111,7 @@
 
     </script>
 
-    <script src="js/main.js" type="text/javascript"></script>
+    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 
 </body>
 </html>
