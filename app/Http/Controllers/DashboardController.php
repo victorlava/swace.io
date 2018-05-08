@@ -11,30 +11,30 @@ use App\Sale;
 
 class DashboardController extends Controller
 {
-    public $token_price;
-
-    public $sale_amount;
+    private $meta;
 
     public function __construct()
     {
-        $this->token_price = env('TOKEN_PRICE');
-        $this->sale_amount = env('SALE_AMOUNT');
+        $this->meta = [ 'token_price' => env('TOKEN_PRICE'),
+                        'sale_amount' => env('SALE_AMOUNT'),
+                        'bonus_percentage' => env('BONUS_PERCENTAGE')];
     }
 
-    /* By default shows transaction history */
     public function index()
     {
         $verified = Auth::user()->isVerified();
+        $user_tokens = Auth::user()->tokens();
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
         $collected = Sale::collectedAmount();
-        $percentage = Sale::collectedPercentage($collected, $this->sale_amount);
+        $percentage = Sale::collectedPercentage($collected, $this->meta['sale_amount']);
 
         return view('dashboard/index', ['verified' => $verified,
                                         'orders' => $orders,
-                                        'sale' => $this->sale_amount,
                                         'collected' => $collected,
-                                        'percentage' => $percentage]);
+                                        'percentage' => $percentage,
+                                        'user_tokens' => $user_tokens,
+                                        'meta' => $this->meta]);
     }
 
     public function create()

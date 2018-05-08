@@ -58,6 +58,11 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function tokens()
+    {
+        return Order::where('user_id', $this->id)->where('status_id', 4)->sum('tokens');
+    }
+
     public function full_name()
     {
         return $this->first_name . ' ' . $this->last_name;
