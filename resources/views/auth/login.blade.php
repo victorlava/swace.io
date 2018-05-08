@@ -1,76 +1,77 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('head')
 <script src='https://www.google.com/recaptcha/api.js'></script>
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }} {{ $fail_counter }}</div>
+<main class="">
+    <div class="canvas">
+        <div class="bubble-1"></div>
+        <div class="shape-1"></div>
+    </div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" autocomplete="off">
-                        @csrf
+    <div class="container">
+        <div class="row mt-3 mx-0">
+            <div class="col-md-6 light-block p-4 p-sm-5 p-md-4 p-lg-5">
+                <form class="form-signin" method="POST" action="{{ route('login') }}" autocomplete="off">
+                    @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                    <a class="navbar-brand mb-4" href="#">
+                        <img src="images/swace-logo-color-white-bg.svg" alt="">
+                    </a>
 
-                            <div class="col-md-6">
-                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}">
+                    <div class="text-left mt-5 mb-3">
+                        <h1 class="">Sign in</h1>
+                    </div>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                    <div class="form-label-group">
+                        <input type="email" id="email" class="form-control my-2 py-3 px-3{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email address" required autofocus>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        @if($fail_counter > 2)
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="g-recaptcha form-control{{ $errors->has('recaptcha') ? ' is-invalid' : '' }}" data-sitekey="{{ $recaptcha }}"></div>
-                                @if ($errors->has('recaptcha'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('recaptcha') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
                         @endif
+                    </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                    <div class="form-label-group">
+                        <input type="password" id="password"  class="form-control my-2 py-3 px-3{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                        @if ($errors->has('password'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    @if($fail_counter > 2)
+                    <div class="form-label-group">
+                        <div class="g-recaptcha form-control{{ $errors->has('recaptcha') ? ' is-invalid' : '' }}" data-sitekey="{{ $recaptcha }}"></div>
+
+                        @if ($errors->has('recaptcha'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('recaptcha') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    @endif
+
+                    <button class="btn btn-primary btn-block text-uppercase mt-3 p-3 mb-4" type="submit">Sign in</button>
+
+                    <div class="text-right muted-link">
+                        <a class="btn-link d-inline-block text-right py-1" href="{{ route('password.request') }}">Forgot password?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 text-center text-md-right">
+                <div class="content">
+                        <span class="d-block d-md-inline-block py-3 mr-md-4">Don't have an account?</span>
+                        <a class="btn  btn-dark text-uppercase p-3 px-4" href="{{ route('register')}}">Sign up</a>
                 </div>
             </div>
+
         </div>
     </div>
-</div>
+</main>
 @endsection
