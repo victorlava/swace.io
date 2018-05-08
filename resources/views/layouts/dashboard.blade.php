@@ -31,7 +31,7 @@
 
     <nav class="navbar py-3 navbar-expand-sm navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ route('dashboard.index') }}">
                 <img src="{{ asset('/images/swace-logo-color-white-type.svg') }}" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
