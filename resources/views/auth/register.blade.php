@@ -1,154 +1,89 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<form class="form-signin" method="POST" action="{{ route('register') }}">
+    @csrf
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+    <a class="navbar-brand mb-4" href="#">
+        <img src="{{ asset('images/swace-logo-color-white-bg.svg') }}" alt="">
+    </a>
 
-                        <div class="form-group row">
-                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
+    <div class="text-left mt-5 mb-3">
+        <h1 class="">Contribute</h1>
 
-                            <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" autofocus>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="text" id="first_name" class="form-control my-2 py-3 px-3{{ $errors->has('first_name') ? ' is-invalid' : '' }}" placeholder="First name" name="first_name" value="{{ old('first_name') }}" required >
 
-                                @if ($errors->has('first_name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+            @if ($errors->has('first_name'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('first_name') }}</strong>
+                </span>
+            @endif
+        </div>
+        <div class="col-lg-6">
+            <input type="text" id="last_name" class="form-control my-2 py-3 px-3{{ $errors->has('last_name') ? ' is-invalid' : '' }}" placeholder="Last name" name="last_name" value="{{ old('last_name') }}" required >
 
-                        <div class="form-group row">
-                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" autofocus>
-
-                                @if ($errors->has('last_name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email', Session::get('email')) }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" value="{{ old('password') }}">
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}">
-
-                                @if ($errors->has('phone'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('phone') }}</strong>
-                                    </span>
-                                @else
-                                <small>{{ __('Phone field is used to reset your account.') }}</small>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-4 text-md-right"></div>
-                            <div class="col-md-8">
-                                <div class="form-check">
-                                    <input
-                                        class="form-check-input {{ $errors->has('terms') ? ' is-invalid' : '' }}"
-                                        type="checkbox"
-                                        id="terms"
-                                        name="terms"
-                                        {{ old('terms') ? ' checked' : '' }}>
-
-                                    <label class="form-check-label" for="terms">
-                                        {{ __('I agree with token sale terms & conditions') }}
-                                    </label>
-                                    @if ($errors->has('terms'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('terms') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-4 text-md-right"></div>
-                            <div class="col-md-8">
-                                <div class="form-check">
-                                    <input
-                                        class="form-check-input {{ $errors->has('resident') ? ' is-invalid' : '' }}"
-                                        type="checkbox"
-                                        id="resident"
-                                        name="resident"
-                                        {{ old('resident') ? ' checked' : '' }}>
-
-                                    <label class="form-check-label" for="resident">
-                                        {{ __("I'm NOT a resident, citizen, registered person from United States of America") }}
-                                    </label>
-                                    @if ($errors->has('resident'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('resident') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    {{ __('Sign up') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            @if ($errors->has('last_name'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('last_name') }}</strong>
+                </span>
+            @endif
         </div>
     </div>
-</div>
+
+    <div class="form-group">
+        <input type="email" id="email" class="form-control my-2 py-3 px-3{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="you@example.com" name="email" value="{{ old('email', Session::get('email')) }}" required >
+
+        @if ($errors->has('email'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
+    </div>
+
+    <div class="form-group">
+        <input type="password" id="password"  class="form-control my-2 py-3 px-3{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Password" name="password" value="{{ old('password') }}" required>
+
+        @if ($errors->has('password'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('password') }}</strong>
+            </span>
+        @endif
+    </div>
+    <div class="form-group">
+        <input type="text" id="phone" class="form-control my-2 py-3 px-3{{ $errors->has('phone') ? ' is-invalid' : '' }}" placeholder="Phone number" name="phone" value="{{ old('phone') }}">
+
+        @if ($errors->has('phone'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('phone') }}</strong>
+            </span>
+        @endif
+    </div>
+
+        <div class="custom-control custom-checkbox my-4 mr-sm-3">
+            <input type="checkbox" class="custom-control-input {{ $errors->has('terms') ? ' is-invalid' : '' }}" id="agreeTC" name="terms" {{ old('terms') ? ' checked' : '' }}>
+            <label class="custom-control-label pl-2" for="agreeTC">I agree with token sale <a href="#">Terms & Conditions</a> </label>
+
+            @if ($errors->has('terms'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('terms') }}</strong>
+            </span>
+            @endif
+        </div>
+
+        <div class="custom-control custom-checkbox my-4 mr-sm-3">
+            <input type="checkbox" class="custom-control-input {{ $errors->has('resident') ? ' is-invalid' : '' }}" id="notUSA" name="resident" {{ old('resident') ? ' checked' : '' }}>
+            <label class="custom-control-label pl-2" for="notUSA">I'm NOT a resident, citizen, registered person from United States of America</label>
+
+            @if ($errors->has('resident'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('resident') }}</strong>
+            </span>
+            @endif
+        </div>
+
+    <button class="btn btn-primary btn-block text-uppercase mt-3 p-3 mb-4" type="submit">Create new account</button>
+</form>
 @endsection
