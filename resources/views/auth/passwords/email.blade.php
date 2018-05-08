@@ -1,47 +1,41 @@
-@extends('layouts.app')
+@extends('layouts.guest')
+
+@section('menu')
+<span class="d-block d-md-inline-block py-3 mr-md-4">Don't have an account?</span>
+<a class="btn  btn-dark text-uppercase p-3 px-4" href="{{ route('register') }}">Sign up</a>
+@endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<form class="form-signin" method="POST" action="{{ route('password.email') }}">
+    @csrf
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <a class="navbar-brand mb-4" href="#">
+        <img src="{{ asset('images/swace-logo-color-white-bg.svg') }}" alt="">
+    </a>
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="text-left mt-5 mb-3">
+        <h1 class="">Forgot password?</h1>
     </div>
-</div>
+
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    <div class="form-label-group">
+        <input type="email" id="email" class="form-control  my-2 py-3 px-3{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="you@example.com" name="email" value="{{ old('email') }}" required autofocus>
+        @if ($errors->has('email'))
+            <span class="invalid-feedback">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
+    </div>
+
+    <button class="btn btn-primary btn-block text-uppercase mt-3 p-3 mb-4" type="submit">Reset password</button>
+
+    <div class="text-left muted-link">
+        <a class="btn-link d-inline-block" href="{{ route('login') }}"> <i class="icon icon-arrow-left mr-1"></i> Sign in</a>
+    </div>
+</form>
 @endsection
