@@ -1,93 +1,91 @@
 @extends('layouts.app')
 
+@section('head')
+<title>Account settings | Swace</title>
+@endsection
+
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            @if(Session::has('message'))
-            <div class="alert {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
-                {{ Session::get("message") }}
-            </div>
-            @endif
-        </div>
+<main class="mb-5">
+    <div class="canvas">
+        <div class="bubble-1"></div>
+        <div class="bubble-2"></div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">{{ __('Profile') }}</div>
+    <div class="container ">
+        <div class="row mt-3 mx-0">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('profile.store') }}" autocomplete="off">
-                        @csrf
+            <div class="col-md-6 light-block p-4 p-sm-5 p-md-4 p-lg-5">
+                <form class="form-signin" method="POST" action="{{ route('profile.store') }}" autocomplete="off">
+                    <div class="text-left mt-4 mb-3">
+                        <h1 class="">Account settings</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="text" id="first_name" name="first_name" class="form-control my-2 py-3 px-3{{ $errors->has('first_name') ? ' is-invalid' : '' }}" placeholder="First name" value="{{ old('first_name', $first_name) }}" required >
 
-                        <div class="form-group row">
-                            <label for="first_name" class="col-sm-4 col-form-label text-md-right">{{ __('First name') }}:</label>
-
-                            <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name', $first_name) }}">
-
-                                @if ($errors->has('first_name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('first_name'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('first_name') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                        <div class="col-lg-6">
+                            <input type="text" id="last_name" name="last_name" class="form-control  my-2 py-3 px-3{{ $errors->has('last_name') ? ' is-invalid' : '' }}" placeholder="Last name" value="{{ old('last_name', $last_name) }}" required >
 
-                        <div class="form-group row">
-                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last lame') }}:</label>
-
-                            <div class="col-md-6">
-                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name', $last_name) }}">
-
-                                @if ($errors->has('last_name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('last_name'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('last_name') }}</strong>
+                                </span>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-mail') }}:</label>
+                    <div class="form-group">
+                        <input type="email" id="email" class="form-control my-2 py-3 px-3{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="E-mail address" value="{{ $email }}" disabled required >
 
-                            <div class="col-md-6">
-                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" disabled value="{{ $email }}">
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="mobile" class="form-control my-2 py-3 px-3{{ $errors->has('mobile') ? ' is-invalid' : '' }}" placeholder="Phone number" value="{{ $mobile }}" disabled >
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        @if ($errors->has('mobile'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('mobile') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <hr>
+                    <h4 class="mt-4 mb-3">Change password</h4>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" class="form-control my-2 py-3 px-3{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="New password" value="{{ old('password') }}">
 
-                        <div class="form-group row">
-                            <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Mobile') }}:</label>
+                        @if ($errors->has('password'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password-confirm" name="password_confirmation" class="form-control my-2 py-3 px-3" placeholder="Confirm password" >
 
-                            <div class="col-md-6">
-                                <input id="mobile" type="text" class="form-control{{ $errors->has('mobile') ? ' is-invalid' : '' }}" disabled value="{{ $mobile }}">
+                    </div>
 
-                                @if ($errors->has('mobile'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('mobile') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                    <button class="btn btn-primary btn-block text-uppercase mt-3 p-3 mb-4" type="submit">Save</button>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Update') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                </form>
+            </div>
+
+            <div class="col-md-6 text-center text-md-right">
+                <div class="content">
+
                 </div>
             </div>
+
         </div>
     </div>
-</div>
+</main>
 @endsection

@@ -17,8 +17,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Swace') }}</title>
-
     <!-- Google Tag Manager -->
 
     <!-- End Google Tag Manager -->
@@ -68,6 +66,18 @@
             </div>
         </div>
     </nav>
+
+    @if(Session::has('message'))
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
+                    {{ Session::get("message") }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     @yield('content')
 
