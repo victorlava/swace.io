@@ -55,8 +55,7 @@
 
                 <div class="col-md-6 text-center text-md-right">
                     <div class="content">
-                            <span class="d-block d-md-inline-block py-3 mr-md-4">Don't have an account?</span>
-                            <a class="btn  btn-dark text-uppercase p-3 px-4" href="{{ route('register')}}">Sign up</a>
+                        @yield('menu')
                     </div>
                 </div>
 

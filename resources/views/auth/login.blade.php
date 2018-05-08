@@ -4,6 +4,11 @@
 <script src='https://www.google.com/recaptcha/api.js'></script>
 @endsection
 
+@section('menu')
+<span class="d-block d-md-inline-block py-3 mr-md-4">Don't have an account?</span>
+<a class="btn  btn-dark text-uppercase p-3 px-4" href="{{ route('register')}}">Sign up</a>
+@endsection
+
 @section('content')
 
 <form class="form-signin" method="POST" action="{{ route('login') }}" autocomplete="off">
