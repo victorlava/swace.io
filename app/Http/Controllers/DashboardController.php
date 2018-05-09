@@ -25,8 +25,8 @@ class DashboardController extends Controller
     {
         $currencies = Currency::all();
         $verified = Auth::user()->isVerified();
-        $user_tokens = Auth::user()->tokens();
-        $user_email = Auth::user()->email;
+        $tokens = Auth::user()->tokens();
+        $email = Auth::user()->email;
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
         $collected = Sale::collectedAmount();
@@ -37,8 +37,8 @@ class DashboardController extends Controller
                                         'orders' => $orders,
                                         'collected' => $collected,
                                         'percentage' => $percentage,
-                                        'user_tokens' => $user_tokens,
-                                        'user_email' => $user_email,
+                                        'tokens' => $tokens,
+                                        'email' => $email,
                                         'meta' => $this->meta]);
     }
 }

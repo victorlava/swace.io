@@ -49,7 +49,7 @@
                         <div class="note-overlay active">
                             <div class="note py-5">
                                 <h3 class="text-center mt-4">You have to confirm your email first.</h3>
-                                <p class="text-center">An email with confirmation link was sent to {{ $user_email }}</p>
+                                <p class="text-center">An email with confirmation link was sent to {{ $email }}</p>
                             </div>
                         </div>
                         @endif
@@ -167,7 +167,7 @@
                     <div class="col-md-6 col-lg-12">
                         <div class="dark-block d-flex p-3 mb-1">
                             <div class="swace-coin mr-3"></div>
-                            <div class="info"><div class="number">{{ number_format($user_tokens, 0, '', ' ') }} SWA</div>
+                            <div class="info"><div class="number">{{ number_format($tokens, 0, '', ' ') }} SWA</div>
                             <div class="label text-uppercase">My Tokens</div></div>
 
                         </div>
