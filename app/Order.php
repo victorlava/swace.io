@@ -100,7 +100,10 @@ class Order extends Model
 
     public function calcTokens(float $price, float $bonus): int
     {
-        return floor((($this->net / $price) * $bonus) / 100);
+        $tokens = $this->net / $price;
+        $bonus = ($tokens * $bonus) / 100;
+
+        return $tokens + $bonus;
     }
 
     public function calcBonus(int $tokens, float $bonus): int
