@@ -191,7 +191,7 @@
                                 <span class="d-block ">
                                     {{ $order->created_at->format('H:i, d M, Y') }}
                                 </span>
-                                <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span><a href="{{ $order->invoice }}" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
+                                <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span><a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
                             </div>
                             <div class="col-lg-2 amount-paid">{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</div>
                             <div class="col-lg-2 usd-info">
@@ -220,7 +220,6 @@
 @endsection
 
 @section('footer')
-<!-- <script src="js/rangeslider.min.js" type="text/javascript"></script> -->
 <script src="{{ asset('js/nouislider.min.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
