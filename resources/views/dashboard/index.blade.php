@@ -5,11 +5,6 @@
 @endsection
 
 @section('content')
-
-@php
-    $classDisabled = $verified ? '' : ' disabled';
-@endphp
-
 <header>
     <div class="container">
         <div class="row">
@@ -21,6 +16,7 @@
             <div class="target"><span class="d-none d-lg-block info">Hard cap - ${{ number_format($meta['sale_amount'], 0, ' ',' ') }}</span></div>
             <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
+
         @if(Session::has('message'))
         <div class="alert alert-dismissible fade show {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
             {{ Session::get("message") }}
@@ -44,9 +40,19 @@
                 <div id="buy-form" class="light-block contribute p-4">
                     <form method="POST" action="{{ route('payment.store') }}">
                         @csrf
+
                         <div class="loader-overlay">
                             <div class="loader"></div>
                         </div>
+
+                        @if(!$verified)
+                        <div class="note-overlay active">
+                            <div class="note py-5">
+                                <h3 class="text-center mt-4">You have to confirm your email first.</h3>
+                                <p class="text-center">An email with confirmation link was sent to {{ $user_email}}</p>
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="row">
                             <div class="col-md-6">
