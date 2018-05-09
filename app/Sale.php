@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-class Sale extends Model
+class Sale
 {
     public static function collectedAmount(): float
     {
