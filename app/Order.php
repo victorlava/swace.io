@@ -49,7 +49,6 @@ class Order extends Model
         $this->tokens = $this->calcTokens($data['token_price'], $data['bonus']);
         $this->bonus = $this->calcBonus($this->tokens, $data['bonus']);
         $this->setStatus($data['request']->status);
-        $this->hash = null; // Remove hash to save space
         $this->save();
     }
 
