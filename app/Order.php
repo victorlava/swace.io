@@ -113,7 +113,7 @@ class Order extends Model
 
     public function calcBonusPercentage(int $tokens, int $bonus_tokens): int
     {
-        return floor(($bonus_tokens * 100) / $tokens);
+        return round(($bonus_tokens * 100) / $tokens);
     }
 
     public function setStatus(string $status)
