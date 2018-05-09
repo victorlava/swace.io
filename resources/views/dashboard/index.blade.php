@@ -231,10 +231,10 @@
         bonusTokens = (tokens*BONUS_PERCENTAGE)/100;
         bonusTokensPrice = bonusTokens*TOKEN_PRICE;
 
-        let priceUSD = (tokens*TOKEN_PRICE)+bonusTokensPrice,
+        let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-            priceUSD = priceUSD - fee;
+            priceUSD = priceUSD - fee - bonusTokensPrice;
 
             overlay.classList.add('active');
 
@@ -248,7 +248,7 @@
                 priceCrypto = priceUSD * contents;
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
-                document.querySelector('#pay-amount').value = priceCrypto.toFixed(7);
+                document.querySelector('#pay-amount').value = priceCrypto.toFixed(8);
 
             });
     }
