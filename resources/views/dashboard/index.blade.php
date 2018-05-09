@@ -19,7 +19,7 @@
         <div class="progress my-4 mt-lg-5">
             <div class="target"><span class="d-none d-lg-block info">Soft cap - $2 000 000</span></div>
             <div class="target"><span class="d-none d-lg-block info">Hard cap - ${{ number_format($meta['sale_amount'], 0, ' ',' ') }}</span></div>
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
 </header>
