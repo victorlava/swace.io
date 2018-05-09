@@ -16,19 +16,19 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id')->unique();
-            $table->float('amount', 10, 2);
-            $table->float('rate', 10, 2)->nullable(); // USD rate 1,000,000.00
-            $table->float('gross', 10, 2)->nullable();
-            $table->float('fee', 8, 2)->nullable(); // CoinGate fee 100,000.00
-            $table->float('net', 10, 2)->nullable(); // Calculate tokens from this sum
-            $table->integer('tokens')->nullable();
-            $table->integer('bonus')->nullable(); // Token bonus
+            $table->decimal('amount', 19, 2);
+            $table->decimal('rate', 19, 2)->nullable();
+            $table->decimal('gross', 19, 2)->nullable();
+            $table->decimal('fee', 19, 2)->nullable(); // CoinGate fee
+            $table->decimal('net', 19, 2)->nullable();
+            $table->decimal('tokens', 19, 2)->nullable();
+            $table->decimal('bonus', 19, 2)->nullable(); // Token bonus
             $table->string('invoice')->nullable(); // Invoice link
             $table->integer('coingate_id')->nullable()->unsigned();
             $table->integer('currency_id')->unsigned();
             $table->integer('status_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->string('hash')->nullable();
+            $table->string('hash')->unique();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
