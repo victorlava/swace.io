@@ -39,12 +39,4 @@ class DashboardController extends Controller
                                         'user_tokens' => $user_tokens,
                                         'meta' => $this->meta]);
     }
-
-    public function create()
-    {
-        $currencies = Currency::all();
-
-        return view('dashboard/create', ['currencies' => $currencies,
-                                         'token_price' => $this->token_price]);
-    }
 }
