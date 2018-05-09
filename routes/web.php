@@ -29,8 +29,8 @@ Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('ema
 
 Route::prefix('payment')->name('payment.')->middleware('verified')->group(function () {
     Route::post('/', 'PaymentController@store')->name('store');
-    Route::get('/success/{order_id}', 'PaymentController@success')->name('success');
-    Route::get('/cancel/{order_id}', 'PaymentController@cancel')->name('cancel');
+    Route::get('/success/{id}', 'PaymentController@success')->name('success');
+    Route::get('/cancel/{id}', 'PaymentController@cancel')->name('cancel');
 });
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback');
 

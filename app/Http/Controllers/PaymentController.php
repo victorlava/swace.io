@@ -9,8 +9,8 @@ use CoinGate\Merchant\Order as MerchantOrder;
 use App\Order;
 use App\Currency;
 use App\Flash;
-use App\Http\Requests\OrderCallback;
-use App\Http\Requests\StoreOrder;
+use App\Http\Requests\OrderCallbackRequest;
+use App\Http\Requests\StoreOrderRequest;
 
 class PaymentController extends Controller
 {
@@ -21,7 +21,7 @@ class PaymentController extends Controller
 
     public function __construct()
     {
-        $this->receiveCurrency = 'USD';
+        $this->receiveCurrency = env('RECEIVE_CURRENCY');
         $this->coingateFee = env('COINGATE_FEE'); // Percentage;
         $this->bonusPercentage = env('BONUS_PERCENTAGE');
         $this->tokenPrice = env('TOKEN_PRICE');
@@ -35,7 +35,7 @@ class PaymentController extends Controller
         ));
     }
 
-    public function store(StoreOrder $request): \Illuminate\Http\RedirectResponse
+    public function store(StoreOrderRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->coingateConfig();
 
@@ -73,7 +73,7 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $hash, Request $request): bool
+    public function callback(string $hash, OrderCallbackRequest $request): bool
     {
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
@@ -89,10 +89,10 @@ class PaymentController extends Controller
     private function prepParams(array $data): array
     {
         return $preparedParams = [
-           'order_id' => (string)$data['order']->id,
+           'order_id' => (string)$data['order']->order_id,
            'price_amount' => (float)$data['amount'],
            'price_currency' => strtoupper($data['order']->type->short_title),
-           'receive_currency' => 'USD',
+           'receive_currency' => $this->receiveCurrency,
            'callback_url' => route('payment.callback', $data['order']->hash),
            'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->order_id]),
            'success_url' => route('payment.success', ['order_id' => $data['order']->order_id]),
@@ -102,16 +102,16 @@ class PaymentController extends Controller
     }
 
 
-    public function success(int $order_id)
+    public function success(string $id)
     {
-        Flash::create('success', "Order #$order_id created succesfully.");
+        Flash::create('success', "Order #$id created succesfully.");
 
         return redirect()->route('dashboard.index');
     }
 
-    public function cancel(int $order_id)
+    public function cancel(string $id)
     {
-        Flash::create('danger', "Order #$order_id have been canceled.");
+        Flash::create('danger', "Order #$id have been canceled.");
 
         return redirect()->route('dashboard.index');
     }
