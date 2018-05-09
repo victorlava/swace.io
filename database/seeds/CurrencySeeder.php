@@ -13,10 +13,10 @@ class CurrencySeeder extends Seeder
     public function run()
     {
         $data = [
-                    [
-                        'title' => 'Litecoin',
-                        'short_title' => "ltc"
-                    ],
+                    // [
+                    //     'title' => 'Litecoin',
+                    //     'short_title' => "ltc"
+                    // ],
                     [
                         'title' => 'Bitcoin',
                         'short_title' => "btc"
