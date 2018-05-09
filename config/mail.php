@@ -57,8 +57,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@swace.wpespresso.com'),
-        'name' => env('MAIL_FROM_NAME', 'SWACE'),
+        'address' => env('MAIL_FROM_ADDRESS', 'info@swace.io'),
+        'name' => env('MAIL_FROM_NAME', 'Swace.io'),
     ],
 
     /*
