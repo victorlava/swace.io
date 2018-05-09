@@ -126,7 +126,7 @@ class RegisterController extends Controller
             $user->verify();
 
             Flash::create(
-                'type',
+                'success',
                 'Your email is verified, now you can start using the dashboard.'
             );
         } else {
