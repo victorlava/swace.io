@@ -49,7 +49,7 @@
                         <div class="note-overlay active">
                             <div class="note py-5">
                                 <h3 class="text-center mt-4">You have to confirm your email first.</h3>
-                                <p class="text-center">An email with confirmation link was sent to {{ $user_email}}</p>
+                                <p class="text-center">An email with confirmation link was sent to {{ $user_email }}</p>
                             </div>
                         </div>
                         @endif
@@ -208,12 +208,12 @@
                                 <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span><a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
                             </div>
                             <div class="col-lg-2 amount-paid">{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</div>
-                            <div class="col-lg-2 usd-info">
-                                <div class="d-lg-flex py-2">
-                                    <div class="flex-fill d-inline-block pr-2">${{ number_format($order->rate, 2, '.', ' ') }} <span class="d-block d-lg-none small text-uppercase">Rate</span> </div>
-                                    <div class="flex-fill d-inline-block pr-2 d-lg-none">${{ number_format($order->gross, 2, '.', ' ') }} <span class="d-block small text-uppercase">Gross</span> </div>
-                                    <div class="flex-fill d-inline-block pr-2 d-lg-none">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block small text-uppercase">Net</span> </div>
-                                    <div class="flex-fill d-inline-block pr-2 d-lg-none">${{ number_format($order->fee, 2, '.', ' ') }} <span class="d-block small text-uppercase">Fee</span> </div>
+                            <div class="col-lg-3 usd-info">
+                                <div class="row py-2 py-lg-2">
+                                    <div class="col-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Rate</span></div>
+                                    <div class="col-3 col-lg-6">${{ number_format($order->gross, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Gross</span></div>
+                                    <div class="col-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block mb-lg-2 small text-uppercase">Net</span></div>
+                                    <div class="col-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Fee</span></div>
                                 </div>
                             </div>
                             <div class=" col-lg-1 icon-wrapper pb-3 pb-md-2">
