@@ -14,7 +14,7 @@
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
-    
+
 Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
     Route::get('', 'ProfileController@index')->name('index');
     Route::post('/store', 'ProfileController@store')->name('store');
@@ -34,7 +34,7 @@ Route::prefix('payment')->name('payment.')->middleware('verified')->group(functi
 });
 Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback');
 
-Route::prefix('adm1n')->name('admin.')->middleware('admin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/', 'Admin\AdminController@index')->name('index');
     Route::get('/transactions', 'Admin\TransactionController@index')->name('transactions.index');
 
