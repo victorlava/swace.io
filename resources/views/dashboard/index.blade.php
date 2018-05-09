@@ -228,8 +228,10 @@
 
     function calculateAmount(tokens, cryptoCurrency) {
         tokens = Math.round(tokens);
+        bonusTokens = (tokens*BONUS_PERCENTAGE)/100;
+        bonusTokensPrice = bonusTokens*TOKEN_PRICE;
 
-        let priceUSD = tokens*TOKEN_PRICE,
+        let priceUSD = (tokens*TOKEN_PRICE)-bonusTokensPrice,
             fee = (priceUSD * FEE) / 100;
 
             priceUSD = priceUSD - fee;
@@ -260,7 +262,8 @@
     }
 
     const TOKEN_PRICE = {{ $meta['token_price'] }},
-          FEE = {{ $meta['coingate_fee'] }};
+          FEE = {{ $meta['coingate_fee'] }},
+          BONUS_PERCENTAGE = {{ $meta['bonus_percentage'] }};
 
     let form = document.querySelector('#buy-form'),
         overlay = form.querySelector('.loader-overlay'),
