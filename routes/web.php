@@ -11,11 +11,10 @@
 |
 */
 
-Route::get('/', 'PageController@index')->name('page.landing');
+Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 
 Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
     Route::get('', 'ProfileController@index')->name('index');
