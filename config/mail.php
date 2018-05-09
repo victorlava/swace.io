@@ -57,7 +57,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@swace.io'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@swaceapp.app'),
         'name' => env('MAIL_FROM_NAME', 'Swace.io'),
     ],
 
