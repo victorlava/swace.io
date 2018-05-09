@@ -15,8 +15,6 @@ use App\Jobs\SendVerificationEmail;
 use App\Mail\EmailVerification;
 use Mail;
 
-// use Job;
-
 class RegisterController extends Controller
 {
     /*
@@ -61,7 +59,7 @@ class RegisterController extends Controller
             'first_name' => 'required|alpha|max:255',
             'last_name' => 'required|alpha|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$^',
+            'password' => 'required|string|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$^',
             'phone' => 'required|max:255',
             'terms' => 'accepted',
             'resident' => 'accepted'
