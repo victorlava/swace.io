@@ -198,7 +198,7 @@
                                 <div class="d-lg-flex py-2">
                                     <div class="flex-fill d-inline-block pr-2">${{ number_format($order->rate, 2, '.', ' ') }} <span class="d-block d-lg-none small text-uppercase">Rate</span> </div>
                                     <div class="flex-fill d-inline-block pr-2 d-lg-none">${{ number_format($order->gross, 2, '.', ' ') }} <span class="d-block small text-uppercase">Gross</span> </div>
-                                    <div class="flex-fill d-inline-block pr-2 d-lg-none">($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' <span class="d-block small text-uppercase">Net</span> </div>
+                                    <div class="flex-fill d-inline-block pr-2 d-lg-none">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block small text-uppercase">Net</span> </div>
                                     <div class="flex-fill d-inline-block pr-2 d-lg-none">${{ number_format($order->fee, 2, '.', ' ') }} <span class="d-block small text-uppercase">Fee</span> </div>
                                 </div>
                             </div>
