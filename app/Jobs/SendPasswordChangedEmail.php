@@ -14,6 +14,8 @@ class SendPasswordChangedEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 3;
+
     protected $user;
     protected $ip;
 
