@@ -70,9 +70,9 @@
     @if(Session::has('message'))
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 mt-3">
                 <div class="alert {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
-                    {{ Session::get("message") }}
+                    <h5>{{ Session::get("message") }}</h5>
                 </div>
             </div>
         </div>

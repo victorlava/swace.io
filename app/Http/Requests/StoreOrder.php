@@ -24,7 +24,7 @@ class StoreOrder extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|numeric|digits_between:1, 4',
+            'amount' => 'required|numeric',
             'currency' => 'required|numeric|exists:currencies,id'
         ];
     }

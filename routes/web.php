@@ -16,7 +16,6 @@ Route::get('/', 'PageController@index')->name('page.landing');
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
-Route::get('/dashboard/buy-tokens', 'DashboardController@create')->name('dashboard.create')->middleware('verified');
 
 Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
     Route::get('', 'ProfileController@index')->name('index');

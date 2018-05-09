@@ -22,7 +22,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->receiveCurrency = 'USD';
-        $this->coingateFee = 1; // Percentage;
+        $this->coingateFee = env('COINGATE_FEE'); // Percentage;
         $this->bonusPercentage = env('BONUS_PERCENTAGE');
         $this->tokenPrice = env('TOKEN_PRICE');
     }
@@ -38,7 +38,6 @@ class PaymentController extends Controller
     public function store(StoreOrder $request): \Illuminate\Http\RedirectResponse
     {
         $this->coingateConfig();
-
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
             $order = new Order();
@@ -105,11 +104,15 @@ class PaymentController extends Controller
 
     public function success(int $order_id)
     {
-        return view('payment.success', ['order_id' => $order_id]);
+        Flash::create('success', "Order #$order_id created succesfully.");
+
+        return redirect()->route('dashboard.index');
     }
 
     public function cancel(int $order_id)
     {
-        return view('payment.cancel', ['order_id' => $order_id]);
+        Flash::create('danger', "Order #$order_id have been canceled.");
+
+        return redirect()->route('dashboard.index');
     }
 }

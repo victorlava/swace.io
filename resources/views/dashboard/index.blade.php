@@ -34,77 +34,81 @@
         <div class="row">
             <div class="col-lg-8">
                 <div id="buy-form" class="light-block contribute p-4">
-                    <div class="loader-overlay">
-                        <div class="loader"></div>
-                    </div>
+                    <form method="POST" action="{{ route('payment.store') }}">
+                        @csrf
+                        <div class="loader-overlay">
+                            <div class="loader"></div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
 
-                                <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
-                                <div class="input-group input-group-lg">
+                                    <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
+                                    <div class="input-group input-group-lg">
 
-                                    <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000"   required>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">SWA</span>
+                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000"   required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">SWA</span>
+                                        </div>
+
                                     </div>
 
                                 </div>
 
+                                <div class="mt-4 mb-3">
+                                    <div id="SWASlider"></div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <label class="small" for="customRange3">
+                                        <div class="number text-left">1 000</div>Min. amount
+                                    </label>
+                                    <label class="small" for="customRange3">
+                                        <div class="number text-right">5 000 000</div>Max. amount
+                                    </label>
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
 
-                            <div class="mt-4 mb-3">
-                                <div id="SWASlider"></div>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <label class="small" for="customRange3">
-                                    <div class="number text-left">1 000</div>Min. amount
-                                </label>
-                                <label class="small" for="customRange3">
-                                    <div class="number text-right">5 000 000</div>Max. amount
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
-
-                                <div class="input-group input-group-lg">
-                                    <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" placeholder="0.0005">
-                                    @if ($errors->has('amount'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('amount') }}</strong>
-                                        </span>
-                                    @endif
-                                    <div id="crypto-toggler" class="input-group-append">
-                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ strtoupper($currencies[0]->short_title) }}</button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            @foreach($currencies as $currency)
-                                            <a class="dropdown-item" href="#"
-                                                                    data-short="{{ strtoupper($currency->short_title) }}"
-                                                                    data-value="{{ $currency->id }}">
-                                            {{ $currency->title }}
-                                            </a>
-                                            @endforeach
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" step="0.00000000000000001" placeholder="0.0005">
+                                        <div id="crypto-toggler" class="input-group-append">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ strtoupper($currencies[0]->short_title) }}</button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                @foreach($currencies as $currency)
+                                                <a class="dropdown-item" href="#"
+                                                                        data-short="{{ strtoupper($currency->short_title) }}"
+                                                                        data-value="{{ $currency->id }}">
+                                                {{ $currency->title }}
+                                                </a>
+                                                @endforeach
+                                            </div>
+                                            <select id="currency" class="form-control{{ $errors->has('currency') ? ' is-invalid' : '' }}" style="display: none;" name="currency">
+                                                @foreach($currencies as $currency)
+                                                <option value="{{ $currency->id }}" {{ ($loop->index == 0) ? 'selected' : '' }}>{{ strtoupper($currency->short_title) }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('currency'))
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('currency') }}</strong>
+                                                </span>
+                                            @endif
                                         </div>
-                                        <select id="currency" class="form-control{{ $errors->has('currency') ? ' is-invalid' : '' }}" style="display: none;" name="currency">
-                                            @foreach($currencies as $currency)
-                                            <option value="{{ $currency->id }}" {{ ($loop->index == 0) ? 'selected' : '' }}>{{ strtoupper($currency->short_title) }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('currency'))
+                                        @if ($errors->has('amount'))
                                             <span class="invalid-feedback">
-                                                <strong>{{ $errors->first('currency') }}</strong>
+                                                <strong>{{ $errors->first('amount') }}</strong>
                                             </span>
                                         @endif
                                     </div>
-                                </div>
 
+                                </div>
+                                <button type="submit" class="btn p-3 mt-4 btn-primary btn-block text-uppercase">Buy tokens</button>
                             </div>
-                            <button type="button" class="btn p-3 mt-4 btn-primary btn-block text-uppercase">Buy tokens</button>
                         </div>
-                    </div>
+                    </form>
+                    <!-- end of form -->
                 </div>
 
                 <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
