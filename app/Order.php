@@ -106,9 +106,11 @@ class Order extends Model
         return $tokens + $bonus;
     }
 
-    public function calcBonus(int $tokens, float $bonus): int
+    public function calcBonus(float $tokens, float $bonus): int
     {
-        return floor(($tokens * $bonus) / 100);
+        $bonus = ($tokens * $bonus) / 100;
+
+        return round($bonus, 2, PHP_ROUND_HALF_DOWN);
     }
 
     public function calcBonusPercentage(int $tokens, int $bonus_tokens): int
