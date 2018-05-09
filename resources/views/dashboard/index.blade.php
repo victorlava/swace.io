@@ -33,10 +33,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="light-block contribute p-4">
-                    <!-- <div class="loader-overlay active">
+                <div id="buy-form" class="light-block contribute p-4">
+                    <div class="loader-overlay">
                         <div class="loader"></div>
-                    </div> -->
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -68,17 +68,36 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span class="currency">Bitcoin</span></label>
+                                <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
 
                                 <div class="input-group input-group-lg">
-                                    <input type="number" class="form-control form-control-lg" placeholder="0.0005">
-                                    <div class="input-group-append">
-                                        <button class="btn  btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BTC</button>
+                                    <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" placeholder="0.0005">
+                                    @if ($errors->has('amount'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('amount') }}</strong>
+                                        </span>
+                                    @endif
+                                    <div id="crypto-toggler" class="input-group-append">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ strtoupper($currencies[0]->short_title) }}</button>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="">Bitcoin</a>
-                                            <a class="dropdown-item" href="">Ether</a>
-                                            <a class="dropdown-item" href="">Litecoin</a>
+                                            @foreach($currencies as $currency)
+                                            <a class="dropdown-item" href="#"
+                                                                    data-short="{{ strtoupper($currency->short_title) }}"
+                                                                    data-value="{{ $currency->id }}">
+                                            {{ $currency->title }}
+                                            </a>
+                                            @endforeach
                                         </div>
+                                        <select id="currency" class="form-control{{ $errors->has('currency') ? ' is-invalid' : '' }}" style="display: none;" name="currency">
+                                            @foreach($currencies as $currency)
+                                            <option value="{{ $currency->id }}" {{ ($loop->index == 0) ? 'selected' : '' }}>{{ strtoupper($currency->short_title) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('currency'))
+                                            <span class="invalid-feedback">
+                                                <strong>{{ $errors->first('currency') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -194,4 +213,110 @@
         </div>
     </div>
 </main>
+@endsection
+
+@section('footer')
+<!-- <script src="js/rangeslider.min.js" type="text/javascript"></script> -->
+<script src="{{ asset('js/nouislider.min.js') }}" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+
+    function calculateAmount(tokens, cryptoCurrency) {
+        tokens = Math.round(tokens);
+
+        let priceUSD = tokens*TOKEN_PRICE,
+            fee = (priceUSD * FEE) / 100;
+
+            priceUSD = priceUSD - fee;
+
+            overlay.classList.add('active');
+
+            const proxyurl = "https://cors-anywhere.herokuapp.com/";
+            const url = "https://api.coingate.com/v2/rates/merchant/USD/" + cryptoCurrency;
+            fetch(proxyurl + url)
+            .then(response => response.text())
+            .then(contents => {
+                overlay.classList.remove('active');
+
+                priceCrypto = priceUSD * contents;
+                if(isNaN(priceCrypto)) { priceCrypto = 0; }
+
+                document.querySelector('#pay-amount').value = priceCrypto;
+
+            });
+    }
+
+    function getSelectedCurrency() {
+        return currencySelect.querySelector('option[selected]').textContent;
+    }
+
+    function getTokenAmount() {
+        return parseInt(form.querySelector('#swaAmount').value);
+    }
+
+    const TOKEN_PRICE = {{ $meta['token_price'] }},
+          FEE = {{ $meta['coingate_fee'] }};
+
+    let form = document.querySelector('#buy-form'),
+        overlay = form.querySelector('.loader-overlay'),
+        cryptoTogglerDiv = document.querySelector('#crypto-toggler'),
+        toggler = cryptoTogglerDiv.querySelector('.dropdown-toggle'),
+        items = cryptoTogglerDiv.querySelectorAll('.dropdown-menu .dropdown-item'),
+        currencySelect = cryptoTogglerDiv.querySelector('#currency');
+
+    var html5Slider = document.getElementById('SWASlider');
+
+    noUiSlider.create(html5Slider, {
+        connect: [true, false],
+        behaviour: 'tap',
+        start: 10000,
+        // step: 1000,
+        range: {
+            'min': 1000,
+            'max': 5000000
+        },
+    });
+
+    var inputNumber = document.getElementById('swaAmount');
+
+    html5Slider.noUiSlider.on('update', function( values, handle ) {
+        var value = values[handle];
+        inputNumber.value = Math.round(value);
+
+    });
+
+    inputNumber.addEventListener('change', function(){
+        html5Slider.noUiSlider.set([this.value]);
+    });
+
+    html5Slider.noUiSlider.on('set', function( values, handle) {
+        let currency = getSelectedCurrency();
+        calculateAmount(values, currency);
+    });
+
+    items.forEach(function(value, index, array) {
+        items[index].addEventListener('click', function() {
+            let options = currencySelect.querySelectorAll('option'),
+                selectedOption = currencySelect.querySelector('option[value="' + items[index].dataset.value + '"]');
+
+            // Unselect all options
+            options.forEach(function(value, index, array) {
+                options[index].removeAttribute('selected');
+            })
+
+            selectedOption.setAttribute('selected', true); // Select the right one
+            let currency = getSelectedCurrency(),
+                tokens = getTokenAmount();
+
+            toggler.textContent = items[index].dataset.short; // Change toggler text to currency text
+            form.querySelector('#currency-long').textContent = items[index].textContent;
+            calculateAmount(tokens, currency);
+
+        })
+    });
+
+
+
+</script>
 @endsection

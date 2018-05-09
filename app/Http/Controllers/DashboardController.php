@@ -17,11 +17,13 @@ class DashboardController extends Controller
     {
         $this->meta = [ 'token_price' => env('TOKEN_PRICE'),
                         'sale_amount' => env('SALE_AMOUNT'),
-                        'bonus_percentage' => env('BONUS_PERCENTAGE')];
+                        'bonus_percentage' => env('BONUS_PERCENTAGE'),
+                        'coingate_fee' => env('COINGATE_FEE')];
     }
 
     public function index()
     {
+        $currencies = Currency::all();
         $verified = Auth::user()->isVerified();
         $user_tokens = Auth::user()->tokens();
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
@@ -29,7 +31,8 @@ class DashboardController extends Controller
         $collected = Sale::collectedAmount();
         $percentage = Sale::collectedPercentage($collected, $this->meta['sale_amount']);
 
-        return view('dashboard/index', ['verified' => $verified,
+        return view('dashboard/index', ['currencies' => $currencies,
+                                        'verified' => $verified,
                                         'orders' => $orders,
                                         'collected' => $collected,
                                         'percentage' => $percentage,
