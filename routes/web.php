@@ -41,8 +41,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('', 'Admin\UserController@index')->name('index');
         Route::get('/filter', 'Admin\UserController@filter')->name('filter');
-        Route::get('/{user_id}/log', 'Admin\UserController@log')->name('log');
-        Route::get('/{user_id}/transaction', 'Admin\UserController@transaction')->name('transaction');
+        Route::get('/{user}/log', 'Admin\UserController@log')->name('log');
+        Route::get('/{user}/transaction', 'Admin\UserController@transaction')->name('transaction');
         Route::post('/export', 'Admin\UserController@export')->name('export');
     });
 });

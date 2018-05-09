@@ -16,14 +16,14 @@ class UserController extends Controller
     public function __construct()
     {
         $this->pagination = 10;
-        $this->total_users = $this->countUsers();
+        $this->totalUsers = $this->countUsers();
         $this->filters = [
                             'contributed' => ['Not contributed', 'Contributed'],
                             'verified' => ['Un-verified','Verified'],
                         ];
     }
 
-    private function countUsers():int
+    private function countUsers(): int
     {
         $number = User::all()->count();
 
@@ -39,7 +39,7 @@ class UserController extends Controller
                                             'verified' => -1,
                                             'filters' => $this->filters,
                                             'users' => $users,
-                                            'total' => $this->total_users,
+                                            'total' => $this->totalUsers,
                                             'formGET' => $formGET]);
     }
 
@@ -72,22 +72,20 @@ class UserController extends Controller
                                             'verified' => $verified,
                                             'filters' => $this->filters,
                                             'users' => $users,
-                                            'total' => $this->total_users,
+                                            'total' => $this->totalUsers,
                                             'formGET' => $formGET]);
     }
 
-    public function log(int $user_id)
+    public function log(int $id)
     {
-        $user = User::findOrFail($user_id);
-
+        $user = User::with('logs')->findOrFail($id);
 
         return view('admin.user.log', ['user' => $user]);
     }
 
-    public function transaction(int $user_id)
+    public function transaction(int $id)
     {
-        $user = User::findOrFail($user_id);
-        // dd($user->orders);
+        $user = User::with('orders')->findOrFail($id);
 
         return view('admin.user.transaction', ['user' => $user ]);
     }
