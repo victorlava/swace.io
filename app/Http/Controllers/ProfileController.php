@@ -57,6 +57,6 @@ class ProfileController extends Controller
 
         Flash::create('success', 'Your profile data update succesfully.');
 
-        return redirect()->route('profile.index');
+        return redirect()->route('dashboard.index');
     }
 }
