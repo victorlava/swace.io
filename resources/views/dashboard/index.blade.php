@@ -234,7 +234,11 @@
         let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-            priceUSD = priceUSD + fee + bonusTokensPrice;
+            console.log('priceUSD:'+priceUSD);
+            console.log('fee:'+fee);
+            console.log('bonusTokenPrice:'+bonusTokensPrice);
+
+            priceUSD = priceUSD - fee + bonusTokensPrice;
 
             overlay.classList.add('active');
 
@@ -245,7 +249,8 @@
             .then(contents => {
                 overlay.classList.remove('active');
 
-                priceCrypto = priceUSD * contents;
+                priceCrypto = priceUSD * contents
+                // console.log(pric)
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
                 document.querySelector('#pay-amount').value = priceCrypto.toFixed(8);
