@@ -16,12 +16,14 @@
 
             <div class="col-md-6 light-block p-4 p-sm-5 p-md-4 p-lg-5">
                 <form class="form-signin" method="POST" action="{{ route('profile.store') }}" autocomplete="off">
+                    @csrf
+                    
                     <div class="text-left mt-4 mb-3">
                         <h1 class="">Account settings</h1>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <input type="text" id="first_name" name="first_name" class="form-control my-2 py-3 px-3{{ $errors->has('first_name') ? ' is-invalid' : '' }}" placeholder="First name" value="{{ old('first_name', $first_name) }}" required >
+                            <input type="text" id="first_name" name="first_name" class="form-control my-2 py-3 px-3{{ $errors->has('first_name') ? ' is-invalid' : '' }}" placeholder="First name" value="{{ old('first_name', $first_name) }}" {{ $disabled }} required >
 
                             @if ($errors->has('first_name'))
                                 <span class="invalid-feedback">
@@ -30,7 +32,7 @@
                             @endif
                         </div>
                         <div class="col-lg-6">
-                            <input type="text" id="last_name" name="last_name" class="form-control  my-2 py-3 px-3{{ $errors->has('last_name') ? ' is-invalid' : '' }}" placeholder="Last name" value="{{ old('last_name', $last_name) }}" required >
+                            <input type="text" id="last_name" name="last_name" class="form-control  my-2 py-3 px-3{{ $errors->has('last_name') ? ' is-invalid' : '' }}" placeholder="Last name" value="{{ old('last_name', $last_name) }}" {{ $disabled }} required >
 
                             @if ($errors->has('last_name'))
                                 <span class="invalid-feedback">

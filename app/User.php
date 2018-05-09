@@ -45,6 +45,17 @@ class User extends Authenticatable
         return $this->admin === 1 ? true : false;
     }
 
+    // Disable input if KYC is passed
+    public function disableInput(): string
+    {
+        return $this->kyc === 1 ? 'disabled' : '';
+    }
+
+    public function isKYC(): bool
+    {
+        return $this->kyc === 1 ? true : false;
+    }
+
     public function isContributed(): bool
     {
         return $this->contributed === 1 ? true : false;
