@@ -234,7 +234,7 @@
         let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-            priceUSD = priceUSD - fee - bonusTokensPrice;
+            priceUSD = priceUSD + fee - bonusTokensPrice;
 
             overlay.classList.add('active');
 
