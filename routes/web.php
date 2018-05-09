@@ -14,8 +14,7 @@
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
-
-
+    
 Route::prefix('profile')->name('profile.')->middleware('verified.message')->group(function () {
     Route::get('', 'ProfileController@index')->name('index');
     Route::post('/store', 'ProfileController@store')->name('store');

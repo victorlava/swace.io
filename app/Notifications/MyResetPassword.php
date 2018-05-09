@@ -14,16 +14,18 @@ class MyResetPassword extends Notification
 
     protected $token;
     protected $ip;
+    protected $email;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($ip, $token)
+    public function __construct($ip, $token, $email)
     {
         $this->ip = $ip;
         $this->token = $token;
+        $this->email = $email;
     }
 
     /**
@@ -47,8 +49,9 @@ class MyResetPassword extends Notification
     {
         return (new MailMessage)->subject('Reset Password')->view(
         'emails.password-reset',
-            ['ip' => $this->ip,
-            'token' => $this->token]
+            [   'ip' => $this->ip,
+                'token' => $this->token,
+                'email' => $this->email]
         );
     }
 

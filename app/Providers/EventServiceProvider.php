@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'Illuminate\Auth\Events\Logout' => [
             'App\Listeners\AuthLogout'
+        ],
+        'Illuminate\Auth\Events\PasswordReset' => [
+            'App\Listeners\PasswordReset'
         ]
     ];
 
