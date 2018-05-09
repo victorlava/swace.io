@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->tinyInteger('verified')->default(0);
             $table->tinyInteger('contributed')->default(0);
+            $table->tinyInteger('kyc')->default(0); // Know your customer
             $table->string('email_token')->nullable();
             $table->rememberToken();
             $table->dateTime('created_at');
