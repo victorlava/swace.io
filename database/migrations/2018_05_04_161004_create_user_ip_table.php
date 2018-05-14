@@ -17,6 +17,8 @@ class CreateUserIpTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('ip_address');
+            $table->string('session_id');
+            $table->string('user_agent');
             $table->dateTime('log_in');
             $table->dateTime('log_out')->nullable();
 
