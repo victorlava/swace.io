@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Log;
+use App\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -26,11 +27,10 @@ class AuthLogout
      */
     public function handle($event)
     {
-        $log = new Log;
-        $log->user_id = $event->user->id;
-        $log->ip_address = request()->ip();
-        $log->log_in = session()->get('log_in_date');
-        $log->log_out = $event->user->date_time();
-        $log->save();
+        $log = Log::where('user_id', $event->user->id)->where('session_id', session()->getId())->first();
+        if ($log) {
+            $log->log_out = $event->user->date_time();
+            $log->save();
+        }
     }
 }

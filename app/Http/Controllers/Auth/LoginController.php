@@ -57,7 +57,7 @@ class LoginController extends Controller
 
         $validator->after(function ($validator) {
             $recaptcha = new \ReCaptcha\ReCaptcha(env('RECAPTCHA_SECRET_KEY'));
-            $response = $recaptcha->verify($validator->recaptcha, $request->ip()); // Verify recaptcha
+            $response = $recaptcha->verify($validator->recaptcha, request()->ip()); // Verify recaptcha
 
             if (!$response->isSuccess() && $validator->failCounter > 2) { // If reCAPTCHA failed then add an error
                 $validator->errors()->add('recaptcha', 'reCAPTCHA validation failed, please try again the "I\'m not a robot" test.');
