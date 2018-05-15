@@ -216,7 +216,7 @@
                                     <div class="col-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Fee</span></div>
                                 </div>
                             </div>
-                            <div class=" col-lg-1 icon-wrapper pb-3 pb-md-2">
+                            <div class="d-lg-none col-lg-1 icon-wrapper pb-3 pb-md-2">
                                 <i class="d-lg-none icon icon-arrows-ccw"></i>
                             </div>
                             @if($order->net)
