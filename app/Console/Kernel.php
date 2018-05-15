@@ -7,6 +7,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\UpdateAmount;
+use App\Jobs\LogOutUsers;
 
 class Kernel extends ConsoleKernel
 {
@@ -37,6 +38,8 @@ class Kernel extends ConsoleKernel
                             // Skip this cron if the total amount is collected
                             return ($collected >= (int)$total) ? true : false;
                         });
+
+        $schedule->job(new LogOutUsers)->everyMinute();
     }
 
     /**

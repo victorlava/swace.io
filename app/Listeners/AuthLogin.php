@@ -29,7 +29,6 @@ class AuthLogin
      */
     public function handle($event)
     {
-
         // 1. Get first log in ip
         // 2. Check if first log in ip is different than current ip
         // 3. If different then send mismatch message to email

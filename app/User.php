@@ -121,6 +121,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Log', 'user_id', 'id');
     }
 
+    public function addLogout()
+    {
+        $log = $this->logs()->orderBy('log_in', 'desc')->first();
+        $log->logout = $this->date_time();
+        $log->save();
+    }
+
+
     /**
      * Send the password reset notification.
      *
