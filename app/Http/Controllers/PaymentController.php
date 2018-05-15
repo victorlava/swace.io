@@ -50,19 +50,27 @@ class PaymentController extends Controller
             $orderParams = $this->prepParams(['order' => $order,
                                                 'amount' => $request->amount]);
 
-            $coingateOrder = MerchantOrder::create($orderParams);
+            try {
+                $coingateOrder = MerchantOrder::create($orderParams);
 
-            if ($coingateOrder) {
-                $order = Order::findOrFail($order->id);
-                $order->pending([   'id' => $coingateOrder->id,
-                                    'url' => $coingateOrder->payment_url]);
+                if ($coingateOrder) {
+                    $order = Order::findOrFail($order->id);
+                    $order->pending([   'id' => $coingateOrder->id,
+                                        'url' => $coingateOrder->payment_url]);
 
-                $url = $coingateOrder->payment_url;
-            } else {
+                    $url = $coingateOrder->payment_url;
+                } else {
+                    $order = Order::findOrFail($order->id);
+                    $order->failed();
+
+                    Flash::create('error', 'Our provider rejected your order. Please contact our support.');
+                    $url = route('dashboard.index');
+                }
+            } catch (\Coingate\ApiError $e) {
                 $order = Order::findOrFail($order->id);
                 $order->failed();
 
-                Flash::create('error', 'Our provider rejected your order. Please contact our support.');
+                Flash::create('error', 'Something went wrong with our provider, please contact our support.');
                 $url = route('dashboard.index');
             }
         } else {
