@@ -37,7 +37,7 @@ class Order extends Model
         $this->fee = $this->calcFee($data['fee']);
         $this->setStatus('pending');
         $this->user_id = $data['user_id'];
-        $this->hash = md5($this->order_id);
+        $this->hash = md5($this->order_id . (string)$data['user_id'] . (string)time());
         $this->save();
     }
 
@@ -90,9 +90,23 @@ class Order extends Model
         return $amount;
     }
 
-    public function generateID(int $userID): int
+    public function generateID(int $userID): string
     {
-        return rand(100, 10000) + $userID + time(); // Improve this
+        $string = preg_replace('/[0-9]O+/', '', md5($userID + time()));
+        $string = str_replace('O', '', $string);
+        
+        $stringArray = str_split($string);
+        $lastIndex = count($stringArray) - 1;
+        $order = [];
+        foreach (range(1, 12) as $key => $value) {
+            $number = rand(1, 9);
+            $char = $stringArray[rand(0, $lastIndex)];
+            $chars = [$number, strtoupper($char)];
+            $order[$key] = $chars[rand(0, 1)];
+        }
+        $order_id = implode('', $order);
+
+        return $order_id;
     }
 
     public function calcRate(string $receiveCurrency): float
