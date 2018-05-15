@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'phone', 'email', 'password', 'email_token', 'created_at'
+        'first_name', 'last_name', 'phone', 'email', 'password', 'email_token', 'verified', 'contributed', 'kyc', 'created_at'
     ];
 
     /**
@@ -32,7 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'admin'
     ];
 
     public function isVerified(): bool

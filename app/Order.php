@@ -6,6 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'order_id', 'amount', 'rate', 'gross', 'fee', 'net', 'tokens',
+        'bonus', 'invoice', 'coingate_id', 'currency_id', 'status_id',
+        'user_id', 'hash'
+    ];
+
     private $exchangeUrl;
 
     public static $receiveAmount;
