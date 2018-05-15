@@ -17,7 +17,7 @@ class Order extends Model
 
     public function create(array $data)
     {
-        $this->order_id = $this->generateID();
+        $this->order_id = $this->generateID($data['user_id']);
         $this->currency_id = (int)$data['request']->currency;
         $this->amount = $data['request']->amount;
         $this->rate = $this->calcRate($data['receive_currency']);
@@ -78,9 +78,9 @@ class Order extends Model
         return $amount;
     }
 
-    public function generateID(): int
+    public function generateID(int $userID): int
     {
-        return rand(100, 10000000); // Improve this
+        return rand(100, 10000) + $userID + time(); // Improve this
     }
 
     public function calcRate(string $receiveCurrency): float
