@@ -94,8 +94,8 @@ class PaymentController extends Controller
            'price_currency' => strtoupper($data['order']->type->short_title),
            'receive_currency' => $this->receiveCurrency,
            'callback_url' => route('payment.callback', $data['order']->hash),
-           'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->order_id]),
-           'success_url' => route('payment.success', ['order_id' => $data['order']->order_id]),
+           'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->hash]),
+           'success_url' => route('payment.success', ['order_id' => $data['order']->hash]),
            'title' => 'Order #' . $data['order']->order_id, // For client
            'description' => 'SWA token purchase.'
        ];
@@ -104,14 +104,14 @@ class PaymentController extends Controller
 
     public function success(string $id)
     {
-        Flash::create('success', "Order #$id created succesfully.");
+        Flash::create('success', "Order created succesfully.");
 
         return redirect()->route('dashboard.index');
     }
 
     public function cancel(string $id)
     {
-        Flash::create('danger', "Order #$id have been canceled.");
+        Flash::create('danger', "Order have been canceled.");
 
         return redirect()->route('dashboard.index');
     }
