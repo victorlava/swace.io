@@ -55,7 +55,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        Flash::create('success', 'Your profile data update succesfully.');
+        Flash::create('success', 'Your profile data updated successfully.');
 
         return redirect()->route('dashboard.index');
     }
