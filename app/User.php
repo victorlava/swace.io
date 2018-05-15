@@ -11,8 +11,6 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    public $timestamps = false;
-
     public $nice_date_format = 'F j, H:i a';
 
     public $precise_date_format = 'Y-m-d H:i:s';

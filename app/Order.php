@@ -15,7 +15,7 @@ class Order extends Model
     protected $fillable = [
         'order_id', 'amount', 'rate', 'gross', 'fee', 'net', 'tokens',
         'bonus', 'invoice', 'coingate_id', 'currency_id', 'status_id',
-        'user_id', 'hash'
+        'user_id', 'hash', 'created_at'
     ];
 
     private $exchangeUrl;
