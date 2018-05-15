@@ -15,10 +15,10 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->meta = [ 'token_price' => env('TOKEN_PRICE'),
-                        'sale_amount' => env('SALE_AMOUNT'),
-                        'bonus_percentage' => env('BONUS_PERCENTAGE'),
-                        'coingate_fee' => env('COINGATE_FEE')];
+        $this->meta = [ 'token_price' => env('SWACE_TOKEN_PRICE'),
+                        'sale_amount' => env('SWACE_SALE_AMOUNT'),
+                        'bonus_percentage' => env('SWACE_BONUS_PERCENTAGE'),
+                        'coingate_fee' => env('SWACE_COINGATE_FEE')];
     }
 
     public function index()

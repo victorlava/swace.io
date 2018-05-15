@@ -21,10 +21,10 @@ class PaymentController extends Controller
 
     public function __construct()
     {
-        $this->receiveCurrency = env('RECEIVE_CURRENCY');
-        $this->coingateFee = env('COINGATE_FEE'); // Percentage;
-        $this->bonusPercentage = env('BONUS_PERCENTAGE');
-        $this->tokenPrice = env('TOKEN_PRICE');
+        $this->receiveCurrency = env('SWACE_RECEIVE_CURRENCY');
+        $this->coingateFee = env('SWACE_COINGATE_FEE'); // Percentage;
+        $this->bonusPercentage = env('SWACE_BONUS_PERCENTAGE');
+        $this->tokenPrice = env('SWACE_TOKEN_PRICE');
     }
 
     private function coingateConfig()
