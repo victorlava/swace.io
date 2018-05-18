@@ -324,6 +324,9 @@
     html5Slider.noUiSlider.on('set', function( values, handle) {
         let currency = getSelectedCurrency();
         calculateAmount(values, currency);
+
+        $('#pay-amount').parent().find('.invalid-feedback').hide();
+        $('#pay-amount').removeClass('is-invalid');
     });
 
     items.forEach(function(value, index, array) {
