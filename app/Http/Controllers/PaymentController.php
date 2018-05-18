@@ -112,7 +112,7 @@ class PaymentController extends Controller
 
     public function success(string $id)
     {
-        Flash::create('success', "Order created succesfully.");
+        Flash::create('success', "Order updated succesfully.");
 
         return redirect()->route('dashboard.index');
     }
