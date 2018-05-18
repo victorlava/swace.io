@@ -61,7 +61,7 @@
                                     <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
                                     <div class="input-group input-group-lg">
 
-                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000"   required>
+                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000" required>
                                         <div class="input-group-append">
                                             <span class="input-group-text">SWA</span>
                                         </div>
@@ -238,6 +238,9 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function() {
+        $('#swaAmount').val('');
+    });
 
     function calculateAmount(tokens, cryptoCurrency) {
         tokens = Math.round(tokens);
@@ -295,7 +298,7 @@
     noUiSlider.create(html5Slider, {
         connect: [true, false],
         behaviour: 'tap',
-        start: 10000,
+        start: 0,
         // step: 1000,
         range: {
             'min': 1000,
