@@ -205,7 +205,10 @@
                                 <span class="d-block ">
                                     {{ $order->created_at->format('H:i, d M, Y') }}
                                 </span>
-                                <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span><a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
+                                <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span>
+                                @if($order->status->title === 'Paid')
+                                <a href="{{ $order->invoice }}.pdf" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
+                                @endif
                             </div>
                             <div class="col-lg-2 amount-paid">{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</div>
                             <div class="col-lg-3 usd-info">

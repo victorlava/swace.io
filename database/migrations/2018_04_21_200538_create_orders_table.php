@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('order_id', 12)->unique();
-            $table->decimal('amount', 19, 8); // For satoshi, ex. 0.0000001 BTC
+            $table->decimal('amount', 27, 18); // For satoshi, ex. 0.0000001 BTC
             $table->decimal('rate', 19, 2)->nullable();
             $table->decimal('gross', 19, 2)->nullable();
             $table->decimal('fee', 19, 2)->nullable(); // CoinGate fee
