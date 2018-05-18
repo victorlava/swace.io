@@ -12,7 +12,7 @@
     <meta property="og:image" content="{{ asset('/images/swacoin.svg') }}" />
     <meta property="og:description" content="Project description" />
     <meta property="og:url" content="{{ url()->current() }}" />
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="{{ assets('img/favicon.ico') }}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">

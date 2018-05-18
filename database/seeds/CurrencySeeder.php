@@ -22,7 +22,7 @@ class CurrencySeeder extends Seeder
                         'short_title' => "btc"
                     ],
                     [
-                        'title' => 'Etherium',
+                        'title' => 'Ethereum',
                         'short_title' => "eth"
                     ]
                 ];
