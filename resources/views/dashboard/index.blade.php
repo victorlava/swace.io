@@ -208,6 +208,7 @@
                                 <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span>
                                 @if($order->status->title === 'Paid')
                                 <a href="{{ $order->invoice }}.pdf" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
+                                @elseif($order->status->title === 'Failed')
                                 @else
                                 <a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View order</a>
                                 @endif
