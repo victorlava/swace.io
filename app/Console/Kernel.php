@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
                         ->everyMinute()
                         ->skip(function () {
                             $collected = Cache::store('file')->get('collected_amount');
-                            $total = env("SALE_AMOUNT");
+                            $total = env("SWACE_SALE_AMOUNT");
 
                             // Skip this cron if the total amount is collected
                             return ($collected >= (int)$total) ? true : false;
