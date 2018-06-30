@@ -16,3 +16,6 @@
     TOKEN_PRICE
 8. Set sale amount (how much to collect)
 9. BONUS_PERCENTAGE susivesti
+10. To play the queues launch php artisan queue:listen process
+11. Set up task scheduling (cron) to:
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
