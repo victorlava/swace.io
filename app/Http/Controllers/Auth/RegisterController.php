@@ -55,7 +55,13 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
         return Validator::make($data, [
+            'personal' => 'required|integer|min:0|max:1',
+            'company_name' => 'required_if:personal,0|max:255',
+            'company_code' => 'required_if:personal,0|nullable|integer',
+            'company_vat' => 'nullable|integer',
+            'company_address' => 'required_if:personal,0|max:255',
             'first_name' => 'required|alpha|max:255',
             'last_name' => 'required|alpha|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -64,6 +70,9 @@ class RegisterController extends Controller
             'terms' => 'accepted',
             'resident' => 'accepted'
         ], [
+            'company_name.required_if' => 'The company name is required.',
+            'company_code.required_if' => 'The company code is required.',
+            'company_address.required_if' => 'The company address is required.',
             'phone.required' => 'The :attribute field is required. ' . __('Phone field is used to reset your account.'),
             'password.regex' => __('The password field must be atleast 8 characters long, contain atleast one uppercase letter, one lowercase letter and one number.')
         ]);
@@ -81,8 +90,13 @@ class RegisterController extends Controller
         session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
                                                     ' e-mail address. Make sure to confirm your address within 24 hours.'));
-
+  
         return User::create([
+            'personal' => $data['personal'],
+            'company_name' => $data['company_name'],
+            'company_code' => $data['company_code'],
+            'company_vat' => $data['company_vat'],
+            'company_address' => $data['company_address'],
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],

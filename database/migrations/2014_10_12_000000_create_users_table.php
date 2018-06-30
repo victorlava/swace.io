@@ -23,6 +23,11 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('verified')->default(0);
             $table->tinyInteger('contributed')->default(0);
             $table->tinyInteger('kyc')->default(0); // Know your customer
+            $table->tinyInteger('personal')->default(1);
+            $table->string('company_name')->nullable();
+            $table->integer('company_code')->nullable();
+            $table->integer('company_vat')->nullable();
+            $table->string('company_address')->nullable();
             $table->string('email_token')->nullable();
             $table->rememberToken();
             $table->dateTime('verified_at')->nullable();
