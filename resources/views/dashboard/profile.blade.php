@@ -17,10 +17,52 @@
             <div class="col-md-6 light-block p-4 p-sm-5 p-md-4 p-lg-5">
                 <form class="form-signin" method="POST" action="{{ route('profile.store') }}" autocomplete="off">
                     @csrf
-                    
+
                     <div class="text-left mt-4 mb-3">
                         <h1 class="">Account settings</h1>
                     </div>
+
+                    @if($personal == 0)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="text" id="company_name" class="form-control my-2 py-3 px-3{{ $errors->has('company_name') ? ' is-invalid' : '' }}" placeholder="Company name" name="company_name" value="{{ old('company_name', $company_name) }}" >
+
+                            @if ($errors->has('company_name'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('company_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <input type="text" id="company_code" class="form-control my-2 py-3 px-3{{ $errors->has('company_code') ? ' is-invalid' : '' }}" placeholder="Company code" name="company_code" value="{{ old('company_code', $company_code) }}" >
+
+                            @if ($errors->has('company_code'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('company_code') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <input type="text" id="company_vat" class="form-control my-2 py-3 px-3{{ $errors->has('company_vat') ? ' is-invalid' : '' }}" placeholder="VAT" name="company_vat" value="{{ old('company_vat', $company_vat) }}" >
+
+                            @if ($errors->has('company_vat'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('company_vat') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <input type="text" id="company_address" class="form-control my-2 py-3 px-3{{ $errors->has('company_address') ? ' is-invalid' : '' }}" placeholder="Company address" name="company_address" value="{{ old('company_address', $company_address) }}" >
+
+                            @if ($errors->has('company_address'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('company_address') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="row">
                         <div class="col-lg-6">
                             <input type="text" id="first_name" name="first_name" class="form-control my-2 py-3 px-3{{ $errors->has('first_name') ? ' is-invalid' : '' }}" placeholder="First name" value="{{ old('first_name', $first_name) }}" {{ $disabled }} required >

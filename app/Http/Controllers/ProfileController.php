@@ -18,11 +18,21 @@ class ProfileController extends Controller
         $last_name = $user->last_name;
         $email = $user->email;
         $mobile = $user->phone;
+        $personal = $user->personal;
+        $company_name = $user->company_name;
+        $company_code = $user->company_code;
+        $company_vat = $user->company_vat;
+        $company_address = $user->company_address;
 
         return view('dashboard.profile', [  'first_name' => $first_name,
                                             'last_name' => $last_name,
                                             'email' => $email,
                                             'mobile' => $mobile,
+                                            'personal' => $personal,
+                                            'company_name' => $company_name,
+                                            'company_code' => $company_code,
+                                            'company_vat' => $company_vat,
+                                            'company_address' => $company_address,
                                             'disabled' => $user->disableInput()]);
     }
 
@@ -30,6 +40,11 @@ class ProfileController extends Controller
     {
         // Default rule, when KYC is passed
         $rules = ['password' => 'string|nullable|confirmed|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$^'];
+        $rules['company_name'] = 'required|max:255';
+        $rules['company_code'] = 'required|integer';
+        $rules['company_vat'] = 'nullable|integer';
+        $rules['company_address'] = 'required|max:255';
+
 
         // If KYC is not passed yet, then it is possible to change the name
         if (!Auth::user()->isKYC()) {
@@ -47,6 +62,11 @@ class ProfileController extends Controller
             $user->first_name = $request->get('first_name');
             $user->last_name = $request->get('last_name');
         }
+
+        $user->company_name = $request->get('company_name');
+        $user->company_code = $request->get('company_code');
+        $user->company_vat = $request->get('company_vat');
+        $user->company_address= $request->get('company_address');
 
         if ($request->get('password') !== null) {
             $user->password = \Hash::make($request->get('password'));
