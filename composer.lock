@@ -1,11 +1,52 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0d5fc8f88c8ecb7176a4e6b34a2858e",
+    "content-hash": "aa7dc40169620f7964d70c54dad91364",
     "packages": [
+        {
+            "name": "camroncade/timezone",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/camroncade/timezone.git",
+                "reference": "9d0c12bb96efbfeb97f122b40aca66f804ae98db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/camroncade/timezone/zipball/9d0c12bb96efbfeb97f122b40aca66f804ae98db",
+                "reference": "9d0c12bb96efbfeb97f122b40aca66f804ae98db",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.2",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Camroncade\\Timezone\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Camron Cade",
+                    "email": "camron@camroncade.com"
+                }
+            ],
+            "description": "Helps manage timezones in Laravel. Includes <select> form builder for timezones.",
+            "homepage": "http://www.camroncade.com/managing-timezones-with-laravel/",
+            "time": "2015-05-20T20:32:03+00:00"
+        },
         {
             "name": "coingate/coingate-php",
             "version": "3.0.1",
