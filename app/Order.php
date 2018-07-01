@@ -94,7 +94,7 @@ class Order extends Model
     {
         $string = preg_replace('/[0-9]O+/', '', md5($userID + time()));
         $string = str_replace('O', '', $string);
-        
+
         $stringArray = str_split($string);
         $lastIndex = count($stringArray) - 1;
         $order = [];
