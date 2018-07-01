@@ -18,10 +18,10 @@
       </select>
   </div>
   <div class="form-group mx-sm-2 mb-2">
-      <input type="number"  class="form-control" name="amount_from" value="" placeholder="0" style="max-width:100px">
+      <input type="number" class="form-control" name="amount_from" value="{{ old('amount_from', $amount_from) }}" placeholder="0" style="max-width:100px">
   </div>
   <div class="form-group mx-sm-2 mb-2">
-      <input type="number"  class="form-control" name="amount_to" value="" placeholder="10000" style="max-width:100px">
+      <input type="number" class="form-control" name="amount_to" value="{{ old('amount_to', $amount_to) }}" placeholder="10000" style="max-width:100px">
   </div>
   <button type="submit" class="btn btn-primary mb-2">Filter</button>
   <a href="{{ route('admin.users.index') }}" class="btn btn-danger mb-2 ml-3">Reset</a>

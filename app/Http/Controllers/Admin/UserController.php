@@ -38,6 +38,8 @@ class UserController extends Controller
 
         return view('admin.user.index', [   'contributed' => -1,
                                             'verified' => -1,
+                                            'amount_from' => null,
+                                            'amount_to' => null,
                                             'filters' => $this->filters,
                                             'users' => $users,
                                             'total' => $this->totalUsers,
@@ -61,7 +63,7 @@ class UserController extends Controller
             ->groupBy('users.id')
             ->havingRaw('total_amount >= ?', [$amount_from])
             ->havingRaw('total_amount <= ?', [$amount_to]);
-  
+
     }
 
     public function filter(Request $request)

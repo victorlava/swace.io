@@ -14,7 +14,7 @@
     </a>
 
     <div class="text-left mt-5 mb-3">
-        <h1 class="">Contribute</h1>    {{ old('personal') }}
+        <h1 class="">Contribute</h1>
     </div>
 
 
@@ -22,7 +22,7 @@
 
       $companyClass = '';
       $personalClass = ' checked';
-      // var_dump(old('personal'));
+
       if(old('personal') === '0') {
           $companyClass = ' checked';
           $personalClass = '';

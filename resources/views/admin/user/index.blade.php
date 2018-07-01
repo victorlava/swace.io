@@ -23,7 +23,9 @@
         <div class="col-md-8">
             @component('admin/components/user-filters', ['contributed' => $contributed,
                                                         'verified' => $verified,
-                                                        'filters' => $filters])
+                                                        'filters' => $filters,
+                                                        'amount_to' => $amount_to,
+                                                        'amount_from' => $amount_from])
             @endcomponent
         </div>
         <div class="col-md-12 mt-3">
