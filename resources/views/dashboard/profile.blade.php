@@ -12,8 +12,8 @@
     </div>
 
     <div class="container ">
-        <div class="row mt-3 mx-0">
 
+        <div class="row mt-3 mx-0">
             <div class="col-md-6 light-block p-4 p-sm-5 p-md-4 p-lg-5">
                 <form class="form-signin" method="POST" action="{{ route('profile.store') }}" autocomplete="off">
                     @csrf
@@ -82,6 +82,10 @@
                                 </span>
                             @endif
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                      <?php echo $timezone->selectForm(old('timezone', $current_timezone), null, array('class' => 'form-control my-2 py-3 px-3', 'name' => 'timezone')) ?>
                     </div>
 
                     <div class="form-group">

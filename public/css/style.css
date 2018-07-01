@@ -1227,6 +1227,9 @@ mark,
 select.form-control:not([size]):not([multiple]) {
   height: calc(2.25rem + 2px); }
 
+.form-signin select.form-control:not([size]):not([multiple]) {
+  height: auto; }
+
 select.form-control:focus::-ms-value {
   color: #495057;
   background-color: #fff; }
