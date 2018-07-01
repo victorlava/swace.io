@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CoinGate\CoinGate as Gateway;
+use Carbon\Carbon;
 use App\Currency;
 use App\Order;
 use App\Sale;
@@ -29,6 +30,12 @@ class DashboardController extends Controller
         $tokens = Auth::user()->tokens();
         $email = Auth::user()->email;
         $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $token_end_date = Carbon::parse($this->meta['end_date'])
+                                ->timezone(Auth::user()->timezone);
+
+        $days_left = $token_end_date->diffInDays(Carbon::now());
+        $hours_left = $token_end_date->diffInHours(Carbon::now());
+        $minutes_left = $token_end_date->diffInMinutes(Carbon::now());
 
         $collected = Sale::collectedAmount();
         $percentage = Sale::collectedPercentage($collected, $this->meta['sale_amount']);
@@ -40,6 +47,10 @@ class DashboardController extends Controller
                                         'percentage' => $percentage,
                                         'tokens' => $tokens,
                                         'email' => $email,
+                                        'token_end_date' => $token_end_date->toDayDateTimeString(),
+                                        'days_left' => $days_left,
+                                        'hours_left' => $hours_left,
+                                        'minutes_left' => $minutes_left,
                                         'meta' => $this->meta]);
     }
 }

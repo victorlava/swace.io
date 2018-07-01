@@ -8,8 +8,8 @@
 <header>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6"><h1>Token <span class="highlight">Pre-Sale</span>  is live <small>Ends: 15 June, 2018 00:00 CET</small></h1></div>
-            <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in 2 days</small> </h1></div>
+            <div class="col-sm-6"><h1>Token <span class="highlight">Pre-Sale</span>  is live <small>Ends: {{ $token_end_date }}</small></h1></div>
+            <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in {{ $days_left }} days</small> </h1></div>
         </div>
         <div class="progress my-4 mt-lg-5">
             <div class="target" style="left:15%"><span class="d-none d-lg-block info">Soft cap - $3 000 000</span></div>
@@ -139,29 +139,28 @@
                         <div class="light-block mb-3">
                             <div id="countdown" class=" timer d-flex text-center justify-content-center">
                                 <div class="time-block flex-fill">
-                                    <div class="number days">26</div>
+                                    <div class="number days">{{ $days_left }}</div>
                                     <div class="label ">days</div>
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="time-block flex-fill">
-                                    <div class="number hours">03</div>
+                                    <div class="number hours">{{ $hours_left }}</div>
                                     <div class="label">hours</div>
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="time-block flex-fill">
-                                    <div class="number minutes">15</div>
+                                    <div class="number minutes">{{ $minutes_left }}</div>
                                     <div class="label">min</div>
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="time-block flex-fill">
-                                    <div class="number seconds">17</div>
+                                    <div class="number seconds">01</div>
                                     <div class="label">sec</div>
                                 </div>
                             </div>
 
                             <div class="block-footer text-center">
-                                Ends: 15 June, 2018 00:00 CET
-                                {{ Carbon\Carbon::parse('2018-01-22 04:09:31')->timezone('Asia/Kolkata')->toDateTimeString() }}
+                                Ends: {{ $token_end_date }}
                             </div>
                         </div>
                     </div>
