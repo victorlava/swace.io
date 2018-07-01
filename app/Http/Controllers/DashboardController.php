@@ -18,7 +18,8 @@ class DashboardController extends Controller
         $this->meta = [ 'token_price' => env('SWACE_TOKEN_PRICE'),
                         'sale_amount' => env('SWACE_SALE_AMOUNT'),
                         'bonus_percentage' => env('SWACE_BONUS_PERCENTAGE'),
-                        'coingate_fee' => env('SWACE_COINGATE_FEE')];
+                        'coingate_fee' => env('SWACE_COINGATE_FEE'),
+                        'end_date' => env('SWACE_END_DATE')];
     }
 
     public function index()

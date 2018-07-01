@@ -8,6 +8,7 @@
 @section('content')
 <form class="form-signin" method="POST" action="{{ route('register') }}">
     @csrf
+    <input type="hidden" name="tz" id="tz">
 
     <a class="navbar-brand mb-4" href="#">
         <img src="{{ asset('images/swace-logo-color-white-bg.svg') }}" alt="">
@@ -160,4 +161,15 @@
 
     <button class="btn btn-primary btn-block text-uppercase mt-3 p-3 mb-4" type="submit">Create new account</button>
 </form>
+
+@endsection
+
+@section('footer')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+<script>
+   $(function () {
+       $('#tz').val(moment.tz.guess());
+   })
+</script>
 @endsection

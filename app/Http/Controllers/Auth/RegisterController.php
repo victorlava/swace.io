@@ -57,6 +57,7 @@ class RegisterController extends Controller
     {
 
         return Validator::make($data, [
+            'timezone' => 'nullable|max:60|alpha-dash',
             'personal' => 'required|integer|min:0|max:1',
             'company_name' => 'required_if:personal,0|max:255',
             'company_code' => 'required_if:personal,0|nullable|integer',
@@ -90,8 +91,9 @@ class RegisterController extends Controller
         session()->put('confirm_email', __('We have sent you a confirmation link to your ' .
                                                     $data['email'] .
                                                     ' e-mail address. Make sure to confirm your address within 24 hours.'));
-  
+
         return User::create([
+            'timezone' => $data['tz'],
             'personal' => $data['personal'],
             'company_name' => $data['company_name'],
             'company_code' => $data['company_code'],
