@@ -108,6 +108,16 @@ class User extends Authenticatable
         return ($date) ? $this->format_date($date->log_in, $type) : 'never';
     }
 
+    public function count_purchase_amount(): float {
+
+      return $this->with('orders')->findOrFail($this->id)
+                                  ->orders()
+                                  ->where('status_id', 3) // Paid
+                                  ->sum('gross');
+
+    }
+
+
     public function orders()
     {
         return $this->hasMany('App\Order', 'user_id', 'id');

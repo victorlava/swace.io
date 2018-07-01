@@ -14,13 +14,13 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h1>
                 <input type="submit" class="btn btn-success" value="Export" form="export">
                 User List ({{ $total }})
             </h1>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
             @component('admin/components/user-filters', ['contributed' => $contributed,
                                                         'verified' => $verified,
                                                         'filters' => $filters])
@@ -41,13 +41,16 @@
                       <th scope="col">E-mail</th>
                       <th scope="col">Phone</th>
                       <th scope="col">Dates</th>
+                      <th scope="col">Amount</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     @if(count($users) > 0)
                         @foreach($users as $user)
-                        <tr>
+                        <?php $amount = $user->count_purchase_amount(); ?>
+
+                        <tr class="@if($amount >= 15000) table-warning @endif">
                             <td>
                                 <input type="checkbox" class="checkbox" name="users[]" value="{{ $user->id }}">
                             </td>
@@ -76,10 +79,14 @@
                              </p>
                           </td>
                           <td>
+                            {{ number_format($amount, 2) }} $
+                          </td>
+                          <td>
                              <p><a href="{{ route('admin.users.transaction', $user->id) }}" class="btn btn-success btn-sm">Transactions</a></p>
                              <p><a href="{{ route('admin.users.log', $user->id) }}" class="btn btn-primary btn-sm">IP log</a></p>
                           </td>
                         </tr>
+      
                         @endforeach
                     @else:
                     <tr>

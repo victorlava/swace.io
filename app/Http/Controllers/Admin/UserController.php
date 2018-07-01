@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Order;
 use App\Flash;
+use DB;
 
 class UserController extends Controller
 {
@@ -33,7 +34,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate($this->pagination);
-        $formGET = '/?contributed=none&verified=none';
+        $formGET = '/?contributed=none&verified=none&amount_from=0&amount_to=0';
 
         return view('admin.user.index', [   'contributed' => -1,
                                             'verified' => -1,
@@ -47,12 +48,26 @@ class UserController extends Controller
     {
         $contributed = $request->get('contributed');
         $verified = $request->get('verified');
-        $formGET = '/?contributed=' . $contributed . '&verified=' . $verified;
+        $amount_from = $request->get('amount_from');
+        $amount_to = $request->get('amount_to');
+        $formGET = '/?contributed=' . $contributed . '&verified=' . $verified . '&amount_from=' . $amount_from . '&amount_to=' . $amount_to;
+
 
         if ($contributed != 'none' && $verified != 'none') {
             $users = User::where('contributed', (int)$contributed)
-                           ->where('verified', (int)$verified)
-                           ->paginate($this->pagination);
+                            ->where('verified', (int)$verified)
+                            ->whereExists(function ($query) {
+                                  $query->select('users.id', DB::raw('SUM(gross) as total_amount'))
+                                        ->from('orders')
+                                        ->whereRaw('orders.user_id = users.id')
+                                        ->whereRaw('status_id = 3')
+                                        ->groupBy('users.id')
+                                        ->havingRaw('total_amount > ?', [$amount_from])
+                                        ->havingRaw('total_amount < ?', [$amount_to]);
+
+                            })
+                            ->paginate($this->pagination);
+            // dd($users);
         } elseif ($contributed != 'none') {
             $verified = -1;
             $users = User::where('contributed', (int)$contributed)
@@ -70,6 +85,8 @@ class UserController extends Controller
 
         return view('admin.user.index', [   'contributed' => $contributed,
                                             'verified' => $verified,
+                                            'amount_from' => $amount_from,
+                                            'amount_to' => $amount_to,
                                             'filters' => $this->filters,
                                             'users' => $users,
                                             'total' => $this->totalUsers,
