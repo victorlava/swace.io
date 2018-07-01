@@ -11,6 +11,7 @@ use App\Currency;
 use App\Flash;
 use App\Http\Requests\OrderCallbackRequest;
 use App\Http\Requests\StoreOrderRequest;
+use App\Jobs\SendOrderEmail;
 
 class PaymentController extends Controller
 {
@@ -38,6 +39,8 @@ class PaymentController extends Controller
     public function store(StoreOrderRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->coingateConfig();
+        $status = '';
+        $message = '';
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
             $order = new Order();
@@ -63,20 +66,36 @@ class PaymentController extends Controller
                     $order = Order::findOrFail($order->id);
                     $order->failed();
 
-                    Flash::create('error', 'Our provider rejected your order. Please contact our support.');
+                    $status = 'canceled';
+                    $message = 'Our provider rejected your order. Please contact our support.';
+
+                    Flash::create('error', $message);
+
                     $url = route('dashboard.index');
                 }
             } catch (\Coingate\ApiError $e) {
                 $order = Order::findOrFail($order->id);
                 $order->failed();
 
-                Flash::create('error', 'Something went wrong with our provider, please contact our support.');
+                $status = 'canceled';
+                $message = 'Something went wrong with our provider, please contact our support.';
+
+                Flash::create('error', $message);
                 $url = route('dashboard.index');
             }
         } else {
-            Flash::create('error', 'We are having issues with our provider. Please try again.');
+
+            $status = 'canceled';
+            $message = 'We are having issues with our provider. Please try again.';
+
+            Flash::create('error', $message);
             $url = route('dashboard.index');
         }
+
+        if($status === '') { $status = 'placed'; }
+
+
+        dispatch(new SendOrderEmail(Auth::user(), $status, $message));
 
         return redirect($url);
     }
@@ -114,12 +133,18 @@ class PaymentController extends Controller
     {
         Flash::create('success', "Order updated succesfully.");
 
+        $order = Order::where('hash', $id)->first();
+        dispatch(new SendOrderEmail($order->user, 'placed', ''));
+
         return redirect()->route('dashboard.index');
     }
 
     public function cancel(string $id)
     {
         Flash::create('danger', "Order have been canceled.");
+
+        $order = Order::where('hash', $id)->first();
+        dispatch(new SendOrderEmail($order->user, 'canceled', ''));
 
         return redirect()->route('dashboard.index');
     }
