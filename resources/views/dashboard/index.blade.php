@@ -203,7 +203,7 @@
                         <div class="row align-items-center table-data py-4 py-lg-3">
                             <div class=" col-lg-3 date pb-4 pb-lg-0">
                                 <span class="d-block ">
-                                    {{ $order->created_at->format('H:i, d M, Y') }}
+                                    {{ Carbon::parse($order->created_at)->timezone(Auth::user()->timezone) }}
                                 </span>
                                 <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span>
                                 @if($order->status->title === 'Paid')

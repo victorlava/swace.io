@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->kyc === 1 ? true : false;
     }
 
+    public function isCompany(): bool
+    {
+        return $this->personal === 1 ? false : true;
+    }
+
     public function isContributed(): bool
     {
         return $this->contributed === 1 ? true : false;
