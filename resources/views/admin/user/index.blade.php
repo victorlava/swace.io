@@ -48,7 +48,7 @@
                   <tbody>
                     @if(count($users) > 0)
                         @foreach($users as $user)
-                        <?php $amount = 3 ?>
+                        <?php $amount = $user->count_purchase_amount(); ?>
 
                         <tr class="@if($amount >= 15000) table-warning @endif">
                             <td>
@@ -79,7 +79,7 @@
                              </p>
                           </td>
                           <td>
-                            {{-- number_format($amount, 2) --}} $
+                            {{ number_format($amount, 2) }} $
                           </td>
                           <td>
                              <p><a href="{{ route('admin.users.transaction', $user->id) }}" class="btn btn-success btn-sm">Transactions</a></p>

@@ -50,42 +50,18 @@ class UserController extends Controller
       if($amount_from !== 0 && $amount_to === 0) {
         /* If "from" is not 0, and "to" is 0, then do search from "from" to "infinity" */
         $amount_to = 99999999;
-      } else if($amount_from === 0 && $amount_to !== 0) {
-
-        $empty_users = DB::table('users')
-          ->leftJoin('orders', 'users.id', '=', 'orders.user_id')
-          ->select('users.id', DB::raw('COUNT(users.id)'))
-          ->groupBy('users.id')
-          ->havingRaw('COUNT(orders.id) = 0');
-
-
       } else if($amount_from === 0 && $amount_to === 0) {
         return false;
       }
 
-      $query->leftJoin('orders', 'users.id', '=', 'orders.user_id')
-        ->select('users.id', DB::raw('SUM(gross) as total_amount'))
-        ->whereRaw('status_id = 3') // Paid
-        ->groupBy('users.id')
-        ->havingRaw('total_amount >= ?', [$amount_from])
-        ->havingRaw('total_amount <= ?', [$amount_to])
-        ->union($empty_users);
-
-        dd($query);
-        // return $query->get();
-
-      // $query->join('orders', 'users.id', '=', 'orders.user_id');
-
-      //
-      // $query->select('users.id', DB::raw('SUM(gross) as total_amount'))
-      //       ->from('orders')
-      //       ->whereRaw('orders.user_id = users.id')
-      //       ->whereRaw('status_id = 3') // Paid
-      //       ->groupBy('users.id')
-      //       ->havingRaw('total_amount >= ?', [$amount_from])
-      //       ->havingRaw('total_amount <= ?', [$amount_to]);
-      //       dd($query);
-
+      $query->select('users.id', DB::raw('SUM(gross) as total_amount'))
+            ->from('orders')
+            ->whereRaw('orders.user_id = users.id')
+            ->whereRaw('status_id = 3') // Paid
+            ->groupBy('users.id')
+            ->havingRaw('total_amount >= ?', [$amount_from])
+            ->havingRaw('total_amount <= ?', [$amount_to]);
+  
     }
 
     public function filter(Request $request)
@@ -96,29 +72,15 @@ class UserController extends Controller
         $amount_to = $request->get('amount_to');
         $formGET = '/?contributed=' . $contributed . '&verified=' . $verified . '&amount_from=' . $amount_from . '&amount_to=' . $amount_to;
 
-        $empty_users = DB::table('users')
-          ->select(DB::raw('users.id, users.first_name, users.last_name'))
-          ->leftJoin('orders', 'users.id', '=', 'orders.user_id')
-          ->groupBy(DB::raw('users.id, users.first_name, users.last_name'))
-          ->havingRaw('COUNT(orders.id) = 0');
-
-          // dd($empty_users->get());
 
         if ($contributed != 'none' && $verified != 'none') {
-            $users = DB::table('users')
-                            ->select(DB::raw('users.id, users.first_name, users.last_name'))
-                            ->leftJoin('orders', 'users.id', '=', 'orders.user_id')
-                            ->where('users.contributed', (int)$contributed)
-                            ->where('users.verified', (int)$verified)
-                            ->where('orders.status_id', 3) // Paid
-                            ->groupBy(DB::raw('users.id, users.first_name, users.last_name'))
-                            ->havingRaw('SUM(gross) >= ?', [$amount_from])
-                            ->havingRaw('SUM(gross) <= ?', [$amount_to])
-                            ->union($empty_users)
+            $users = User::where('contributed', (int)$contributed)
+                            ->where('verified', (int)$verified)
+                            ->whereExists(function ($query) use ($amount_from, $amount_to){
+                                  $this->filter_amount($query, (int)$amount_from, (int)$amount_to);
+                            })
                             ->paginate($this->pagination);
-
-            //                 // dd($users->toSql());
-            dd($users);
+            // dd($users);
         } elseif ($contributed != 'none') {
             $verified = -1;
             $users = User::where('contributed', (int)$contributed)
