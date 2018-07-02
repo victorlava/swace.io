@@ -102,6 +102,7 @@ class PaymentController extends Controller
 
     public function callback(string $hash, OrderCallbackRequest $request): bool
     {
+
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
         if ($order) {
@@ -111,10 +112,12 @@ class PaymentController extends Controller
                           'bonus' => $this->bonusPercentage]);
 
 
-            $response->create(['coingate_id' => $request->id,
-                          'order_id' => $request->order_id,
-                          'response' => $request->response]);
-        }
+            $raw = json_encode($request);
+            $response = new \App\Response();
+            $response->create([ 'coingate_id' => $request->id,
+                                'order_id' => $request->order_id,
+                                'response' => $raw]);
+            }
 
         return true;
     }

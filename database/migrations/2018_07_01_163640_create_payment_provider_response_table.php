@@ -21,8 +21,6 @@ class CreatePaymentProviderResponseTable extends Migration
             $table->string('response');
             $table->timestamps();
 
-            $table->foreign('coingate_id')->references('coingate_id')->on('orders');
-            $table->foreign('order_id')->references('order_id')->on('orders');
         });
     }
 
