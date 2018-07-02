@@ -262,13 +262,13 @@
 
             overlay.classList.add('active');
 
-            const url = "http://swace.test/api/rates/" + cryptoCurrency;
+            const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
             fetch(url)
             .then(response => response.text())
             .then(contents => {
                 overlay.classList.remove('active');
 
-                priceCrypto = priceUSD * contents;
+                priceCrypto = priceUSD * contents
                 // console.log(pric)
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
