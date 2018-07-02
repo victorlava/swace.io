@@ -262,14 +262,13 @@
 
             overlay.classList.add('active');
 
-            const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            const url = "https://api.coingate.com/v2/rates/merchant/USD/" + cryptoCurrency;
-            fetch(proxyurl + url)
+            const url = "http://swace.test/api/rates/" + cryptoCurrency;
+            fetch(url)
             .then(response => response.text())
             .then(contents => {
                 overlay.classList.remove('active');
 
-                priceCrypto = priceUSD * contents
+                priceCrypto = priceUSD * contents;
                 // console.log(pric)
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 

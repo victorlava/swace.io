@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'DashboardController@index')->name('dashboard.index')->middleware('verified.message');
+Route::get('/api/rates/{currency}', 'DashboardController@json_rates')->name('dashboard.json.rates');
 
 Route::resource('/contribute', 'ContributeController')->only(['create', 'store'])->middleware('guest');
 

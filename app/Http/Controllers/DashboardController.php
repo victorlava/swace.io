@@ -53,4 +53,16 @@ class DashboardController extends Controller
                                         'minutes_left' => $minutes_left,
                                         'meta' => $this->meta]);
     }
+
+    public function json_rates($currency) {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.coingate.com/v2/rates/merchant/USD/" . $currency);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        echo $output;
+
+    }
 }
