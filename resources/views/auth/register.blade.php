@@ -79,7 +79,7 @@
 
         <div class="custom-control custom-checkbox my-4 mr-sm-3">
             <input type="checkbox" class="custom-control-input {{ $errors->has('terms') ? ' is-invalid' : '' }}" id="agreeTC" name="terms" {{ old('terms') ? ' checked' : '' }}>
-            <label class="custom-control-label pl-2" for="agreeTC">I agree with token sale <a href="#">Terms & Conditions</a> </label>
+            <label class="custom-control-label pl-2" for="agreeTC">I agree with token sale <a href="https://swace.io/downloads/Token_Sale_TC_Swace.pdf" target="_blank">Terms & Conditions</a> </label>
 
             @if ($errors->has('terms'))
             <span class="invalid-feedback">
