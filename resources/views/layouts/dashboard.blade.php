@@ -70,11 +70,19 @@
     @yield('content')
 
     <footer>
-        <div class="container">
-            <div class="copyright text-center py-5">
-              &copy; 2016-2018 Swace Ltd.
-              <a target="_blank"
-                href="https://swace.io/downloads/Token_Sale_TC_Swace.pdf">Terms & Conditions.</a>
+      <div class="container">
+            <div class="row">
+                <div class="col-sm-6 order-md-1">
+                    <div class="copyright text-center text-md-left mb-2 mb-md-5">Copyright 2016-2018</div>
+
+
+                </div>
+                <div class="col-sm-6 order-md-2">
+                    <ul class="footer-nav text-center text-md-right p-0 mb-5">
+                        <li><a href="https://www.swace.io/downloads/Token_Sale_TC_Swace.pdf" target="_blank">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </footer>
