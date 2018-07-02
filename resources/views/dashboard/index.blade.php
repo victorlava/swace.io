@@ -265,7 +265,6 @@
                 let amount = price / contents,
                     tokens = amount / TOKEN_PRICE;
 
-                  /* TODO: remove or add fee?? */
 
                 if(isNaN(tokens)) { tokens = 0; }
 
@@ -282,9 +281,6 @@
         let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-
-            priceUSD = priceUSD - fee;
-
             overlay.classList.add('active');
 
             const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
@@ -293,8 +289,7 @@
             .then(contents => {
                 overlay.classList.remove('active');
                 priceCrypto = priceUSD * contents
-                // alert(priceCrypto);
-                // console.log(pric)
+
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
                 document.querySelector('#pay-amount').value = priceCrypto.toFixed(8);
