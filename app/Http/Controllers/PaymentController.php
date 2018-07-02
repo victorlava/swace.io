@@ -106,10 +106,10 @@ class PaymentController extends Controller
 
         if ($order) {
 
-            $response = new App\Response();
-            $response->create(['coingate_id' => $request->id,
-                               'order_id' => $request->order_id,
-                               'response' => $request->response]);
+            // $response = new App\Response();
+            // $response->create(['coingate_id' => $request->id,
+            //                    'order_id' => $request->order_id,
+            //                    'response' => $request->response]);
 
             $order->paid(['request' => $request,
                           'token_price' => $this->tokenPrice,
