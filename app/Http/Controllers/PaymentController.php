@@ -114,8 +114,8 @@ class PaymentController extends Controller
 
             $raw = json_encode($request);
             $response = new \App\Response();
-            $response->create([ 'coingate_id' => $request->id,
-                                'order_id' => $request->order_id,
+            $response->create([ 'coingate_id' => $request->order_id,
+                                'order_id' => $request->id,
                                 'response' => $raw]);
             }
 
