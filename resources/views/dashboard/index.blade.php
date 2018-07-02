@@ -270,7 +270,7 @@
             });
     }
 
-    function calculatePrice(tokens, cryptoCurrency) {
+    async function calculatePrice(tokens, cryptoCurrency) {
         tokens = Math.round(tokens);
         bonusTokens = (tokens*BONUS_PERCENTAGE)/100;
         bonusTokensPrice = bonusTokens*TOKEN_PRICE;
@@ -284,18 +284,22 @@
             overlay.classList.add('active');
 
             const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
-            fetch(url)
+            const result = await fetch(url)
             .then(response => response.text())
             .then(contents => {
                 overlay.classList.remove('active');
-
                 priceCrypto = priceUSD * contents
+                // alert(priceCrypto);
                 // console.log(pric)
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
                 document.querySelector('#pay-amount').value = priceCrypto.toFixed(8);
 
+                return priceCrypto;
+
             });
+
+            return result;
     }
 
     function getSelectedCurrency() {
@@ -373,9 +377,12 @@
 
             toggler.textContent = items[index].dataset.short; // Change toggler text to currency text
             form.querySelector('#currency-long').textContent = items[index].textContent;
-            calculatePrice(tokens, currency);
 
-        })
+            calculatePrice(tokens, currency).then((result) => {
+              calculateTokens(result, currency);
+            });
+
+        });
     });
 
 
