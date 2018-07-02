@@ -58,7 +58,7 @@ class Order extends Model
     public function paid(array $data)
     {
         $tokens = $this->calcTokens($data['token_price']);
-        $bonus = $this->calcBonus($this->tokens, $data['bonus']);
+        $bonus = $this->calcBonus($tokens, $data['bonus']);
 
         $this->net = $data['request']->receive_amount;
         $this->tokens = $tokens + $bonus;
@@ -127,7 +127,7 @@ class Order extends Model
         return ($this->gross * $fee) / 100;
     }
 
-    public function calcTokens(float $price): int
+    public function calcTokens(float $price): float
     {
         $tokens = $this->net / $price;
 
