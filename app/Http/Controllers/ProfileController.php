@@ -27,6 +27,7 @@ class ProfileController extends Controller
         $company_code = $user->company_code;
         $company_vat = $user->company_vat;
         $company_address = $user->company_address;
+        $company_city = $user->company_city;
         $current_timezone = $user->timezone;
 
         return view('dashboard.profile', [  'first_name' => $first_name,
@@ -38,6 +39,7 @@ class ProfileController extends Controller
                                             'company_code' => $company_code,
                                             'company_vat' => $company_vat,
                                             'company_address' => $company_address,
+                                            'company_city' => $company_city,
                                             'timezone' => $timezone,
                                             'current_timezone' => $current_timezone,
                                             'disabled' => $user->disableInput()]);
@@ -49,6 +51,7 @@ class ProfileController extends Controller
         $rules = ['password' => 'string|nullable|confirmed|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$^'];
 
         $rules['timezone'] = 'required|max:60';
+        $rules['personal'] = 'required|integer|min:0|max:1';
 
         // dd($errors);
 
@@ -64,6 +67,7 @@ class ProfileController extends Controller
           $rules['company_code'] = 'required|integer';
           $rules['company_vat'] = 'nullable|integer';
           $rules['company_address'] = 'required|max:255';
+          $rules['company_city'] = 'required|max:255';
         }
 
         $this->validate($request, $rules);
@@ -82,6 +86,7 @@ class ProfileController extends Controller
         $user->company_vat = $request->get('company_vat');
         $user->company_address = $request->get('company_address');
         $user->timezone = $request->get('timezone');
+        $user->personal = $request->get('personal');
 
         if ($request->get('password') !== null) {
             $user->password = \Hash::make($request->get('password'));

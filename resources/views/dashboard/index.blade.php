@@ -257,11 +257,8 @@
         let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-            console.log('priceUSD:'+priceUSD);
-            console.log('fee:'+fee);
-            console.log('bonusTokenPrice:'+bonusTokensPrice);
 
-            priceUSD = priceUSD - fee + bonusTokensPrice;
+            priceUSD = priceUSD - fee;
 
             overlay.classList.add('active');
 
@@ -357,4 +354,5 @@
 
 
 </script>
+<script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 @endsection
