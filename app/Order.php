@@ -130,7 +130,7 @@ class Order extends Model
 
     public function calcTokens(float $price): float
     {
-        $tokens = $this->net / $price;
+        $tokens = $this->gross / $price;
 
         return $tokens;
     }
