@@ -261,8 +261,8 @@
                 let amount = price / contents,
                     tokens = amount / TOKEN_PRICE;
 
-                alert(tokens);
-                // console.log(pric)
+                  /* TODO: remove or add fee?? */
+
                 if(isNaN(tokens)) { tokens = 0; }
 
                 inputNumber.value = tokens.toFixed(0);
