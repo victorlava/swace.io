@@ -57,12 +57,13 @@ class Order extends Model
 
     public function paid(array $data)
     {
-        $tokens = $this->calcTokens($data['token_price']);
-        $bonus = $this->calcBonus($tokens, $data['bonus']);
 
         $this->net = $data['request']->receive_amount;
+        $tokens = $this->calcTokens($data['token_price']);
+        $bonus = $this->calcBonus($tokens, $data['bonus']);
         $this->tokens = $tokens + $bonus;
         $this->bonus = $bonus;
+
         $this->setStatus($data['request']->status);
         $this->save();
     }
