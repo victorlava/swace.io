@@ -6124,3 +6124,15 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .dev {
   box-shadow: 0 0 0 2px rgba(231, 33, 142, 0.2); }
+
+  footer a {
+    transition: .15s all ease-in;
+    color: #e7218e;
+    box-shadow: 0 10px 0 rgba(243, 231, 249, 0);
+  }
+
+  footer a:hover {
+    box-shadow: 0 1px 0 rgba(231, 33, 142, 0.8);
+    text-decoration: none;
+    color: #e7218e;
+  }

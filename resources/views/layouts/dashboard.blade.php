@@ -71,7 +71,10 @@
 
     <footer>
         <div class="container">
-            <div class="copyright text-center py-5">&copy; 2016-2018 Swace Ltd.</div>
+            <div class="copyright text-center py-5">
+              &copy; 2016-2018 Swace Ltd.
+              <a href="https://swace.io/downloads/Token_Sale_TC_Swace.pdf">Terms & Conditions.</a>
+            </div>
         </div>
     </footer>
 
