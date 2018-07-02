@@ -16,7 +16,7 @@ class CreatePaymentProviderResponseTable extends Migration
         Schema::create('responses', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->integer('coingate_id')->unsigned();
+            $table->string('coingate_id', 12)->unique();
             $table->integer('order_id')->unsigned();
             $table->string('response');
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreatePaymentProviderResponseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_provider_response');
+        Schema::dropIfExists('responses');
     }
 }
