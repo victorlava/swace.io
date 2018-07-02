@@ -16,7 +16,7 @@ class CreatePaymentProviderResponseTable extends Migration
         Schema::create('responses', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->string('order_id', 12)->unique();
+            $table->string('order_id', 12);
             $table->integer('coingate_id')->unsigned();
             $table->string('response');
             $table->timestamps();
