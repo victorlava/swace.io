@@ -13,7 +13,7 @@ class CreatePaymentProviderResponseTable extends Migration
      */
     public function up()
     {
-        Schema::create('response', function (Blueprint $table) {
+        Schema::create('responses', function (Blueprint $table) {
 
             $table->increments('id');
             $table->integer('coingate_id')->unsigned();
