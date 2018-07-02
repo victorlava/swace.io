@@ -112,7 +112,7 @@ class PaymentController extends Controller
                           'bonus' => $this->bonusPercentage]);
 
 
-            $raw = json_encode($request);
+            $raw = json_encode($request->all());
             $response = new \App\Response();
             $response->create([ 'coingate_id' => $request->id,
                                 'order_id' => $request->order_id,
