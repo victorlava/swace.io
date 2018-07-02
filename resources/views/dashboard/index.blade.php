@@ -249,7 +249,28 @@
         $('#swaAmount').val('');
     });
 
-    function calculateAmount(tokens, cryptoCurrency) {
+    function calculateTokens(price, cryptoCurrency) {
+
+            overlay.classList.add('active');
+
+            const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
+            fetch(url)
+            .then(response => response.text())
+            .then(contents => {
+                overlay.classList.remove('active');
+                let amount = price / contents,
+                    tokens = amount / TOKEN_PRICE;
+
+                alert(tokens);
+                // console.log(pric)
+                if(isNaN(tokens)) { tokens = 0; }
+
+                inputNumber.value = tokens.toFixed(0);
+
+            });
+    }
+
+    function calculatePrice(tokens, cryptoCurrency) {
         tokens = Math.round(tokens);
         bonusTokens = (tokens*BONUS_PERCENTAGE)/100;
         bonusTokensPrice = bonusTokens*TOKEN_PRICE;
@@ -309,7 +330,8 @@
         },
     });
 
-    var inputNumber = document.getElementById('swaAmount');
+    let inputNumber = document.getElementById('swaAmount'),
+        payAmount = document.getElementById('pay-amount');
 
     html5Slider.noUiSlider.on('update', function( values, handle ) {
         var value = values[handle];
@@ -321,9 +343,15 @@
         html5Slider.noUiSlider.set([this.value]);
     });
 
+    payAmount.addEventListener('change', function() {
+      calculateTokens(this.value, getSelectedCurrency());
+
+      // html5Slider.noUiSlider.set([this.value]);
+    });
+
     html5Slider.noUiSlider.on('set', function( values, handle) {
         let currency = getSelectedCurrency();
-        calculateAmount(values, currency);
+        calculatePrice(values, currency);
 
         $('#pay-amount').parent().find('.invalid-feedback').hide();
         $('#pay-amount').removeClass('is-invalid');
@@ -345,7 +373,7 @@
 
             toggler.textContent = items[index].dataset.short; // Change toggler text to currency text
             form.querySelector('#currency-long').textContent = items[index].textContent;
-            calculateAmount(tokens, currency);
+            calculatePrice(tokens, currency);
 
         })
     });
