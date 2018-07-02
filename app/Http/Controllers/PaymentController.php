@@ -110,7 +110,7 @@ class PaymentController extends Controller
                           'token_price' => $this->tokenPrice,
                           'bonus' => $this->bonusPercentage]);
 
-            $response = new App\Response();
+            $response = new \App\Response();
 
             $response->create(['coingate_id' => $request->id,
                           'order_id' => $request->order_id,
