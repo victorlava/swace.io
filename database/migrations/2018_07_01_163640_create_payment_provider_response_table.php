@@ -18,7 +18,7 @@ class CreatePaymentProviderResponseTable extends Migration
             $table->increments('id');
             $table->string('order_id', 12);
             $table->integer('coingate_id')->unsigned();
-            $table->string('response');
+            $table->string('response', 1000);
             $table->timestamps();
         });
     }
