@@ -172,8 +172,8 @@
 
                         </div>
                         <div class="dark-block p-3 mb-1">
-                            <div class="number">1 485 000 000 SWA</div>
-                            <div class="label">TOKEN CROWDSALE POOL</div>
+                            <div class="number">135 000 000 SWA </div>
+                            <div class="label">TOKEN PRESALE POOL</div>
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">${{ number_format($meta['token_price'], 2, '.', ' ') }}</div>
