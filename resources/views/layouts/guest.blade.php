@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Swace" />
     <meta property="og:image" content="{{ asset('/images/swacoin.svg') }}" />
-    <meta property="og:description" content="Project description" />
+    <meta property="og:description" content="Swace is a blockchain-based challenge platform where users gain rewards for engaging with brands" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
