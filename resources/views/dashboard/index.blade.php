@@ -247,8 +247,6 @@
 
     $(document).ready(function() {
         $('#swaAmount').val('');
-        // alert('{{ $token_end_date }}' + 15 * 24 * 60 * 60 * 1000);
-
         var deadline = new Date(Date.parse('{{ $token_end_date }}'));
         initializeClock('countdown', deadline);
     });
@@ -326,7 +324,6 @@
         connect: [true, false],
         behaviour: 'tap',
         start: 0,
-        // step: 1000,
         range: {
             'min': 1000,
             'max': 5000000
@@ -348,8 +345,6 @@
 
     payAmount.addEventListener('change', function() {
       calculateTokens(this.value, getSelectedCurrency());
-
-      // html5Slider.noUiSlider.set([this.value]);
     });
 
     html5Slider.noUiSlider.on('set', function( values, handle) {
@@ -365,16 +360,15 @@
             let options = currencySelect.querySelectorAll('option'),
                 selectedOption = currencySelect.querySelector('option[value="' + items[index].dataset.value + '"]');
 
-            // Unselect all options
             options.forEach(function(value, index, array) {
                 options[index].removeAttribute('selected');
             })
 
-            selectedOption.setAttribute('selected', true); // Select the right one
+            selectedOption.setAttribute('selected', true);
             let currency = getSelectedCurrency(),
                 tokens = getTokenAmount();
 
-            toggler.textContent = items[index].dataset.short; // Change toggler text to currency text
+            toggler.textContent = items[index].dataset.short;
             form.querySelector('#currency-long').textContent = items[index].textContent;
 
             calculatePrice(tokens, currency).then((result) => {
