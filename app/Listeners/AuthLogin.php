@@ -50,5 +50,6 @@ class AuthLogin
         $log->user_agent = request()->header('User-Agent');
         $log->log_in = session()->get('log_in_date');
         $log->save();
+
     }
 }
