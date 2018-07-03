@@ -32,7 +32,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->dateTime('verified_at')->nullable();
             $table->tinyInteger('admin')->default(0);
-            $table->string('timezone', 60)->nullable();
             $table->timestamps();
         });
     }
