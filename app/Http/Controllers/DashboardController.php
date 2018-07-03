@@ -20,7 +20,8 @@ class DashboardController extends Controller
                         'sale_amount' => env('SWACE_SALE_AMOUNT'),
                         'bonus_percentage' => env('SWACE_BONUS_PERCENTAGE'),
                         'coingate_fee' => env('SWACE_COINGATE_FEE'),
-                        'end_date' => env('SWACE_END_DATE')];
+                        'end_date' => env('SWACE_END_DATE'),
+                        'coingate_public_api' => env('COINGATE_PUBLIC_API')];
     }
 
     public function index()
@@ -52,5 +53,17 @@ class DashboardController extends Controller
                                         'hours_left' => $hours_left,
                                         'minutes_left' => $minutes_left,
                                         'meta' => $this->meta]);
+    }
+
+    public function json_rates(Request $request) {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->meta['coingate_public_api'] . "USD/" . $request->currency);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        echo $output;
+
     }
 }

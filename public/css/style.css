@@ -1227,9 +1227,6 @@ mark,
 select.form-control:not([size]):not([multiple]) {
   height: calc(2.25rem + 2px); }
 
-.form-signin select.form-control:not([size]):not([multiple]) {
-  height: auto; }
-
 select.form-control:focus::-ms-value {
   color: #495057;
   background-color: #fff; }
@@ -5292,6 +5289,10 @@ h1, h2, h3, h4 {
 .icon-arrow-left:before {
   content: "\70"; }
 
+.footer a,
+.footer a:link {
+  color: #E7218E; }
+
 a .icon, a:link .icon {
   font-size: 1.25rem;
   vertical-align: middle; }
@@ -5527,6 +5528,29 @@ a .icon, a:link .icon {
     color: #FBFAFB; }
   .note-overlay .note p {
     color: rgba(251, 250, 251, 0.75); }
+
+.partner,
+.footer-nav {
+  list-style: none; }
+  .partner a,
+  .partner a:link,
+  .footer-nav a,
+  .footer-nav a:link {
+    transition: .15s all ease-in;
+    color: #e7218e;
+    box-shadow: 0 10px 0 rgba(251, 250, 251, 0); }
+    .partner a:hover,
+    .partner a:link:hover,
+    .footer-nav a:hover,
+    .footer-nav a:link:hover {
+      box-shadow: 0 1px 0 rgba(231, 33, 142, 0.8);
+      text-decoration: none;
+      color: #e7218e; }
+    .partner a:visited,
+    .partner a:link:visited,
+    .footer-nav a:visited,
+    .footer-nav a:link:visited {
+      text-decoration: none; }
 
 .progress {
   overflow: visible;

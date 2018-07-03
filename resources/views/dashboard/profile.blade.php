@@ -22,46 +22,14 @@
                         <h1 class="">Account settings</h1>
                     </div>
 
-                    @if($personal == 0)
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <input type="text" id="company_name" class="form-control my-2 py-3 px-3{{ $errors->has('company_name') ? ' is-invalid' : '' }}" placeholder="Company name" name="company_name" value="{{ old('company_name', $company_name) }}" >
+                    @component('components/business-form', ['personal' => $personal,
+                                                            'company_name' => $company_name,
+                                                            'company_code' => $company_code,
+                                                            'company_vat' => $company_vat,
+                                                            'company_address' => $company_address,
+                                                            'company_city' => $company_city])
 
-                            @if ($errors->has('company_name'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('company_name') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="col-lg-12">
-                            <input type="text" id="company_code" class="form-control my-2 py-3 px-3{{ $errors->has('company_code') ? ' is-invalid' : '' }}" placeholder="Company code" name="company_code" value="{{ old('company_code', $company_code) }}" >
-
-                            @if ($errors->has('company_code'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('company_code') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="col-lg-12">
-                            <input type="text" id="company_vat" class="form-control my-2 py-3 px-3{{ $errors->has('company_vat') ? ' is-invalid' : '' }}" placeholder="VAT" name="company_vat" value="{{ old('company_vat', $company_vat) }}" >
-
-                            @if ($errors->has('company_vat'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('company_vat') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="col-lg-12">
-                            <input type="text" id="company_address" class="form-control my-2 py-3 px-3{{ $errors->has('company_address') ? ' is-invalid' : '' }}" placeholder="Company address" name="company_address" value="{{ old('company_address', $company_address) }}" >
-
-                            @if ($errors->has('company_address'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('company_address') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
+                    @endcomponent
 
                     <div class="row">
                         <div class="col-lg-6">

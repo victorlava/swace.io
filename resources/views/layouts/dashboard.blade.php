@@ -10,7 +10,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Swace" />
     <meta property="og:image" content="{{ asset('/images/swacoin.svg') }}" />
-    <meta property="og:description" content="Project description" />
+    <meta property="og:description" content="Swace is a blockchain-based challenge platform where users gain rewards for engaging with brands" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
@@ -70,8 +70,20 @@
     @yield('content')
 
     <footer>
-        <div class="container">
-            <div class="copyright text-center py-5">&copy; 2016-2018 Swace Ltd.</div>
+      <div class="container">
+            <div class="row">
+                <div class="col-sm-6 order-md-1">
+                    <div class="copyright text-center text-md-left mb-2 mb-md-5">Copyright 2016-2018</div>
+
+
+                </div>
+                <div class="col-sm-6 order-md-2">
+                    <ul class="footer-nav text-center text-md-right p-0 mb-5">
+                        <li><a href="https://www.swace.io/downloads/Token_Sale_TC_Swace.pdf" target="_blank">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
     </footer>
 
@@ -80,8 +92,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     @yield('footer')
-
-    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 
 </body>
 </html>

@@ -19,73 +19,13 @@
     </div>
 
 
-    <?php
-
-      $companyClass = '';
-      $personalClass = ' checked';
-
-      if(old('personal') === '0') {
-          $companyClass = ' checked';
-          $personalClass = '';
-      } else {
-        $personalClass = ' checked';
-      }
-
-    ?>
-
-    <div id="toggle_form" class="row">
-      <div class="col-lg-6 my-2 py-3 px-3">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="personal" name="personal" class="custom-control-input" value="1"{{ $personalClass }}>
-          <label class="custom-control-label" for="personal">I am a person</label>
-        </div>
-      </div>
-      <div class="col-lg-6 my-2 py-3 px-3">
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="company" name="personal" class="custom-control-input" value="0"{{ $companyClass }}>
-          <label class="custom-control-label" for="company">I am a company delegate</label>
-        </div>
-      </div>
-    </div>
-
-    <div id="company_form" class="row @if($personalClass !== '') d-none @endif">
-        <div class="col-lg-12">
-            <input type="text" id="company_name" class="form-control my-2 py-3 px-3{{ $errors->has('company_name') ? ' is-invalid' : '' }}" placeholder="Company name" name="company_name" value="{{ old('company_name') }}" >
-
-            @if ($errors->has('company_name'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('company_name') }}</strong>
-                </span>
-            @endif
-        </div>
-        <div class="col-lg-12">
-            <input type="text" id="company_code" class="form-control my-2 py-3 px-3{{ $errors->has('company_code') ? ' is-invalid' : '' }}" placeholder="Company code" name="company_code" value="{{ old('company_code') }}" >
-
-            @if ($errors->has('company_code'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('company_code') }}</strong>
-                </span>
-            @endif
-        </div>
-        <div class="col-lg-12">
-            <input type="text" id="company_vat" class="form-control my-2 py-3 px-3{{ $errors->has('company_vat') ? ' is-invalid' : '' }}" placeholder="VAT" name="company_vat" value="{{ old('company_vat') }}" >
-
-            @if ($errors->has('company_vat'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('company_vat') }}</strong>
-                </span>
-            @endif
-        </div>
-        <div class="col-lg-12">
-            <input type="text" id="company_address" class="form-control my-2 py-3 px-3{{ $errors->has('company_address') ? ' is-invalid' : '' }}" placeholder="Company address" name="company_address" value="{{ old('company_address') }}" >
-
-            @if ($errors->has('company_address'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('company_address') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>
+    @component('components/business-form', ['personal' => '',
+                                            'company_name' => '',
+                                            'company_code' => '',
+                                            'company_vat' => '',
+                                            'company_address' => '',
+                                            'company_city' => ''])
+    @endcomponent
 
     <div class="row">
         <div class="col-lg-6">
@@ -139,7 +79,7 @@
 
         <div class="custom-control custom-checkbox my-4 mr-sm-3">
             <input type="checkbox" class="custom-control-input {{ $errors->has('terms') ? ' is-invalid' : '' }}" id="agreeTC" name="terms" {{ old('terms') ? ' checked' : '' }}>
-            <label class="custom-control-label pl-2" for="agreeTC">I agree with token sale <a href="#">Terms & Conditions</a> </label>
+            <label class="custom-control-label pl-2" for="agreeTC">I agree with token sale <a href="https://swace.io/downloads/Token_Sale_TC_Swace.pdf" target="_blank">Terms & Conditions</a> </label>
 
             @if ($errors->has('terms'))
             <span class="invalid-feedback">

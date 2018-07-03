@@ -13,16 +13,12 @@ class CreatePaymentProviderResponseTable extends Migration
      */
     public function up()
     {
-        Schema::create('response', function (Blueprint $table) {
-
+        Schema::create('responses', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('order_id', 12);
             $table->integer('coingate_id')->unsigned();
-            $table->integer('order_id')->unsigned();
-            $table->string('response');
+            $table->text('response', 1000);
             $table->timestamps();
-
-            $table->foreign('coingate_id')->references('id')->on('orders');
-            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
@@ -33,6 +29,6 @@ class CreatePaymentProviderResponseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_provider_response');
+        Schema::dropIfExists('responses');
     }
 }

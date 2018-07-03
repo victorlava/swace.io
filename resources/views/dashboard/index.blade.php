@@ -126,8 +126,8 @@
                 </div>
 
                 <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
-                    <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> Please start the verification to get your tokens activated.  </h4>
-                    <p> You can also  purchase tokens first and start your KYC process later.</p>
+                    <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Required</h4>
+                    <p>The coins you purchase will be distributed after you successfully complete the KYC process, which becomes available on July 6.</p>
                 </div>
 
             </div>
@@ -172,8 +172,8 @@
 
                         </div>
                         <div class="dark-block p-3 mb-1">
-                            <div class="number">1 485 000 000 SWA</div>
-                            <div class="label">TOKEN CROWDSALE POOL</div>
+                            <div class="number">135 000 000 SWA </div>
+                            <div class="label">TOKEN PRESALE POOL</div>
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">${{ number_format($meta['token_price'], 2, '.', ' ') }}</div>
@@ -214,7 +214,7 @@
                                 <a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View order</a>
                                 @endif
                             </div>
-                            <div class="col-lg-2 amount-paid">{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</div>
+                            <div class="col-lg-2 amount-paid">{{ number_format($order->amount, 8)}} {{ strtoupper($order->type->short_title) }}</div>
                             <div class="col-lg-3 usd-info">
                                 <div class="row py-2 py-lg-2">
                                     <div class="col-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Rate</span></div>
@@ -247,9 +247,31 @@
 
     $(document).ready(function() {
         $('#swaAmount').val('');
+        var deadline = new Date(Date.parse('{{ $token_end_date }}'));
+        initializeClock('countdown', deadline);
     });
 
-    function calculateAmount(tokens, cryptoCurrency) {
+    function calculateTokens(price, cryptoCurrency) {
+
+            overlay.classList.add('active');
+
+            const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
+            fetch(url)
+            .then(response => response.text())
+            .then(contents => {
+                overlay.classList.remove('active');
+                let amount = price / contents,
+                    tokens = amount / TOKEN_PRICE;
+
+
+                if(isNaN(tokens)) { tokens = 0; }
+
+                inputNumber.value = tokens.toFixed(0);
+
+            });
+    }
+
+    async function calculatePrice(tokens, cryptoCurrency) {
         tokens = Math.round(tokens);
         bonusTokens = (tokens*BONUS_PERCENTAGE)/100;
         bonusTokensPrice = bonusTokens*TOKEN_PRICE;
@@ -257,28 +279,24 @@
         let priceUSD = tokens*TOKEN_PRICE,
             fee = (priceUSD * FEE) / 100;
 
-            console.log('priceUSD:'+priceUSD);
-            console.log('fee:'+fee);
-            console.log('bonusTokenPrice:'+bonusTokensPrice);
-
-            priceUSD = priceUSD - fee + bonusTokensPrice;
-
             overlay.classList.add('active');
 
-            const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            const url = "https://api.coingate.com/v2/rates/merchant/USD/" + cryptoCurrency;
-            fetch(proxyurl + url)
+            const url = "{{ URL::to('/') }}" + "/api/rates/" + cryptoCurrency;
+            const result = await fetch(url)
             .then(response => response.text())
             .then(contents => {
                 overlay.classList.remove('active');
-
                 priceCrypto = priceUSD * contents
-                // console.log(pric)
+
                 if(isNaN(priceCrypto)) { priceCrypto = 0; }
 
                 document.querySelector('#pay-amount').value = priceCrypto.toFixed(8);
 
+                return priceCrypto;
+
             });
+
+            return result;
     }
 
     function getSelectedCurrency() {
@@ -306,14 +324,14 @@
         connect: [true, false],
         behaviour: 'tap',
         start: 0,
-        // step: 1000,
         range: {
             'min': 1000,
             'max': 5000000
         },
     });
 
-    var inputNumber = document.getElementById('swaAmount');
+    let inputNumber = document.getElementById('swaAmount'),
+        payAmount = document.getElementById('pay-amount');
 
     html5Slider.noUiSlider.on('update', function( values, handle ) {
         var value = values[handle];
@@ -325,9 +343,13 @@
         html5Slider.noUiSlider.set([this.value]);
     });
 
+    payAmount.addEventListener('change', function() {
+      calculateTokens(this.value, getSelectedCurrency());
+    });
+
     html5Slider.noUiSlider.on('set', function( values, handle) {
         let currency = getSelectedCurrency();
-        calculateAmount(values, currency);
+        calculatePrice(values, currency);
 
         $('#pay-amount').parent().find('.invalid-feedback').hide();
         $('#pay-amount').removeClass('is-invalid');
@@ -338,23 +360,26 @@
             let options = currencySelect.querySelectorAll('option'),
                 selectedOption = currencySelect.querySelector('option[value="' + items[index].dataset.value + '"]');
 
-            // Unselect all options
             options.forEach(function(value, index, array) {
                 options[index].removeAttribute('selected');
             })
 
-            selectedOption.setAttribute('selected', true); // Select the right one
+            selectedOption.setAttribute('selected', true);
             let currency = getSelectedCurrency(),
                 tokens = getTokenAmount();
 
-            toggler.textContent = items[index].dataset.short; // Change toggler text to currency text
+            toggler.textContent = items[index].dataset.short;
             form.querySelector('#currency-long').textContent = items[index].textContent;
-            calculateAmount(tokens, currency);
 
-        })
+            calculatePrice(tokens, currency).then((result) => {
+              calculateTokens(result, currency);
+            });
+
+        });
     });
 
 
 
 </script>
+<script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 @endsection

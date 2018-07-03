@@ -78,6 +78,11 @@ class LoginController extends Controller
             return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
+
+        if(Auth::user()->isAdmin()){
+            return redirect()->route('admin.index'); 
+        }
+
         return redirect()->route('dashboard.index');
     }
 
@@ -88,4 +93,6 @@ class LoginController extends Controller
         return view('auth.login', ['recaptcha' => env('RECAPTCHA_SITE_KEY'),
                                     'fail_counter' => $failCounter ]);
     }
+
+
 }

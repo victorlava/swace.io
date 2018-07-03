@@ -102,19 +102,22 @@ class PaymentController extends Controller
 
     public function callback(string $hash, OrderCallbackRequest $request): bool
     {
+
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
         if ($order) {
 
-            $response = new App\Response();
-            $response->create(['coingate_id' => $request->id,
-                               'order_id' => $request->order_id,
-                               'response' => $request->response]);
-
             $order->paid(['request' => $request,
                           'token_price' => $this->tokenPrice,
                           'bonus' => $this->bonusPercentage]);
-        }
+
+
+            $raw = json_encode($request->all());
+            $response = new \App\Response();
+            $response->create([ 'coingate_id' => $request->id,
+                                'order_id' => $request->order_id,
+                                'response' => $raw]);
+            }
 
         return true;
     }
