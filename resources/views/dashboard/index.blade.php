@@ -12,8 +12,9 @@
             <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in {{ $days_left }} days</small> </h1></div>
         </div>
         <div class="progress my-4 mt-lg-5">
-            <div class="target" style="left:15%"><span class="d-none d-lg-block info">Soft cap - $3 000 000</span></div>
-            <div class="target"><span class="d-none d-lg-block info">Hard cap - ${{ number_format($meta['sale_amount'], 0, ' ',' ') }}</span></div>
+            <div class="target" style="left:74%"><span class="d-none d-lg-block info">PRESALE CAP 100 000 000 SWA</span></div>
+
+
             <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
@@ -173,7 +174,7 @@
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">135 000 000 SWA </div>
-                            <div class="label">TOKEN PRESALE POOL</div>
+                            <div class="label">TOKEN PRESALE POOL INCLUDING 25% BONUS</div>
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">${{ number_format($meta['token_price'], 2, '.', ' ') }}</div>
