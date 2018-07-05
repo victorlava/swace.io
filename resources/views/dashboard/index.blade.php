@@ -61,7 +61,7 @@
                                     <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
                                     <div class="input-group input-group-lg">
 
-                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000" required>
+                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="{{ $meta['min_buy_amount'] }}" required>
                                         <div class="input-group-append">
                                             <span class="input-group-text">SWA</span>
                                         </div>
@@ -75,10 +75,10 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <label class="small" for="customRange3">
-                                        <div class="number text-left">1 000</div>Min. amount
+                                        <div class="number text-left">{{ number_format($meta['min_buy_amount'], 0, '.', ' ') }}</div>Min. amount
                                     </label>
                                     <label class="small" for="customRange3">
-                                        <div class="number text-right">5 000 000</div>Max. amount
+                                        <div class="number text-right">{{ number_format($meta['max_buy_amount'], 0, '.', ' ') }}</div>Max. amount
                                     </label>
                                 </div>
                             </div>
@@ -325,8 +325,8 @@
         behaviour: 'tap',
         start: 0,
         range: {
-            'min': 1000,
-            'max': 5000000
+            'min': {{ $meta['min_buy_amount'] }},
+            'max': {{ $meta['max_buy_amount'] }}
         },
     });
 
