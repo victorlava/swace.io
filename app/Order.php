@@ -18,14 +18,7 @@ class Order extends Model
         'user_id', 'hash', 'created_at'
     ];
 
-    private $exchangeUrl;
-
     public static $receiveAmount;
-
-    public function __construct()
-    {
-        $this->exchangeUrl = 'https://api.coingate.com/v2/rates/merchant/';
-    }
 
     public function create(array $data)
     {
@@ -115,7 +108,7 @@ class Order extends Model
 
     public function calcRate(string $receiveCurrency): float
     {
-        return (float)file_get_contents($this->exchangeUrl . $this->type->short_title . '/' . $receiveCurrency);
+        return (float)file_get_contents(env('COINGATE_PUBLIC_API') . $this->type->short_title . '/' . $receiveCurrency);
     }
 
     public function calcGross(): float
