@@ -57,7 +57,7 @@ class RegisterController extends Controller
     {
 
         return Validator::make($data, [
-            'timezone' => 'nullable|max:60|alpha-dash',
+            'timezone' => 'nullable|max:60',
             'personal' => 'required|integer|min:0|max:1',
             'company_name' => 'required_if:personal,0|max:255',
             'company_code' => 'required_if:personal,0|nullable|integer',
