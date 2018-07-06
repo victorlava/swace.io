@@ -706,6 +706,7 @@
                                                             @yield('content')
 
                                                             <br/>
+                                                            <br/>
                                                             Yours, the Swace team
                                                             <br/>
                                                         </p>
