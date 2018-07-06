@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 $user->first_name = $faker->firstName;
                 $user->last_name = $faker->lastName;
                 $user->phone = $faker->phoneNumber;
-                $user->email = 'dummy_user+ ' . $i . '@swace.io';
+                $user->email = 'dummy_user+' . $i . '@swace.io';
                 $user->password = \Hash::make('admin');
                 $user->verified = rand(0, 1);
                 $user->contributed = 0;
