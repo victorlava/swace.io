@@ -21,7 +21,8 @@ class DashboardController extends Controller
                         'bonus_percentage' => env('SWACE_BONUS_PERCENTAGE'),
                         'coingate_fee' => env('SWACE_COINGATE_FEE'),
                         'end_date' => env('SWACE_END_DATE'),
-                        'coingate_public_api' => env('COINGATE_PUBLIC_API')];
+                        'coingate_public_api' => env('COINGATE_PUBLIC_API'),
+                        'token_pre_sale' => env("SWACE_PRE_SALE")];
     }
 
     public function index()
