@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-{{-- dd($errors) --}}
 <header>
     <div class="container">
         <div class="row">
