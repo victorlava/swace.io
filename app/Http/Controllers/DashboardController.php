@@ -22,7 +22,7 @@ class DashboardController extends Controller
                         'coingate_fee' => env('SWACE_COINGATE_FEE'),
                         'end_date' => env('SWACE_END_DATE'),
                         'coingate_public_api' => env('COINGATE_PUBLIC_API'),
-                        'token_pre_sale' => env("SWACE_PRE_SALE")];
+                        'token_pre_sale' => env("SWACE_PRESALE")];
     }
 
     public function index()
