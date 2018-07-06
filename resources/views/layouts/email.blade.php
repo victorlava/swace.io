@@ -671,7 +671,7 @@
                                             <tr>
                                                 <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0;">
 
-                                                    <img align="left" alt="" src="https://swa.swace.io/swace-logo-mail.png" width="179" style="max-width:358px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnRetinaImage">
+                                                    <img align="left" alt="" src="https://swa.swace.io/images/swace-logo-mail.png" width="179" style="max-width:358px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnRetinaImage">
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -704,6 +704,10 @@
 
                                                         <p style="text-align: left; font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
                                                             @yield('content')
+
+                                                            <br/>
+                                                            Yours, the Swace team
+                                                            <br/>
                                                         </p>
                                                     </td>
                                                 </tr>
@@ -741,10 +745,6 @@
                                 </tbody>
                             </table>
                             @endif
-
-                            <p style="text-align: left; font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-                                Yours, the Swace team
-                            </p>
                         </td>
                     </tr>
                     <tr>
@@ -814,7 +814,7 @@
                                                                                                         <tbody><tr>
 
                                                                                                             <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                                                <a href="https://www.facebook.com/swaceapp/" target="_blank"><img src="https://swa.swace.io/images/mail-color-color-facebook.png" style="display:block;" height="24" width="24" class=""></a>
+                                                                                                                <a href="https://www.facebook.com/swaceapp/" target="_blank"><img src="https://swa.swace.io/images/mail-logo-color-facebook.png" style="display:block;" height="24" width="24" class=""></a>
                                                                                                             </td>
 
 

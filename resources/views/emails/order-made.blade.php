@@ -19,7 +19,7 @@
 
 @section('cta')
     @TODO: WOW to add the route
-    <a class="mcnButton " title="Confirm Email Address" href="#"
+    <a class="mcnButton " title="Continue order" href="#"
        target="_blank"
-       style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">C[continue the order you started]</a>
+       style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">[Continue the order you started]</a>
 @endsection
