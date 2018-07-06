@@ -137,8 +137,10 @@ class User extends Authenticatable
     public function addLogout()
     {
         $log = $this->logs()->orderBy('log_in', 'desc')->first();
-        $log->logout = $this->date_time();
-        $log->save();
+        if($log) {
+          $log->logout = $this->date_time();
+          $log->save();
+        }
     }
 
 
