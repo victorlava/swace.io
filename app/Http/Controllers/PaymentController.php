@@ -19,6 +19,8 @@ class PaymentController extends Controller
     private $coingateFee;
     private $bonusPercentage;
     private $tokenPrice;
+    private $minTokenAmount;
+    private $maxTokenAmount;
 
     public function __construct()
     {
@@ -26,6 +28,8 @@ class PaymentController extends Controller
         $this->coingateFee = env('SWACE_COINGATE_FEE'); // Percentage;
         $this->bonusPercentage = env('SWACE_BONUS_PERCENTAGE');
         $this->tokenPrice = env('SWACE_TOKEN_PRICE');
+        $this->minTokenAmount = 1000;
+        $this->maxTokenAmount = 5000000;
     }
 
     private function coingateConfig()
@@ -43,6 +47,14 @@ class PaymentController extends Controller
         $message = '';
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
+
+            $min = $this->minTokenAmount - 1;
+            $max = $this->maxTokenAmount + 1;
+        
+            $request->validate([
+              'tokens' => "required|gt:$min|lt:$max"
+            ]);
+
             $order = new Order();
             $order->create(['user_id' => Auth::user()->id,
                             'request' => $request,
@@ -109,7 +121,9 @@ class PaymentController extends Controller
 
             $order->paid(['request' => $request,
                           'token_price' => $this->tokenPrice,
-                          'bonus' => $this->bonusPercentage]);
+                          'bonus' => $this->bonusPercentage,
+                          'min_token_amount' => $this->minTokenAmount,
+                          'max_token_amount' => $this->maxTokenAmount]);
 
 
             $raw = json_encode($request->all());

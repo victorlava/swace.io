@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+{{-- dd($errors) --}}
 <header>
     <div class="container">
         <div class="row">
@@ -62,7 +63,7 @@
                                     <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
                                     <div class="input-group input-group-lg">
 
-                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="1000" required>
+                                        <input type="number" class="form-control form-control-lg" id="swaAmount" name="tokens" placeholder="1000" required>
                                         <div class="input-group-append">
                                             <span class="input-group-text">SWA</span>
                                         </div>

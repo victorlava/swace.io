@@ -64,7 +64,13 @@ class Order extends Model
         $this->tokens = $tokens;
         $this->bonus = $bonus;
 
-        $this->setStatus($data['request']->status);
+        if( $this->tokens <= $data['min_token_amount'] ||
+            $this->tokens >= $data['max_token_amount']) {
+            $this->setStatus('failed');
+        } else {
+            $this->setStatus($data['request']->status);
+        }
+
         $this->save();
     }
 
