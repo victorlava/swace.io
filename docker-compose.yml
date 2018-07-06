@@ -1,0 +1,17 @@
+version: "2.1"
+
+services:
+  db:
+    image: mariadb:latest
+    ports:
+      - 13306:3306
+    volumes:
+      - ./storage/db:/data/db
+    networks:
+      - swace-stack
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+networks:
+  swace-stack:
+    driver: bridge
