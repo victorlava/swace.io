@@ -19,12 +19,13 @@ class DashboardController extends Controller
         $this->meta = [
             'min_buy_amount' => env('SWACE_MIN_BUY_AMOUNT'),
             'max_buy_amount' => env('SWACE_MAX_BUY_AMOUNT'),
+            'token_pre_sale' => env('SWACE_PRESALE'),
             'token_price' => env('SWACE_TOKEN_PRICE'),
             'sale_amount' => env('SWACE_SALE_AMOUNT'),
             'bonus_percentage' => env('SWACE_BONUS_PERCENTAGE'),
             'coingate_fee' => env('SWACE_COINGATE_FEE'),
             'end_date' => env('SWACE_END_DATE'),
-            'coingate_public_api' => env('COINGATE_PUBLIC_API')
+            'coingate_public_api' => env('COINGATE_PUBLIC_API'),
         ];
     }
 

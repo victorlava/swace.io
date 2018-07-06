@@ -28,8 +28,9 @@ class PaymentController extends Controller
         $this->coingateFee = env('SWACE_COINGATE_FEE'); // Percentage;
         $this->bonusPercentage = env('SWACE_BONUS_PERCENTAGE');
         $this->tokenPrice = env('SWACE_TOKEN_PRICE');
-        $this->minTokenAmount = 1000;
-        $this->maxTokenAmount = 5000000;
+        $this->minTokenAmount = env('SWACE_MIN_BUY_AMOUNT');
+        $this->maxTokenAmount = env('SWACE_MAX_BUY_AMOUNT');
+
     }
 
     private function coingateConfig()
@@ -50,7 +51,7 @@ class PaymentController extends Controller
 
             $min = $this->minTokenAmount - 1;
             $max = $this->maxTokenAmount + 1;
-        
+
             $request->validate([
               'tokens' => "required|gt:$min|lt:$max"
             ]);
