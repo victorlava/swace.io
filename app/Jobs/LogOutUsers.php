@@ -39,8 +39,8 @@ class LogOutUsers implements ShouldQueue
         foreach ($sessions as $session) {
             $timePassed = $currentTimestamp - $session->last_activity;
 
-            if ($timePassed >= $hour && $session->user) {
-                  $session->user->addLogout();
+            if ($timePassed >= $hour) {
+                  $session->user()->addLogout();
                   $session->delete();
             }
         }
