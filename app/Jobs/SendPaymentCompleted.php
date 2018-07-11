@@ -23,7 +23,7 @@ class SendPaymentCompleted implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(App\User $user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
