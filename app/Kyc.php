@@ -15,7 +15,7 @@ class Kyc
     
     public function __construct()
     {
-        $this->apiKey = 'a9eff2dad6cfc3ca38e60a40764c9a2eddee38fc5ac29a4a84f3e78e9abc99d5';
+        $this->apiKey = env('KYC_API_KEY');
         $this->baseUrl = 'https://kycico.finpass.eu';
         $this->tokenApiUrl = $this->baseUrl . '/api/startsession';
         $this->dataApiUrl = $this->baseUrl . '/api/getdata';
@@ -58,7 +58,7 @@ class Kyc
             'body' => json_encode([
                 'apikey' => $this->apiKey,
                 'data' => [
-                    'email' => 'adasdasdasd'
+                    'email' => auth()->user()->email
                 ]
             ])
         ]);
