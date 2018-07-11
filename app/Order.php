@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Jobs\SendPaymentCompleted;
 
 class Order extends Model
 {
@@ -159,6 +160,7 @@ class Order extends Model
 
             case 'paid':
                 $code = 4;
+                dispatch(new SendPaymentCompleted($this->user));
                 break;
 
             case 'canceled':
