@@ -48,7 +48,7 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         // Default rule, when KYC is passed
-        $rules = ['password' => 'string|nullable|confirmed|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$^'];
+        $rules = ['password' => 'string|nullable|confirmed|regex:^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W_]{8,}$^'];
 
         $rules['timezone'] = 'required|max:60';
         $rules['personal'] = 'required|integer|min:0|max:1';
@@ -58,8 +58,8 @@ class ProfileController extends Controller
 
         // If KYC is not passed yet, then it is possible to change the name
         if (!Auth::user()->isKYC()) {
-            $rules['first_name'] = 'required|alpha|max:255';
-            $rules['last_name'] = 'required|alpha|max:255';
+            $rules['first_name'] = 'required|alpha|max:255|regex:/^[\pL\s\-]+$/u';
+            $rules['last_name'] = 'required|alpha|max:255|regex:/^[\pL\s\-]+$/u';
         }
 
         if(Auth::user()->isCompany()) {

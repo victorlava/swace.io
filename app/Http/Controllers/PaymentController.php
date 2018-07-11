@@ -19,6 +19,8 @@ class PaymentController extends Controller
     private $coingateFee;
     private $bonusPercentage;
     private $tokenPrice;
+    private $minTokenAmount;
+    private $maxTokenAmount;
 
     public function __construct()
     {
@@ -26,6 +28,9 @@ class PaymentController extends Controller
         $this->coingateFee = env('SWACE_COINGATE_FEE'); // Percentage;
         $this->bonusPercentage = env('SWACE_BONUS_PERCENTAGE');
         $this->tokenPrice = env('SWACE_TOKEN_PRICE');
+        $this->minTokenAmount = env('SWACE_MIN_BUY_AMOUNT');
+        $this->maxTokenAmount = env('SWACE_MAX_BUY_AMOUNT');
+
     }
 
     private function coingateConfig()
@@ -43,6 +48,11 @@ class PaymentController extends Controller
         $message = '';
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
+
+            $request->validate([
+              'tokens' => "required|gte:$this->minTokenAmount|lte:$this->maxTokenAmount"
+            ]);
+
             $order = new Order();
             $order->create(['user_id' => Auth::user()->id,
                             'request' => $request,
@@ -95,7 +105,7 @@ class PaymentController extends Controller
         if($status === '') { $status = 'placed'; }
 
 
-        dispatch(new SendOrderEmail(Auth::user(), $status, $message));
+        dispatch(new SendOrderEmail(Auth::user(), $status, $message, $order->invoice));
 
         return redirect($url);
     }
@@ -143,7 +153,7 @@ class PaymentController extends Controller
         Flash::create('success', "Order updated succesfully.");
 
         $order = Order::where('hash', $id)->first();
-        dispatch(new SendOrderEmail($order->user, 'placed', ''));
+        dispatch(new SendOrderEmail($order->user, 'placed', '', $order->invoice));
 
         return redirect()->route('dashboard.index');
     }
@@ -153,7 +163,7 @@ class PaymentController extends Controller
         Flash::create('danger', "Order have been canceled.");
 
         $order = Order::where('hash', $id)->first();
-        dispatch(new SendOrderEmail($order->user, 'canceled', ''));
+        dispatch(new SendOrderEmail($order->user, 'canceled', '', $order->invoice));
 
         return redirect()->route('dashboard.index');
     }

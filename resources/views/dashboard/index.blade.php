@@ -12,8 +12,9 @@
             <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in {{ $days_left }} days</small> </h1></div>
         </div>
         <div class="progress my-4 mt-lg-5">
-            <div class="target" style="left:15%"><span class="d-none d-lg-block info">Soft cap - $3 000 000</span></div>
-            <div class="target"><span class="d-none d-lg-block info">Hard cap - ${{ number_format($meta['sale_amount'], 0, ' ',' ') }}</span></div>
+            <div class="target" style="left:74%"><span class="d-none d-lg-block info">PRESALE CAP {{ number_format($meta['token_pre_sale'], 0, '', ' ') }} SWA</span></div>
+
+
             <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
@@ -61,7 +62,7 @@
                                     <label class="d-flex mb-3 mt-2 justify-content-between" for="">Your buy <span class="currency">SWA Tokens </span></label>
                                     <div class="input-group input-group-lg">
 
-                                        <input type="number" class="form-control form-control-lg" id="swaAmount" placeholder="{{ $meta['min_buy_amount'] }}" required>
+                                        <input type="number" class="form-control form-control-lg" id="swaAmount" name="tokens" placeholder="{{ $meta['min_buy_amount'] }}" required>
                                         <div class="input-group-append">
                                             <span class="input-group-text">SWA</span>
                                         </div>
@@ -125,10 +126,12 @@
                     <!-- end of form -->
                 </div>
 
+                @if(!auth()->user()->isKYC())
                 <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
                     <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Required</h4>
                     <p>The coins you purchase will be distributed after you successfully complete the KYC process, which becomes available on July 6.</p>
                 </div>
+                @endif
 
             </div>
             <div class="col-lg-4">
@@ -173,7 +176,7 @@
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">135 000 000 SWA </div>
-                            <div class="label">TOKEN PRESALE POOL</div>
+                            <div class="label">TOKEN PRESALE POOL INCLUDING {{ $meta['bonus_percentage'] }}% BONUS</div>
                         </div>
                         <div class="dark-block p-3 mb-1">
                             <div class="number">${{ number_format($meta['token_price'], 2, '.', ' ') }}</div>

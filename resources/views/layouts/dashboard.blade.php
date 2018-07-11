@@ -47,7 +47,9 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="{{ route('profile.index') }}">Account settings</a>
-                            <a class="dropdown-item" href="#">KYC Verification</a>
+                            @if(!auth()->user()->isKYC())
+                            <a class="dropdown-item" href="{{ route('kyc.index') }}">KYC Verification</a>
+                            @endif
                         </div>
                     </li>
                     <li class="nav-item ">

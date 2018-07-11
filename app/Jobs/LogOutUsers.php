@@ -40,8 +40,8 @@ class LogOutUsers implements ShouldQueue
             $timePassed = $currentTimestamp - $session->last_activity;
 
             if ($timePassed >= $hour) {
-                $session->user->addLogout();
-                $session->delete();
+                  $session->user()->addLogout();
+                  $session->delete();
             }
         }
     }
