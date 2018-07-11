@@ -2,16 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Session;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Session;
+use Illuminate\Queue\SerializesModels;
 
 class LogOutUsers implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, Queueable, SerializesModels;
 
     public $tries = 3;
 
@@ -25,23 +24,19 @@ class LogOutUsers implements ShouldQueue
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
-        $sessions = Session::all();
+        /** @var Session[] $sessions */
+        $sessions = Session::with('user')->all();
         $currentTimestamp = time();
         $hour = 3600;
 
         foreach ($sessions as $session) {
             $timePassed = $currentTimestamp - $session->last_activity;
 
-            if ($timePassed >= $hour) {
-                  $session->user()->addLogout();
-                  $session->delete();
+            if ($timePassed >= $hour && $user = $session->user()->first()) {
+                $user->addLogout();
+                $session->delete();
             }
         }
     }
