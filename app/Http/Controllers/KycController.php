@@ -17,9 +17,15 @@ class KycController extends Controller
     
     public function index()
     {
+        if(auth()->user()->isKYC()) {
+            Flash::create('success', 'You\'ve passed KYC verification earlier.');
+
+            return redirect()->route('dashboard.index');
+        }
+
         try {
             $url = $this->kycProvider->getUrl();
-
+          
             return redirect()->away($url);
         } catch (\Exception $ex) {
             Flash::create('danger', 'Error while starting KYC verification.');
@@ -39,7 +45,8 @@ class KycController extends Controller
 
                     Flash::create('success', 'KYC verification successful');
                 } else {
-                    Flash::create('danger', 'KYC verification not passed. Repeat verification or contact SWACE support.');
+                    $reason = $this->kycProvider->getReason(auth()->user()->email);
+                    Flash::create('danger', $reason);
                 }
             } else {
                 Flash::create('danger', 'Missing KYC token.');
