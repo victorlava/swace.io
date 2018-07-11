@@ -36,6 +36,3 @@
     If you did not initiate this request, please contact the Swace team immediately at <a
             href="mailto:{{ env("MAIL_SUPPORT") }}">{{ env("MAIL_SUPPORT") }}</a>.
 @endsection
-
-@section('cta')
-@endsection
