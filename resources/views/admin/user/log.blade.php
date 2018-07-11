@@ -34,7 +34,7 @@
                       <td>{{ $log->ip_address }}</td>
                       <td>{{ $log->log_in }}</td>
                       <td>{{ $log->log_out }}</td>
-                      <td>{{ $log->online_time() }}</td>
+                      <td>{{ $log->onlineTime() }}</td>
                     </tr>
                     @endforeach
                 @else:

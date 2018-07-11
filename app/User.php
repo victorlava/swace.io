@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Notifications\MyResetPassword as ResetPasswordNotification;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -83,7 +84,7 @@ class User extends Authenticatable
 
     public function date_time(): string
     {
-        return date('Y-m-d H:i:s', time());
+        return date('Y-m-d H:i:s');
     }
 
     public function format_date($date, string $type = 'nice'): string
@@ -130,18 +131,24 @@ class User extends Authenticatable
 
     public function logs()
     {
-        return $this->hasMany('App\Log', 'user_id', 'id');
+        return $this->hasMany('App\Log', 'user_id', 'id')->orderBy('log_in', 'desc');
     }
 
-    public function addLogout()
+    public function addLogout(string $sessionId = null): void
     {
-        $log = $this->logs()->orderBy('log_in', 'desc')->first();
-        if($log) {
-          $log->logout = $this->date_time();
-          $log->save();
+        $builder = $this->logs()->orderBy('log_in', 'desc');
+
+        if (null !== $sessionId) {
+            $builder->where('session_id', $sessionId);
+        }
+
+        $log = $builder->first();
+
+        if ($log) {
+            $log->log_out = Carbon::now();
+            $log->save();
         }
     }
-
 
     /**
      * Send the password reset notification.

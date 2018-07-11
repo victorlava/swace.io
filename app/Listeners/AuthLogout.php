@@ -2,10 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Log;
-use App\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Auth\Events\Logout;
 
 class AuthLogout
 {
@@ -22,15 +19,11 @@ class AuthLogout
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  Logout $event
      * @return void
      */
-    public function handle($event)
+    public function handle(Logout $event): void
     {
-        $log = Log::where('user_id', $event->user->id)->where('session_id', session()->getId())->first();
-        if ($log) {
-            $log->log_out = $event->user->date_time();
-            $log->save();
-        }
+        $event->user->addLogout(session()->getId());
     }
 }
