@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Jobs\SendPaymentCompleted;
 
 class Order extends Model
 {
@@ -56,14 +57,7 @@ class Order extends Model
         $bonus = $this->calcBonus($tokens, $data['bonus']);
         $this->tokens = $tokens;
         $this->bonus = $bonus;
-
-        if( $this->tokens <= $data['min_token_amount'] ||
-            $this->tokens >= $data['max_token_amount']) {
-            $this->setStatus('failed');
-        } else {
-            $this->setStatus($data['request']->status);
-        }
-
+        $this->setStatus($data['request']->status);
         $this->save();
     }
 
@@ -166,6 +160,7 @@ class Order extends Model
 
             case 'paid':
                 $code = 4;
+                dispatch(new SendPaymentCompleted($this->user));
                 break;
 
             case 'canceled':

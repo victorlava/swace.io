@@ -7,10 +7,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\OrderMade;
+use App\Mail\PaymentCompleted;
 use Mail;
 
-class SendOrderEmail implements ShouldQueue
+class SendPaymentCompleted implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -18,20 +18,14 @@ class SendOrderEmail implements ShouldQueue
 
     protected $user;
 
-    protected $status;
-
-    protected $viewOrder;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, string $status, string $viewOrder)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->status = $status;
-        $this->viewOrder = $viewOrder;
     }
 
     /**
@@ -41,7 +35,7 @@ class SendOrderEmail implements ShouldQueue
      */
     public function handle()
     {
-      $email = new OrderMade($this->status, $this->viewOrder);
+      $email = new PaymentCompleted();
       Mail::to($this->user->email)->send($email);
     }
 }

@@ -49,11 +49,8 @@ class PaymentController extends Controller
 
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
 
-            $min = $this->minTokenAmount - 1;
-            $max = $this->maxTokenAmount + 1;
-
             $request->validate([
-              'tokens' => "required|gt:$min|lt:$max"
+              'tokens' => "required|gte:$this->minTokenAmount|lte:$this->maxTokenAmount"
             ]);
 
             $order = new Order();
@@ -122,9 +119,7 @@ class PaymentController extends Controller
 
             $order->paid(['request' => $request,
                           'token_price' => $this->tokenPrice,
-                          'bonus' => $this->bonusPercentage,
-                          'min_token_amount' => $this->minTokenAmount,
-                          'max_token_amount' => $this->maxTokenAmount]);
+                          'bonus' => $this->bonusPercentage]);
 
 
             $raw = json_encode($request->all());
