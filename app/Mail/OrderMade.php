@@ -13,8 +13,6 @@ class OrderMade extends Mailable
 
     protected $status;
 
-    protected $message;
-
     protected $viewOrder;
 
     /**
@@ -22,10 +20,9 @@ class OrderMade extends Mailable
      *
      * @return void
      */
-     public function __construct($status, $message, $viewOrder)
+     public function __construct(string $status, string $viewOrder)
      {
          $this->status = $status;
-         $this->message = $message;
          $this->viewOrder = $viewOrder;
 
      }
@@ -38,7 +35,6 @@ class OrderMade extends Mailable
      public function build()
      {
          return $this->view('emails.order-made', ['order_status' => $this->status,
-                                                  'order_message' => $this->message,
                                                   'order_link' => $this->viewOrder]);
      }
 }

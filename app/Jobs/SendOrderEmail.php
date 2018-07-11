@@ -20,8 +20,6 @@ class SendOrderEmail implements ShouldQueue
 
     protected $status;
 
-    protected $message;
-
     protected $viewOrder;
 
     /**
@@ -29,11 +27,10 @@ class SendOrderEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user, $status, $message, $viewOrder)
+    public function __construct(User $user, string $status, string $viewOrder)
     {
         $this->user = $user;
         $this->status = $status;
-        $this->message = $message;
         $this->viewOrder = $viewOrder;
     }
 
@@ -44,7 +41,7 @@ class SendOrderEmail implements ShouldQueue
      */
     public function handle()
     {
-      $email = new OrderMade($this->status, $this->message, $this->viewOrder);
+      $email = new OrderMade($this->status, $this->viewOrder);
       Mail::to($this->user->email)->send($email);
     }
 }
