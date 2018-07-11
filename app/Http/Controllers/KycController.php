@@ -8,11 +8,11 @@ use App\Flash;
 
 class KycController extends Controller
 {
-    private $kycProvider;
+    protected $kycProvider;
 
-    public function __construct()
+    public function __construct(Kyc $kycProvider)
     {
-        $this->kycProvider = new Kyc();
+        $this->kycProvider = $kycProvider;
     }
     
     public function index()
