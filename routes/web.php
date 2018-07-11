@@ -24,6 +24,12 @@ Route::prefix('profile')->name('profile.')->middleware('verified.message')->grou
     Route::post('/password/store', 'PasswordController@store')->name('password.store');
 });
 
+Route::prefix('kyc')->name('kyc.')->middleware('verified')->group(function () {
+  Route::get('/', 'KycController@index')->name('index');
+  Route::get('/status', 'KycController@status')->name('status');
+});
+Route::get('/kyc/callback', 'KycController@callback')->name('kyc.callback');
+
 Auth::routes();
 Route::post('/login', 'Auth\LoginController@authenticate')->name('login.auth');
 Route::get('/email/verify/{token}', 'Auth\RegisterController@verify')->name('email.verification');

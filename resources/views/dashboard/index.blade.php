@@ -126,10 +126,12 @@
                     <!-- end of form -->
                 </div>
 
+                @if(!auth()->user()->isKYC())
                 <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
                     <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Required</h4>
                     <p>The coins you purchase will be distributed after you successfully complete the KYC process, which becomes available on July 6.</p>
                 </div>
+                @endif
 
             </div>
             <div class="col-lg-4">
