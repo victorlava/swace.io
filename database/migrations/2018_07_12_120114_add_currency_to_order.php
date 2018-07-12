@@ -14,7 +14,7 @@ class AddCurrencyToOrder extends Migration
     public function up()
     {
       Schema::table('orders', function (Blueprint $table) {
-        $table->string('currency', 5);
+        $table->string('currency', 5)->nullable();
       });  //
     }
 
