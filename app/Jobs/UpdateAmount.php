@@ -44,7 +44,7 @@ class UpdateAmount implements ShouldQueue
     {
         $amount = Order::whereHas('status', function ($query) {
             $query->where('title', 'Paid');
-        })->sum('gross');
+        })->sum('tokens');
 
         if (!$amount) {
             $amount = 0;
