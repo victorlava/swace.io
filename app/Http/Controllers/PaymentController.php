@@ -104,9 +104,6 @@ class PaymentController extends Controller
 
         if($status === '') { $status = 'placed'; }
 
-
-        dispatch(new SendOrderEmail(Auth::user(), $status, $order->invoice));
-
         return redirect($url);
     }
 
