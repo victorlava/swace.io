@@ -13,5 +13,5 @@
     Thank you for your payment. It has been processed and received by our partner CoinGate.<br/>
     <br/>
     You can view the number of purchased SWA tokens and your overall balance by logging into your dashboard at <a
-            href="{{ route('/') }}">swa.swace.io</a>.
+            href="{{ route('dashboard.index') }}">swa.swace.io</a>.
 @endsection
