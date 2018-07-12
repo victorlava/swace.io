@@ -29,6 +29,7 @@ class Order extends Model
         $this->rate = $this->calcRate($data['receive_currency']);
         $this->gross = $this->calcGross();
         $this->fee = $this->calcFee($data['fee']);
+        $this->invoice = $data['url'];
         $this->setStatus('pending');
         $this->user_id = $data['user_id'];
         $this->hash = md5($this->order_id . (string)$data['user_id'] . (string)time());
