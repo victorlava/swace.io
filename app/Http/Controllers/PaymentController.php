@@ -104,9 +104,8 @@ class PaymentController extends Controller
 
         if($status === '') { $status = 'placed'; }
 
-
-        dispatch(new SendOrderEmail(Auth::user(), $status, $message, $order->invoice));
-
+        dispatch(new SendOrderEmail($order->user, 'placed', '', $order->invoice));
+        
         return redirect($url);
     }
 
@@ -153,7 +152,6 @@ class PaymentController extends Controller
         Flash::create('success', "Order updated succesfully.");
 
         $order = Order::where('hash', $id)->first();
-        dispatch(new SendOrderEmail($order->user, 'placed', '', $order->invoice));
 
         return redirect()->route('dashboard.index');
     }
@@ -163,7 +161,6 @@ class PaymentController extends Controller
         Flash::create('danger', "Order have been canceled.");
 
         $order = Order::where('hash', $id)->first();
-        dispatch(new SendOrderEmail($order->user, 'canceled', '', $order->invoice));
 
         return redirect()->route('dashboard.index');
     }

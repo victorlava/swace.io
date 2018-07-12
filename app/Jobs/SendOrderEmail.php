@@ -27,7 +27,7 @@ class SendOrderEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, string $status, string $viewOrder)
+    public function __construct($user, string $status, string $viewOrder)
     {
         $this->user = $user;
         $this->status = $status;
