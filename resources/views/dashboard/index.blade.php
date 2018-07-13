@@ -11,7 +11,7 @@
             <div class="col-sm-6"><h1>Token <span class="highlight">Pre-Sale</span>  is live <small>Ends: {{ $token_end_date }}</small></h1></div>
             <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in {{ $days_left }} days</small> </h1></div>
         </div>
-        <div class="progress my-4 mt-lg-5">
+        <div class="progress mb-4 mt-5">
             <div class="target" style="left: 7%">
               <span class="d-lg-block info text-center ">
                 <span class="d-block d-sm-inline">PRESALE CAP</span>
