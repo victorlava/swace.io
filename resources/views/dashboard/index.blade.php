@@ -1,4 +1,4 @@
-ory@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('head')
 <title>Swace</title>
