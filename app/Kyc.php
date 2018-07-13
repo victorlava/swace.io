@@ -104,7 +104,7 @@ class Kyc
         return $this->sendJsonRequest($this->statusApiUrl, $data)->RejectReasonId;
     }
     
-    private function sendJsonRequest(string $url, array $data) : ?object
+    private function sendJsonRequest(string $url, array $data) // : ?object
     {
         $response = $this->httpClient->post($url, [
             'body' => json_encode($data)
