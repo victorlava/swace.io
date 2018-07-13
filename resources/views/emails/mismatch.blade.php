@@ -1,11 +1,11 @@
 @extends('layouts.email')
 
 @section('title')
-    Location mismatch
+    Swace Login Notification
 @endsection
 
 @section('header')
-    Location Mismatch
+    Swace Login Notification
 @endsection
 
 @section('content')
