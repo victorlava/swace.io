@@ -134,13 +134,29 @@
                     <!-- end of form -->
                 </div>
 
-                @if(!Auth::user()->isKYC())
-                <a class="block-link" href="https://swa.swace.io/kyc">
-                  <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
-                      <h4 class="alert-heading pt-2 mb-1">KYC Verification Required</h4>
-                      <p>The coins you purchase will be distributed after you successfully <u>complete the KYC process</u>.</p>
-                  </div>
-                </a>
+                @if(!auth()->user()->isKYC())
+                  @if(auth()->user()->kyc == \App\Kyc::STATUS_UNTOUCHED)
+                    <a class="block-link" href="{{ route('kyc.index') }}">
+                      <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
+                          <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Required</h4>
+                          <p>The coins you purchase will be distributed after you successfully <u>complete the KYC process</u>.</p>
+                      </div>
+                    </a>
+                  @elseif(auth()->user()->kyc == \App\Kyc::STATUS_AUTO_FAILED)
+                    <a class="block-link" href="{{ route('kyc.index') }}">
+                      <div class="alert alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
+                          <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> Unfortunately, the automatic KYC process has failed</h4>
+                          <p>We will try doing it manually, and if it works, we'll let you know within 24 hours via email and a dashboard notification. However, we recommend that you try going through the automatic process again using your cellphone, as most smartphone cameras are able to produce a high-quality very legible image. <u>Try again.</u> </p>
+                      </div>
+                    </a>
+                  @elseif(auth()->user()->kyc == \App\Kyc::STATUS_MANUAL_FAILED)
+                    <a class="block-link" href="{{ route('kyc.index') }}">
+                      <div class="alert alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
+                          <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Failed</h4>
+                          <p> We regret to inform you that you have failed to pass both the automatic and the manual KYC process, and in accordance with EU regulations we will not be able to accept payments from you at this stage. <u>You are welcome to try again!</u></p>
+                      </div>
+                    </a>
+                  @endif
                 @endif
 
             </div>

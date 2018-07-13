@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Kyc;
+use App\User;
 use App\Flash;
 
 class KycController extends Controller
@@ -17,9 +18,15 @@ class KycController extends Controller
     
     public function index()
     {
+        if(auth()->user()->isKYC()) {
+            Flash::create('success', 'You\'ve passed KYC verification earlier.');
+
+            return redirect()->route('dashboard.index');
+        }
+
         try {
             $url = $this->kycProvider->getUrl();
-
+          
             return redirect()->away($url);
         } catch (\Exception $ex) {
             Flash::create('danger', 'Error while starting KYC verification.');
@@ -33,14 +40,17 @@ class KycController extends Controller
     {
         try {
             if ($request->has('token')) {
-                $verified = $this->kycProvider->checkStatus($request->token);
-                if ($verified) {
-                    auth()->user()->update(['kyc' => true]);
+                $statusCode = $this->kycProvider->getStatus($request->token);
+                if (in_array($statusCode, Kyc::VERIFIED_STATUS_CODES)) {
+                    auth()->user()->update(['kyc' => Kyc::STATUS_VERIFIED]);
 
                     Flash::create('success', 'KYC verification successful');
+
                 } else {
-                    Flash::create('danger', 'KYC verification not passed. Repeat verification or contact SWACE support.');
+                    auth()->user()->update(['kyc' => Kyc::STATUS_AUTO_FAILED]);
                 }
+
+                dispatch(new \App\Jobs\SendKycStatusChangedEmail(auth()->user()));
             } else {
                 Flash::create('danger', 'Missing KYC token.');
             }
@@ -56,10 +66,19 @@ class KycController extends Controller
     public function callback(Request $request)
     {
         if ($request->has('token')) {
-            $user = $this->kycProvider->getVerifiedUserByToken($request->token);
+            $email = $this->kycProvider->getEmailByToken($request->token);
+            
+            if($email) {
+                $user = User::whereEmail($email)->first();
 
-            if($user) {
-                $user->update(['kyc' => true]);
+                $statusCode = $this->kycProvider->getStatus($request->token);
+                if (in_array($statusCode, Kyc::VERIFIED_STATUS_CODES)) {
+                    $user->update(['kyc' => Kyc::STATUS_VERIFIED]);
+                } else {
+                    $user->update(['kyc' => Kyc::STATUS_MANUAL_FAILED]);
+                }
+
+                dispatch(new \App\Jobs\SendKycStatusChangedEmail(auth()->user()));
             }
         }
 
