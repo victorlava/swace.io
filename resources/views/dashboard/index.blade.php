@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+ory@extends('layouts.dashboard')
 
 @section('head')
 <title>Swace</title>
@@ -23,7 +23,7 @@
             </span>
           </div>
 
-            <div class="progress-bar @if($percetange >= 99.99) full @endif" style="width: {{ $percentage }}%" role="progressbar" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar @if($percentage >= 99.99) full @endif" style="width: {{ $percentage }}%" role="progressbar" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
         @if(Session::has('message'))
