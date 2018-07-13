@@ -30,7 +30,6 @@ class PaymentController extends Controller
         $this->tokenPrice = env('SWACE_TOKEN_PRICE');
         $this->minTokenAmount = env('SWACE_MIN_BUY_AMOUNT');
         $this->maxTokenAmount = env('SWACE_MAX_BUY_AMOUNT');
-
     }
 
     private function coingateConfig()
@@ -47,12 +46,9 @@ class PaymentController extends Controller
         $status = '';
         $message = '';
 
+        var_dump($request->all());
+
         if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
-
-            $request->validate([
-              'tokens' => "required|gte:$this->minTokenAmount|lte:$this->maxTokenAmount"
-            ]);
-
             $order = new Order();
             $order->create(['user_id' => Auth::user()->id,
                             'request' => $request,
