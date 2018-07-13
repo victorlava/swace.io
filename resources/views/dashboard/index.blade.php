@@ -201,7 +201,7 @@
 
                         </div>
                         <div class="dark-block p-3 mb-1">
-                            <div class="number">135 000 000 SWA </div>
+                            <div class="number">{{ number_format(round($meta['token_pre_sale'] * $meta['bonus_percentage'] / 100), 0, '', ' ')}}SWA</div>
                             <div class="label">TOKEN PRESALE POOL INCLUDING {{ $meta['bonus_percentage'] }}% BONUS</div>
                         </div>
                         <div class="dark-block p-3 mb-1">
