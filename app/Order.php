@@ -57,7 +57,7 @@ class Order extends Model
         $bonus = $this->calcBonus($tokens, $data['bonus']);
         $this->tokens = $tokens;
         $this->bonus = $bonus;
-        $this->currency = $data['pay_currency'];
+        $this->currency = $data['request']->pay_currency;
         $this->setStatus($data['request']->status);
         $this->save();
     }

@@ -3,15 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class Sale
 {
     public static function collectedAmount(): float
     {
-        $amount = Cache::store('file')->get('collected_amount');
+    	$exists = Storage::disk('local')->exists('collected_amount.txt');
 
-        return (Cache::store('file')->has('collected_amount') ? $amount : 0) ;
+    	if ($exists) {
+        	$amount = Storage::get('collected_amount.txt');
+        } else {
+        	$amount = 0;
+        }
+
+        return $amount;
     }
 
     public static function collectedPercentage(float $amount, float $totalAmount): float
