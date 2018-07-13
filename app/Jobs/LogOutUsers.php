@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Session;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,18 +28,15 @@ class LogOutUsers implements ShouldQueue
     public function handle(): void
     {
         /** @var Session[] $sessions */
-        $sessions = Session::with('user')->all();
-        $currentTimestamp = time();
+        $sessions = Session::with('user')->get();
         $hour = 3600;
 
         foreach ($sessions as $session) {
-            $timePassed = $currentTimestamp - $session->last_activity;
+            $timePassed = Carbon::now()->diffInSeconds($session->last_activity, true);
 
-            if($session->user()) {
-                if ($timePassed >= $hour) {
-                    $session->user()->addLogout();
-                    $session->delete();
-                }
+            if ($timePassed >= $hour && $user = $session->user()->first()) {
+                $user->addLogout();
+                $session->delete();
             }
         }
     }
