@@ -34,7 +34,7 @@ class LogOutUsers implements ShouldQueue
         foreach ($sessions as $session) {
             $timePassed = Carbon::now()->diffInSeconds($session->last_activity, true);
 
-            if ($timePassed >= $hour && $user = $session->user()->first()) {
+            if ($timePassed >= $hour && null !== $user = $session->user) {
                 $user->addLogout();
                 $session->delete();
             }
