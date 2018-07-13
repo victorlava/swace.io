@@ -9,10 +9,12 @@
 @endsection
 
 @section('content')
-    Your order is being processed.<br/>
-    <br/>
+    Your order is being processed.<br/> <br/>
+
     If you haven’t completed your purchase and want to continue, you can do that by logging into your dashboard, then clicking ‘View order’ or the link to the order you wish to complete under ‘Your transaction history’.
+    
     <br/>
+    
     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width:100%;">
         <tbody class="mcnButtonBlockOuter">
         <tr>
@@ -33,6 +35,6 @@
         </tr>
         </tbody>
     </table>
-    If you did not initiate this request, please contact the Swace team immediately at <a
-            href="mailto:{{ env("MAIL_SUPPORT") }}">{{ env("MAIL_SUPPORT") }}</a>.
+    
+    If you did not initiate this request, please contact the Swace team immediately at <a href="mailto:{{ env("MAIL_SUPPORT") }}">{{ env("MAIL_SUPPORT") }}</a>.
 @endsection
