@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Kyc;
+use App\User;
 use App\Flash;
 
 class KycController extends Controller
@@ -39,15 +40,17 @@ class KycController extends Controller
     {
         try {
             if ($request->has('token')) {
-                $verified = $this->kycProvider->checkStatus($request->token);
-                if ($verified) {
-                    auth()->user()->update(['kyc' => true]);
+                $statusCode = $this->kycProvider->getStatus($request->token);
+                if (in_array($statusCode, Kyc::VERIFIED_STATUS_CODES)) {
+                    auth()->user()->update(['kyc' => Kyc::STATUS_VERIFIED]);
 
                     Flash::create('success', 'KYC verification successful');
+
                 } else {
-                    $reason = $this->kycProvider->getReason(auth()->user()->email);
-                    Flash::create('danger', $reason);
+                    auth()->user()->update(['kyc' => Kyc::STATUS_AUTO_FAILED]);
                 }
+
+                dispatch(new \App\Jobs\SendKycStatusChangedEmail(auth()->user()));
             } else {
                 Flash::create('danger', 'Missing KYC token.');
             }
@@ -63,10 +66,19 @@ class KycController extends Controller
     public function callback(Request $request)
     {
         if ($request->has('token')) {
-            $user = $this->kycProvider->getVerifiedUserByToken($request->token);
+            $email = $this->kycProvider->getEmailByToken($request->token);
+            
+            if($email) {
+                $user = User::whereEmail($email)->first();
 
-            if($user) {
-                $user->update(['kyc' => true]);
+                $statusCode = $this->kycProvider->getStatus($request->token);
+                if (in_array($statusCode, Kyc::VERIFIED_STATUS_CODES)) {
+                    $user->update(['kyc' => Kyc::STATUS_VERIFIED]);
+                } else {
+                    $user->update(['kyc' => Kyc::STATUS_MANUAL_FAILED]);
+                }
+
+                dispatch(new \App\Jobs\SendKycStatusChangedEmail(auth()->user()));
             }
         }
 

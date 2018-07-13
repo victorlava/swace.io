@@ -6,12 +6,18 @@ use App\User;
 
 class Kyc
 {
+    const STATUS_UNTOUCHED = 0;
+    const STATUS_VERIFIED = 1;
+    const STATUS_AUTO_FAILED = 2;
+    const STATUS_MANUAL_FAILED = 3;
+    const VERIFIED_STATUS_CODES = [1, 2];
+
     private $apiKey;
     private $kycBaseUrl;
     private $kycTokenUrl;
     private $kycStartUrl;
     private $httpClient;
-    private $verifiedStatusCodes = [1, 2];
+   
     private $defaultRejectionReason = 'KYC verification not passed. Repeat verification or contact SWACE support.';
     private $rejectionReasons = [
         1 => 'Missing document photo. Please include document photo that contains your photo and general information.',
@@ -49,11 +55,9 @@ class Kyc
         return $url;
     }
     
-    public function checkStatus(string $token) : bool
+    public function getStatus(string $token) : int
     {
-        $statusCode = $this->getData($token)->status;
-        
-        return in_array($statusCode, $this->verifiedStatusCodes);
+        return $this->getData($token)->status;
     }
     
     public function getReason(string $email) : string
@@ -64,14 +68,8 @@ class Kyc
         return $reasonCode && isset($this->rejectionReasons[$reasonCode]) ? $this->rejectionReasons[$reasonCode] : $reason;
     }
     
-    public function getVerifiedUserByToken(string $token) : ?User {
-        $data = $this->getData($token);
-        
-        if(in_array($data->status, $this->verifiedStatusCodes)) {
-            return User::whereEmail($data->data->email)->first();
-        }
-        
-        return null;
+    public function getEmailByToken(string $token) : string {
+        return $this->getData($token)->data->email;
     }
     
     private function getToken() : string
