@@ -9,13 +9,9 @@
 @endsection
 
 @section('content')
-    We have received a password reset request from the following IP address
-    <strong>{{ $ip }}</strong>. You can change your password using the link below, which will be valid for 15 minutes.
+    We have received a password reset request from the following IP address <strong>{{ $ip }}</strong>. You can change your password using the link below, which will be valid for 15 minutes.
     <br/>
     <br/>
-
-    If you did not initiate this request, please contact the Swace team immediately at <a
-            href="mailto:{{ env("MAIL_SUPPORT") }}">{{ env("MAIL_SUPPORT") }}</a>.
 @endsection
 
 @section('cta')
@@ -25,3 +21,6 @@
         email</a>
 @endsection
 
+@section('content_2')
+    If you did not initiate this request, please contact the Swace team immediately at <a href="mailto:{{ env("MAIL_SUPPORT") }}">{{ env("MAIL_SUPPORT") }}</a>.
+@endsection
