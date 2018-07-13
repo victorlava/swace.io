@@ -105,7 +105,7 @@ class PaymentController extends Controller
         if($status === '') { $status = 'placed'; }
 
         dispatch(new SendOrderEmail($order->user, 'placed', '', $order->invoice));
-        
+
         return redirect($url);
     }
 
@@ -115,6 +115,9 @@ class PaymentController extends Controller
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
         if ($order) {
+
+            $response_message = 'Order Paid';
+            $response_code = 200;
 
             $order->paid(['request' => $request,
                           'token_price' => $this->tokenPrice,
@@ -126,9 +129,13 @@ class PaymentController extends Controller
             $response->create([ 'coingate_id' => $request->id,
                                 'order_id' => $request->order_id,
                                 'response' => $raw]);
-            }
+        } else {
+            $response_message = 'Order Not Found';
+            $response_code = 500;
+        }
 
-        return true;
+        return response($response_message, $response_code)
+                  ->header('Content-Type', 'text/plain');
     }
 
     private function prepParams(array $data): array
