@@ -39,7 +39,9 @@ Route::prefix('payment')->name('payment.')->middleware('verified')->group(functi
     Route::get('/success/{id}', 'PaymentController@success')->name('success');
     Route::get('/cancel/{id}', 'PaymentController@cancel')->name('cancel');
 });
-Route::post('/payment/callback/{hash}', 'PaymentController@callback')->name('payment.callback');
+Route::post('/payment/callback', 'PaymentController@callback')
+    ->middleware('coingate.ip-whitelist')
+    ->name('payment.callback');
 
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/', 'Admin\AdminController@index')->name('index');
