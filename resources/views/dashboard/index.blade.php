@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {{-- <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
+                                    <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
 
                                     <div class="input-group input-group-lg">
                                         <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" step="0.00000000000000001" placeholder="0.0005">
@@ -115,7 +115,7 @@
                                             <span class="invalid-feedback">
                                                 <strong>{{ $errors->first('amount') }}</strong>
                                             </span>
-                                        @endif --}}
+                                        @endif
                                     </div>
 
                                 </div>
