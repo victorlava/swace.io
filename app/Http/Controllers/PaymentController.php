@@ -109,7 +109,7 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $hash, OrderCallbackRequest $request): bool
+    public function callback(string $hash, OrderCallbackRequest $request): string
     {
 
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
