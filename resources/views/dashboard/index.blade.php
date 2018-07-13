@@ -11,18 +11,26 @@
             <div class="col-sm-6"><h1>Token <span class="highlight">Pre-Sale</span>  is live <small>Ends: {{ $token_end_date }}</small></h1></div>
             <div class="col-sm-6 text-sm-right"><h1 class="">Bonus <span class="highlight">{{ $meta['bonus_percentage'] }}%</span> <small>Ends in {{ $days_left }} days</small> </h1></div>
         </div>
-        <div class="progress my-4 mt-lg-5">
-            <div class="target" style="left:74%"><span class="d-none d-lg-block info">PRESALE CAP {{ number_format($meta['token_pre_sale'], 0, '', ' ') }} SWA</span></div>
+        <div class="progress mb-4 mt-5">
+            <div class="target" style="left: 7%">
+              <span class="d-lg-block info text-center ">
+                <span class="d-block d-sm-inline">PRESALE CAP</span>
+                {{ number_format($meta['token_pre_sale'], 0, '', ' ') }} SWA</span>
+            </div>
 
+            <div class="target" style="left: 100%"><span class="d-lg-block info text-center "><span class="d-block d-sm-inline">HARD CAP</span>
+              {{ number_format($meta['sale_amount'], 0, '', ' ') }} SWA
+            </span>
+          </div>
 
-            <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar @if($percentage >= 99.99) full @endif" style="width: {{ $percentage }}%" role="progressbar" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
         @if(Session::has('message'))
         <div class="alert alert-dismissible fade show {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
             {{ Session::get("message") }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
+                <span aria-hidden="true">Ã—</span>
             </button>
         </div>
         @endif
@@ -126,11 +134,13 @@
                     <!-- end of form -->
                 </div>
 
-                @if(!auth()->user()->isKYC())
-                <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
-                    <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Required</h4>
-                    <p>The coins you purchase will be distributed after you successfully complete the KYC process, which becomes available on July 6.</p>
-                </div>
+                @if(!Auth::user()->isKYC())
+                <a class="block-link" href="https://swa.swace.io/kyc">
+                  <div class="alert alert-info mt-4 pt-3 pb-2 px-4" role="alert">
+                      <h4 class="alert-heading pt-2 mb-1">KYC Verification Required</h4>
+                      <p>The coins you purchase will be distributed after you successfully <u>complete the KYC process</u>.</p>
+                  </div>
+                </a>
                 @endif
 
             </div>
@@ -201,10 +211,10 @@
 
             @if(count($orders) > 0)
                 @foreach($orders as $order)
-                <div class="transaction text-center text-lg-left mb-2">
+                <div class="transaction text-left text-lg-left mb-2">
                     <div class="container-fluid">
-                        <div class="row align-items-center table-data py-4 py-lg-3">
-                            <div class=" col-lg-3 date pb-4 pb-lg-0">
+                        <div class="row align-items-center table-data py-4 py-lg-2">
+                            <div class=" col-lg-3 date pb-3 pb-lg-0">
                                 <span class="d-block ">
                                     {{ Carbon::parse($order->created_at)->timezone(Auth::user()->timezone) }}
                                 </span>
@@ -218,19 +228,16 @@
                                 @endif
                             </div>
                             <div class="col-lg-2 amount-paid">{{ number_format($order->amount, 8)}} {{ strtoupper($order->type->short_title) }}</div>
-                            <div class="col-lg-3 usd-info">
-                                <div class="row py-2 py-lg-2">
-                                    <div class="col-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Rate</span></div>
-                                    <div class="col-3 col-lg-6">${{ number_format($order->gross, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Gross</span></div>
-                                    <div class="col-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block mb-lg-2 small text-uppercase">Net</span></div>
-                                    <div class="col-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Fee</span></div>
+                            <div class="col-lg-3 usd-info my-3 my-lg-0">
+                                <div class="row py-2">
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block small text-uppercase">Rate</span></div>
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->gross, 2, '.', ' ') }}<span class="d-block small text-uppercase">Gross</span></div>
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block small text-uppercase">Net</span></div>
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block small text-uppercase">Fee</span></div>
                                 </div>
                             </div>
-                            <div class="d-lg-none col-lg-1 icon-wrapper pb-3 pb-md-2">
-                                <i class="d-lg-none icon icon-arrows-ccw"></i>
-                            </div>
                             @if($order->net)
-                            <div class="col-6 col-lg-2 amount-swa text-right text-lg-left">{{ number_format($order->tokens, 0, ' ', ' ') }} <span class="d-lg-none">SWA</span> </div>
+                            <div class="col-6 col-lg-2 amount-swa text-left text-lg-left">{{ number_format($order->tokens, 0, ' ', ' ') }} <span class="d-lg-none">SWA</span> </div>
                             <div class="col-6 col-lg-2 amount-swa text-left text-lg-left">+{{ number_format($order->bonus, 0, ' ', ' ') }} (<span class="highlight">{{ $order->calcBonusPercentage($order->tokens, $order->bonus)}}%</span>)</div>
                             @endif
                         </div>
