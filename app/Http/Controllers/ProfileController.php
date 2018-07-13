@@ -53,19 +53,17 @@ class ProfileController extends Controller
         $rules['timezone'] = 'required|max:60';
         $rules['personal'] = 'required|integer|min:0|max:1';
 
-        // dd($errors);
-
 
         // If KYC is not passed yet, then it is possible to change the name
         if (!Auth::user()->isKYC()) {
-            $rules['first_name'] = 'required|alpha|max:255|regex:/^[\pL\s\-]+$/u';
-            $rules['last_name'] = 'required|alpha|max:255|regex:/^[\pL\s\-]+$/u';
+            $rules['first_name'] = 'required|max:255|regex:/^[\pL\s\-]+$/u';
+            $rules['last_name'] = 'required|max:255|regex:/^[\pL\s\-]+$/u';
         }
 
         if(Auth::user()->isCompany()) {
           $rules['company_name'] = 'required|max:255';
           $rules['company_code'] = 'required|integer';
-          $rules['company_vat'] = 'nullable|integer';
+          $rules['company_vat'] = 'nullable';
           $rules['company_address'] = 'required|max:255';
           $rules['company_city'] = 'required|max:255';
         }
