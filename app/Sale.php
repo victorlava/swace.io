@@ -11,7 +11,7 @@ class Sale
     {
         $amount = Cache::store('file')->get('collected_amount');
 
-        return (Cache::store('file')->has('collected_amount') ? $amount : 0) ;
+        return (Cache::store('file')->has('collected_amount') ? $amount : 0);
     }
 
     public static function collectedPercentage(float $amount, float $totalAmount): float
