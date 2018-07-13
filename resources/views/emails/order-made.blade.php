@@ -25,7 +25,7 @@
                         <td align="center" valign="middle" class="mcnButtonContent" style="font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; padding: 18px;">
                         <a class="mcnButton " title="Continue order" href="{{ $order_link }}"
                              target="_blank"
-                             style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">[Continue the order you started]</a>
+                             style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Continue the order you started</a>
 
                         </td>
                     </tr>
