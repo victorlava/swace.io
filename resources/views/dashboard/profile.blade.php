@@ -18,6 +18,10 @@
                 <form class="form-signin" method="POST" action="{{ route('profile.store') }}" autocomplete="off">
                     @csrf
 
+                    <div class="text-left muted-link">
+                      <a class="btn-link d-inline-block" href="{{ route('dashboard.index') }}"> <i class="icon icon-arrow-left mr-1"></i> back to dashboard</a>
+                    </div>
+
                     <div class="text-left mt-4 mb-3">
                         <h1 class="">Account settings</h1>
                     </div>
