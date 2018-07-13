@@ -685,7 +685,7 @@
                     <tr>
                         <td valign="top" id="templateBody">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
-                            <tbody class="mcnTextBlockOuter">
+                                <tbody class="mcnTextBlockOuter">
                                 <tr>
                                     <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
                                         <!--[if mso]>
@@ -736,6 +736,45 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            @endif
+
+                            @hasSection('content_2')
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+                                <tbody class="mcnTextBlockOuter">
+                                <tr>
+                                    <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+                                        <!--[if mso]>
+                                        <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                                            <tr>
+                                        <![endif]-->
+
+                                        <!--[if mso]>
+                                        <td valign="top" width="600" style="width:600px;">
+                                        <![endif]-->
+                                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px; font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+                                                        <p style="text-align: left; font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                                            @yield('content_2')
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+
+                                        <!--[if mso]>
+                                        </tr>
+                                        </table>
+                                        <![endif]-->
                                     </td>
                                 </tr>
                                 </tbody>

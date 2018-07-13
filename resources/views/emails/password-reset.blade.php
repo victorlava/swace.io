@@ -11,14 +11,12 @@
 @section('content')
     We have received a password reset request from the following IP address <strong>{{ $ip }}</strong>. You can change your password using the link below, which will be valid for 15 minutes.
     <br/>
-    <br/>
 @endsection
 
 @section('cta')
     <a class="mcnButton " title="Reset password" href="{{ route('password.reset', $token) }}?email={{ $email }}"
        target="_blank"
-       style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Reset
-        email</a>
+       style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Reset password</a>
 @endsection
 
 @section('content_2')

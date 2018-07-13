@@ -9,8 +9,8 @@
 @endsection
 
 @section('content')
-    Your password has been changed.<br/>
-    <br/>
+    Your password has been changed.<br/><br/>
+
     The IP address from which your password was changed is <strong>{{ $ip }}</strong>.<br/>
     <br/>
     

@@ -18,7 +18,7 @@
     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width:100%;">
         <tbody class="mcnButtonBlockOuter">
         <tr>
-            <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:0" valign="top" align="left" class="mcnButtonBlockInner">
+            <td style="padding-top:8px; padding-right:18px; padding-bottom:18px; padding-left:0" valign="top" align="left" class="mcnButtonBlockInner">
                 <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 4px;background-color: #5B00DF;">
                     <tbody>
                     <tr>
