@@ -46,15 +46,20 @@ namespace App{
  * @property string $hash
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property \App\Currency $currency
+ * @property float $expected_tokens
+ * @property float $bonus_percentage
  * @property-read \App\Status $status
- * @property-read \App\Currency $type
  * @property-read \App\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereBonus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereBonusPercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCoingateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCurrencyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereExpectedTokens($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereGross($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereHash($value)

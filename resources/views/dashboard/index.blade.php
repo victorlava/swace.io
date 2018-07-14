@@ -30,7 +30,7 @@
         <div class="alert alert-dismissible fade show {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
             {{ Session::get("message") }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">Ã—</span>
+                <span aria-hidden="true">×</span>
             </button>
         </div>
         @endif
@@ -96,7 +96,7 @@
                                     <label class="d-flex mb-3 mt-2 justify-content-between" for="">You pay <span id="currency-long" class="currency">{{ $currencies[0]->title }}</span></label>
 
                                     <div class="input-group input-group-lg">
-                                        <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" step="0.00000000000000001" placeholder="0.0005">
+                                        <input type="number" id="pay-amount" class="form-control form-control-lg{{ $errors->has('amount') ? ' is-invalid' : '' }}" name="amount" step="0.00000000000000001" placeholder="0.05">
                                         <div id="crypto-toggler" class="input-group-append">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ strtoupper($currencies[0]->short_title) }}</button>
                                             <div class="dropdown-menu dropdown-menu-right">
@@ -232,7 +232,7 @@
                         <div class="row align-items-center table-data py-4 py-lg-2">
                             <div class=" col-lg-3 date pb-3 pb-lg-0">
                                 <span class="d-block ">
-                                    {{ Carbon::parse($order->created_at)->timezone(Auth::user()->timezone) }}
+                                    {{ Carbon::parse($order->created_at, Auth::user()->timezone) }}
                                 </span>
                                 <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span>
                                 @if($order->status->title === 'Paid')
