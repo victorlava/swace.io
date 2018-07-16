@@ -30,7 +30,7 @@
         <div class="alert alert-dismissible fade show {!! Session::get('type') == 'success' ? 'alert-success' : 'alert-danger' !!}" role="alert">
             {{ Session::get("message") }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">Ã—</span>
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
         @endif
