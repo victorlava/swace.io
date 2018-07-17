@@ -78,7 +78,7 @@ class KycController extends Controller
                     $user->update(['kyc' => Kyc::STATUS_MANUAL_FAILED]);
                 }
 
-                dispatch(new \App\Jobs\SendKycStatusChangedEmail(auth()->user()));
+                dispatch(new \App\Jobs\SendKycStatusChangedEmail($user));
             }
         }
 
