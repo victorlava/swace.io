@@ -248,7 +248,7 @@
                                 <div class="row py-2">
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block small text-uppercase">Rate</span></div>
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->gross, 2, '.', ' ') }}<span class="d-block small text-uppercase">Gross</span></div>
-                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block small text-uppercase">Net</span></div>
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : 'N/A' }}<span class="d-block small text-uppercase">Net</span></div>
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block small text-uppercase">Fee</span></div>
                                 </div>
                             </div>
