@@ -153,9 +153,18 @@
                     <a class="block-link" href="{{ route('kyc.index') }}">
                       <div class="alert alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
                           <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Failed</h4>
-                          <p> We regret to inform you that you have failed to pass both the automatic and the manual KYC process, and in accordance with EU regulations we will not be able to accept payments from you at this stage. <u>You are welcome to try again!</u></p>
+                          <p>We regret to inform you that you have failed to pass both the automatic and the manual KYC process, and in accordance with EU regulations we will not be able to accept payments from you at this stage. <u>You are welcome to try again!</u></p>
                       </div>
                     </a>
+                  @else
+                    <div class="alert alert-dismissible fade show alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
+                        <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> Congratulations, you've successfully passed our KYC process!</h4>
+                        <p>You will now be able to purchase SWA tokens.</u></p>
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                   @endif
                 @endif
 
