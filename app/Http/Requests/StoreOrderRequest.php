@@ -23,9 +23,13 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules()
     {
+        $minAmount = env('SWACE_MIN_BUY_AMOUNT');
+        $maxAmount = env('SWACE_MAX_BUY_AMOUNT');
+
         return [
             'amount' => 'required|numeric',
-            'currency' => 'required|numeric|exists:currencies,id'
+            'tokens' => "required|gte:{$minAmount}|lte:{$maxAmount}",
+            'currency' => 'required|numeric|exists:currencies,id',
         ];
     }
 }

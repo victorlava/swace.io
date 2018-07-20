@@ -153,18 +153,9 @@
                     <a class="block-link" href="{{ route('kyc.index') }}">
                       <div class="alert alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
                           <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> KYC Verification Failed</h4>
-                          <p>We regret to inform you that you have failed to pass both the automatic and the manual KYC process, and in accordance with EU regulations we will not be able to accept payments from you at this stage. <u>You are welcome to try again!</u></p>
+                          <p> We regret to inform you that you have failed to pass both the automatic and the manual KYC process, and in accordance with EU regulations we will not be able to accept payments from you at this stage. <u>You are welcome to try again!</u></p>
                       </div>
                     </a>
-                  @else
-                    <div class="alert alert-dismissible fade show alert-danger mt-4 pt-3 pb-2 px-4" role="alert">
-                        <h4 class="alert-heading pt-2 mb-1"><i class="icon icon-info-circled mr-1"></i> Congratulations, you've successfully passed our KYC process!</h4>
-                        <p>You will now be able to purchase SWA tokens.</u></p>
-
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
                   @endif
                 @endif
 
@@ -257,7 +248,7 @@
                                 <div class="row py-2">
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block small text-uppercase">Rate</span></div>
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->gross, 2, '.', ' ') }}<span class="d-block small text-uppercase">Gross</span></div>
-                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : 'N/A' }}<span class="d-block small text-uppercase">Net</span></div>
+                                    <div class="col-6 py-1 text-left col-sm-3 col-lg-6">{{ ($order->net) ? '$'.number_format($order->net, 2, '.', ' ') : '' }}<span class="d-block small text-uppercase">Net</span></div>
                                     <div class="col-6 py-1 text-left col-sm-3 col-lg-6">${{ number_format($order->fee, 2, '.', ' ') }}<span class="d-block small text-uppercase">Fee</span></div>
                                 </div>
                             </div>
