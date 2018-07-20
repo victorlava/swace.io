@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use CoinGate\CoinGate;
-use CoinGate\Merchant\Order as MerchantOrder;
-use App\Order;
-use App\Currency;
 use App\Flash;
 use App\Http\Requests\OrderCallbackRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Jobs\SendOrderEmail;
+use App\Order;
+use CoinGate\CoinGate;
+use CoinGate\Merchant\Order as MerchantOrder;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PaymentController extends Controller
 {
@@ -30,9 +30,11 @@ class PaymentController extends Controller
         $this->tokenPrice = env('SWACE_TOKEN_PRICE');
         $this->minTokenAmount = env('SWACE_MIN_BUY_AMOUNT');
         $this->maxTokenAmount = env('SWACE_MAX_BUY_AMOUNT');
+
+        $this->initCoingateConfig();
     }
 
-    private function coingateConfig()
+    private function initCoingateConfig()
     {
         CoinGate::config(array(
             'environment' => env('COINGATE_ENVIRONMENT'),
@@ -42,121 +44,122 @@ class PaymentController extends Controller
 
     public function store(StoreOrderRequest $request): \Illuminate\Http\RedirectResponse
     {
-        $this->coingateConfig();
-        $status = '';
-        $message = '';
+//        if (!Coingate::testConnection()) {
+//            $message = 'We are having issues with our provider. Please try again later.';
+//
+//            Flash::create('error', $message);
+//
+//            return redirect(route('dashboard.index'));
+//        }
 
-        var_dump($request->all());
+        $order = new Order();
+        $order->user()->associate(Auth::user());
+        $order->createNew([
+            'receive_currency' => $this->receiveCurrency,
+            'bonus_percentage' => $this->bonusPercentage,
+            'fee' => $this->coingateFee
+        ], $request->all());
 
-        if (Coingate::testConnection()) { // In case of coingate failure, let's show a message to user
-            $order = new Order();
-            $order->create(['user_id' => Auth::user()->id,
-                            'request' => $request,
-                            'receive_currency' => $this->receiveCurrency,
-                            'fee' => $this->coingateFee]);
+        try {
+            $coingateOrder = MerchantOrder::create(
+                $this->prepareProviderParams($order)
+            );
 
+            dd($coingateOrder);
 
-            $orderParams = $this->prepParams(['order' => $order,
-                                                'amount' => $request->amount]);
+            if ($coingateOrder) {
+                $order->pending($coingateOrder);
 
-            try {
-                $coingateOrder = MerchantOrder::create($orderParams);
+                $url = $coingateOrder->payment_url;
 
-                if ($coingateOrder) {
-                    $order = Order::findOrFail($order->id);
-                    $order->pending([   'id' => $coingateOrder->id,
-                                        'url' => $coingateOrder->payment_url]);
+                dispatch(new SendOrderEmail($order));
+            } else {
+                $order->failed('Rejected by provider');
 
-                    $url = $coingateOrder->payment_url;
-                } else {
-                    $order = Order::findOrFail($order->id);
-                    $order->failed();
-
-                    $status = 'canceled';
-                    $message = 'Our provider rejected your order. Please contact our support.';
-
-                    Flash::create('error', $message);
-
-                    $url = route('dashboard.index');
-                }
-            } catch (\Coingate\ApiError $e) {
-                $order = Order::findOrFail($order->id);
-                $order->failed();
-
-                $status = 'canceled';
-                $message = 'Something went wrong with our provider, please contact our support.';
+                $message = 'Our provider rejected your order. Please contact our support.';
 
                 Flash::create('error', $message);
+
                 $url = route('dashboard.index');
             }
-        } else {
+        } catch (\Coingate\ApiError $e) {
+            $order->failed($e->getMessage());
 
-            $status = 'canceled';
-            $message = 'We are having issues with our provider. Please try again.';
+            $message = 'Something went wrong with our provider, please contact our support.';
 
             Flash::create('error', $message);
             $url = route('dashboard.index');
         }
 
-        if($status === '') { $status = 'placed'; }
-
-        dispatch(new SendOrderEmail($order->user, 'placed', '', $order->invoice));
-        
         return redirect($url);
     }
 
-    public function callback(string $hash, OrderCallbackRequest $request): bool
+    public function callback(OrderCallbackRequest $request): string
     {
-
-        $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
+        $order = Order::where('coingate_id', $request->id)->where('hash', $request->token)->first();
 
         if ($order) {
+            $responseCode = Response::HTTP_BAD_REQUEST;
 
-            $order->paid(['request' => $request,
-                          'token_price' => $this->tokenPrice,
-                          'bonus' => $this->bonusPercentage]);
-
+            $order->paid([
+                'request' => $request,
+                'token_price' => $this->tokenPrice,
+                'bonus' => $this->bonusPercentage
+            ]);
 
             $raw = json_encode($request->all());
             $response = new \App\Response();
-            $response->create([ 'coingate_id' => $request->id,
-                                'order_id' => $request->order_id,
-                                'response' => $raw]);
-            }
+            $response->create([
+                'coingate_id' => $request->id,
+                'order_id' => $request->order_id,
+                'response' => $raw
+            ]);
+        } else {
+            $responseCode = Response::HTTP_NOT_FOUND;
+        }
 
-        return true;
+        return response(null, $responseCode, ['Content-Type' =>'text/plain']);
     }
 
-    private function prepParams(array $data): array
+    private function prepareProviderParams(Order $order): array
     {
-        return $preparedParams = [
-           'order_id' => (string)$data['order']->order_id,
-           'price_amount' => (float)$data['amount'],
-           'price_currency' => strtoupper($data['order']->type->short_title),
-           'receive_currency' => $this->receiveCurrency,
-           'callback_url' => route('payment.callback', $data['order']->hash),
-           'cancel_url' => route('payment.cancel', ['order_id' => $data['order']->hash]),
-           'success_url' => route('payment.success', ['order_id' => $data['order']->hash]),
-           'title' => 'Order #' . $data['order']->order_id, // For client
-           'description' => 'SWA token purchase.'
-       ];
-    }
+        $oid = $order->order_id;
 
+        return [
+            'order_id' => $oid,
+            'price_amount' => $order->amount,
+            'price_currency' => strtoupper($order->currency->short_title),
+            'receive_currency' => $this->receiveCurrency,
+            'callback_url' => route('payment.callback', $order->hash),
+            'cancel_url' => route('payment.cancel', ['order_id' => $oid]),
+            'success_url' => route('payment.success', ['order_id' => $oid]),
+            'title' => 'Order #' . $oid, // For client
+            'description' => sprintf('%s SWA token purchase.', $order->tokens_expected)
+        ];
+    }
 
     public function success(string $id)
     {
-        Flash::create('success', "Order updated succesfully.");
+        Flash::create('success', "Order updated successfully.");
 
-        $order = Order::where('hash', $id)->first();
+        $order = Order::where('order_id', $id)->first();
+
+        if (!$order) {
+            throw new BadRequestHttpException();
+        }
 
         return redirect()->route('dashboard.index');
     }
 
     public function cancel(string $id)
     {
-        Flash::create('danger', "Order have been canceled.");
+        Flash::create('danger', "Order has been canceled.");
 
-        $order = Order::where('hash', $id)->first();
+        $order = Order::where('order_id', $id)->first();
+
+        if (!$order) {
+            throw new BadRequestHttpException();
+        }
 
         return redirect()->route('dashboard.index');
     }

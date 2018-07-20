@@ -17,22 +17,22 @@ class Status extends Model
         'title', 'description'
     ];
 
-    public function class() : string
+    public function cssClass(): string
     {
-        $clasName = '';
+        $className = '';
 
-        if ($this->title == 'Failed') {
+        if ($this->title === 'Failed') {
             $className = 'badge-danger';
-        } elseif ($this->title == 'Pending') {
+        } elseif ($this->title === 'Pending') {
             $className = 'badge-warning';
-        } elseif ($this->title == 'Expired') {
+        } elseif ($this->title === 'Expired' || $this->title === 'New') {
             $className = 'badge-secondary';
-        } elseif ($this->title == 'Paid') {
+        } elseif ($this->title === 'Paid') {
             $className = 'badge-success';
-        } elseif ($this->title == 'Canceled') {
+        } elseif ($this->title === 'Canceled') {
             $className = 'badge-danger';
         }
 
-        return ' ' . $className;
+        return $className;
     }
 }

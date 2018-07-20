@@ -21,7 +21,7 @@
               {{ $order->id }}
           </th>
           <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
-          <td>{{ $order->amount }} {{ strtoupper($order->type->short_title) }}</td>
+          <td>{{ $order->amount }} {{ strtoupper($order->currency->short_title) }}</td>
           <td>{{ $order->rate }} $</td>
           <td>{{ $order->gross }} $</td>
           <td>{{ $order->fee }} $</td>
@@ -32,7 +32,7 @@
               <p>
                   <a href="{{ $order->invoice }}">Invoice</a>
               </p>
-              <span class="badge{{ $order->status->class() }}">{{ $order->status->title }}</span>
+              <span class="badge {{ $order->status->cssClass() }}">{{ $order->status->title }}</span>
           </td>
         </tr>
         @endforeach

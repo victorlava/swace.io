@@ -208,7 +208,7 @@
                                 <span class="d-block ">
                                     {{ Carbon::parse($order->created_at)->timezone(Auth::user()->timezone) }}
                                 </span>
-                                <span class="badge badge-pill{{ $order->status->class() }}">{{ $order->status->title }}</span>
+                                <span class="badge badge-pill {{ $order->status->cssClass() }}">{{ $order->status->title }}</span>
                                 @if($order->status->title === 'Paid')
                                 <a href="{{ $order->invoice }}.pdf" target="_blank" class="ml-2 badge badge-pill badge-secondary">View invoice</a>
                                 @elseif($order->status->title === 'Failed' || $order->status->title === 'Expired' || $order->status->title === 'Canceled')
@@ -217,7 +217,7 @@
                                 <a href="{{ $order->invoice }}" target="_blank" class="ml-2 badge badge-pill badge-secondary">View order</a>
                                 @endif
                             </div>
-                            <div class="col-lg-2 amount-paid">{{ number_format($order->amount, 8)}} {{ strtoupper($order->type->short_title) }}</div>
+                            <div class="col-lg-2 amount-paid">{{ number_format($order->amount, 8)}} {{ strtoupper($order->currency->short_title) }}</div>
                             <div class="col-lg-3 usd-info">
                                 <div class="row py-2 py-lg-2">
                                     <div class="col-3 col-lg-6">${{ number_format($order->rate, 2, '.', ' ') }}<span class="d-block mb-lg-2 small text-uppercase">Rate</span></div>

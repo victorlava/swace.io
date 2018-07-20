@@ -74,7 +74,9 @@ class User extends Authenticatable
 
     public function tokens()
     {
-        return Order::where('user_id', $this->id)->where('status_id', 4)->sum('tokens');
+        return Order::where('user_id', $this->id)
+            ->where('status_id', Order::COINGATE_STATUS_PAID)
+            ->sum('tokens');
     }
 
     public function full_name()

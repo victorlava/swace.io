@@ -35,7 +35,11 @@ class DashboardController extends Controller
         $verified = Auth::user()->isVerified();
         $tokens = Auth::user()->tokens();
         $email = Auth::user()->email;
-        $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $orders = Order::with('currency', 'status', 'user')
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $token_end_date = Carbon::parse($this->meta['end_date'], Auth::user()->timezone);
 
         $days_left = $token_end_date->diffInDays(Carbon::now());

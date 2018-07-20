@@ -2,36 +2,30 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Mail\OrderMade;
+use App\Order;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 use Mail;
 
 class SendOrderEmail implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Queueable, SerializesModels;
 
     public $tries = 3;
 
-    protected $user;
-
-    protected $status;
-
-    protected $viewOrder;
+    /** @var Order */
+    protected $order;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user, string $status, string $viewOrder)
+    public function __construct(Order $order)
     {
-        $this->user = $user;
-        $this->status = $status;
-        $this->viewOrder = $viewOrder;
+        $this->order = $order;
     }
 
     /**
@@ -39,9 +33,9 @@ class SendOrderEmail implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-      $email = new OrderMade($this->status, $this->viewOrder);
-      Mail::to($this->user->email)->send($email);
+      $email = new OrderMade($this->order->invoice);
+      Mail::to($this->order->user->email)->send($email);
     }
 }

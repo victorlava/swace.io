@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCurrencyToOrder extends Migration
+class OrdersAdditionalFields extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddCurrencyToOrder extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('pay_currency', 5)->nullable();
+            $table->decimal('tokens_expected', 19, 2)->after('net');
+            $table->decimal('bonus_percentage')->after('tokens');
         });
     }
 
@@ -26,7 +27,7 @@ class AddCurrencyToOrder extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('pay_currency');
+            $table->dropColumn('tokens_expected', 'bonus_percentage');
         });
     }
 }

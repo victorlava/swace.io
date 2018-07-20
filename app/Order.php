@@ -7,45 +7,78 @@ use App\Jobs\SendPaymentCompleted;
 
 class Order extends Model
 {
+    public const COINGATE_STATUS_FAILED = 1;
+    public const COINGATE_STATUS_PENDING = 2;
+    public const COINGATE_STATUS_EXPIRED = 3;
+    public const COINGATE_STATUS_PAID = 4;
+    public const COINGATE_STATUS_CANCELED = 5;
+    public const COINGATE_STATUS_NEW = 6;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    /** @var string[] */
     protected $fillable = [
-        'order_id', 'amount', 'rate', 'gross', 'fee', 'net', 'tokens',
-        'bonus', 'invoice', 'coingate_id', 'currency_id', 'status_id',
-        'user_id', 'hash', 'created_at'
+        'order_id',
+        'amount',
+        'rate',
+        'gross',
+        'fee',
+        'net',
+        'tokens_expected',
+        'tokens',
+        'bonus_percentage',
+        'receive_currency',
+        'bonus',
+        'invoice',
+        'coingate_id',
+        'currency_id',
+        'status_id',
+        'user_id',
+        'hash',
     ];
 
-    public static $receiveAmount;
-
-    public function create(array $data)
+    public function createNew(array $data, array $request)
     {
-        $this->order_id = $this->generateID($data['user_id']);
-        $this->currency_id = (int)$data['request']->currency;
-        $this->amount = $data['request']->amount;
-        $this->rate = $this->calcRate($data['receive_currency']);
-        $this->gross = $this->calcGross();
-        $this->fee = $this->calcFee($data['fee']);
-        $this->setStatus('pending');
-        $this->user_id = $data['user_id'];
-        $this->hash = md5($this->order_id . (string)$data['user_id'] . (string)time());
+        $orderId = $this->generateID($this->user->id);
+
+        $this->amount = (float)$request['amount'];
+//        $this->rate = $this->calcRate($data['receive_currency']);
+//        $this->gross = $this->calcGross();
+//        $this->fee = $this->calcFee($data['fee']);
+
+        $this->fill([
+            'order_id' => $orderId,
+            'currency_id' => (int)$request['currency'],
+            'tokens_expected' => (float)$request['tokens'],
+            'bonus_percentage' => $data['bonus_percentage'] / 100,
+            'hash' => md5($orderId . $this->user->id . time()),
+        ]);
+
+        $this->setStatus(self::COINGATE_STATUS_NEW);
+
         $this->save();
     }
 
-    public function pending(array $data)
+    public function pending(\CoinGate\Merchant\Order $merchantOrder): void
     {
-        $this->coingate_id = $data['id'];
-        $this->invoice = $data['url'];
-        $this->setStatus('pending');
+        $this->coingate_id = $merchantOrder->id;
+        $this->invoice = $merchantOrder->payment_url;
+        $this->hash = $merchantOrder->token;
+        $this->receive_currency = $merchantOrder->receive_currency;
+
+        $this->setStatus(self::COINGATE_STATUS_PENDING);
         $this->save();
     }
 
-    public function failed()
+    public function failed(string $comment): void
     {
-        $this->setStatus('failed');
+        $this->setStatus(self::COINGATE_STATUS_FAILED);
+        $this->comment = $comment;
+        $this->save();
+    }
+
+    public function canceled(string $comment): void
+    {
+        $this->setStatus(self::COINGATE_STATUS_CANCELED);
+        $this->comment = $comment;
         $this->save();
     }
 
@@ -56,59 +89,46 @@ class Order extends Model
         $bonus = $this->calcBonus($tokens, $data['bonus']);
         $this->tokens = $tokens;
         $this->bonus = $bonus;
-        $this->currency = $data['pay_currency'];
+        $this->pay_currency = $data['request']->pay_currency;
         $this->setStatus($data['request']->status);
         $this->save();
     }
 
-    public function type()
+    public function currency()
     {
-        return $this->hasOne('App\Currency', 'id', 'currency_id');
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function status()
     {
-        return $this->hasOne('App\Status', 'id', 'status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function user()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
-    }
-
-    public static function getCollectedAmount()
-    {
-        $amount = Order::whereHas('status', function ($query) {
-            $query->where('title', 'Paid');
-        })->sum('gross');
-
-        Cache::store('file')->put('collected_amount', $amount, 10);
-
-        return $amount;
+        return $this->belongsTo(User::class);
     }
 
     public function generateID(int $userID): string
     {
-        $string = preg_replace('/[0-9]O+/', '', md5($userID + time()));
-        $string = str_replace('O', '', $string);
+        $string = preg_replace('/[0-9O]+/', '', md5($userID . time()));
 
         $stringArray = str_split($string);
         $lastIndex = count($stringArray) - 1;
         $order = [];
         foreach (range(1, 12) as $key => $value) {
-            $number = rand(1, 9);
-            $char = $stringArray[rand(0, $lastIndex)];
+            $number = random_int(1, 9);
+            $char = $stringArray[random_int(0, $lastIndex)];
             $chars = [$number, strtoupper($char)];
-            $order[$key] = $chars[rand(0, 1)];
+            $order[$key] = $chars[random_int(0, 1)];
         }
-        $order_id = implode('', $order);
 
-        return $order_id;
+        return implode('', $order);
     }
 
     public function calcRate(string $receiveCurrency): float
     {
-        return (float)file_get_contents(env('COINGATE_PUBLIC_API') . $this->type->short_title . '/' . $receiveCurrency);
+        return (float)file_get_contents(env('COINGATE_PUBLIC_API') . $this->currency->short_title . '/' . $receiveCurrency);
     }
 
     public function calcGross(): float
@@ -118,12 +138,12 @@ class Order extends Model
 
     public function calcFee(float $fee): float
     {
-        return ($this->gross * $fee) / 100;
+        return $this->gross * $fee / 100;
     }
 
-    public function calcTokens(float $price): float
+    public function calcTokens(float $tokenPrice): float
     {
-        $tokens = $this->gross / $price;
+        $tokens = $this->gross / $tokenPrice;
 
         return $tokens;
     }
@@ -142,33 +162,37 @@ class Order extends Model
 
     public function setStatus(string $status)
     {
-        $status = strtolower($status);
-        $code = 1; // Default;
+//        $status = strtolower($status);
+//        $code = 1; // Default;
+//
+//        switch ($status) {
+//            case 'failed':
+//                $code = 1;
+//                break;
+//
+//            case 'pending':
+//                $code = 2;
+//                break;
+//
+//            case 'expired':
+//                $code = 3;
+//                break;
+//
+//            case 'paid':
+//                $code = 4;
+//                dispatch(new SendPaymentCompleted($this->user));
+//                break;
+//
+//            case 'canceled':
+//                $code = 5;
+//                break;
+//
+//        }
 
-        switch ($status) {
-            case 'failed':
-                $code = 1;
-                break;
-
-            case 'pending':
-                $code = 2;
-                break;
-
-            case 'expired':
-                $code = 3;
-                break;
-
-            case 'paid':
-                $code = 4;
-                dispatch(new SendPaymentCompleted($this->user));
-                break;
-
-            case 'canceled':
-                $code = 5;
-                break;
-
+        if ($status === self::COINGATE_STATUS_PAID) {
+            dispatch(new SendPaymentCompleted($this->user));
         }
 
-        $this->status_id = Status::find($code)->id;
+        $this->status_id = $status;
     }
 }
