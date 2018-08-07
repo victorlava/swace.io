@@ -12,6 +12,7 @@ use App\Flash;
 use App\Http\Requests\OrderCallbackRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Jobs\SendOrderEmail;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
@@ -109,9 +110,19 @@ class PaymentController extends Controller
         return redirect($url);
     }
 
-    public function callback(string $hash, OrderCallbackRequest $request): string
+    public function callbackNoHash(OrderCallbackRequest $request)
     {
+        $order = Order::where('coingate_id', $request->id)->where('order_id', $request->order_id)->first();
 
+        if (!$order) {
+            return response(null, Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->callback($order->hash ,$request);
+    }
+
+    public function callback(string $hash, OrderCallbackRequest $request)
+    {
         $order = Order::where('coingate_id', $request->id)->where('hash', $hash)->first();
 
         if ($order) {
@@ -130,8 +141,8 @@ class PaymentController extends Controller
                                 'order_id' => $request->order_id,
                                 'response' => $raw]);
         } else {
-            $response_message = 'Order Not Found';
-            $response_code = 500;
+            $response_message = 'Order does not exist';
+            $response_code = 400;
         }
 
         return response($response_message, $response_code)
